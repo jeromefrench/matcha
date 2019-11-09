@@ -1,11 +1,10 @@
 var express = require('express');
 var bodyParser = require("body-parser");
 
+var bdd = require('./bdd_functions.js');
+
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true}));
-
-var log;
-var fname;
 
 app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/plain');
@@ -18,10 +17,11 @@ app.get('/sign-up', function(req, res){
 
 app.post('/sign-up', function(req, res){
     var lname = req.body.lastname;
-    fname = req.body.firstname;
+    var fname = req.body.firstname;
     var email = req.body.email;
-    log = req.body.login;
+    var login = req.body.login;
     var passwd = req.body.passwd;
+    bdd.insert_user(login, passwd, fname, lname, email);
 });
 
 app.get('/sign-in', function(req, res){
