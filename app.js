@@ -1,15 +1,28 @@
 // const express = require('express');
 
-
 var bdd = require('./bdd_functions.js');
 
 
-bdd.get_user();
+// var results =  bdd.get_user();
+// console.log("data" + results);
+// bdd.insert_user("jean2", "jean-passwd2", "jeanname2", "dupond2", "jean@dupond2");
+// bdd.insert_user("jean", "jean-passwd", "jeanname", "dupond", "jean@dupond");
+bdd.isLoginPasswdMatch("jean", "jean-passwdwww");
 
 
+bdd.myEvent.on('endPasswordMatch', function(result){
+	if (result == true)
+	{
+		console.log("Password Match");
+	}
+	else
+	{
+		console.log("Password dont Match");
+	}
+})
 
 
-
+// console.log("le match " + match);
 
 
 // 	const app = express();
