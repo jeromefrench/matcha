@@ -29,8 +29,19 @@ app.get('/sign-in', function(req, res){
 });
 
 app.post('/sign-in', function(req, res){
-    console.log("login=" + req.body.login);
-    console.log("passwd=" + req.body.passwd);
+    // console.log("login=" + req.body.login);
+    // console.log("passwd=" + req.body.passwd);
+    bdd.isLoginPasswdMatch(req.body.login, req.body.passwd);
+    bdd.myEvent.on('endPasswordMatch', function(result){
+        if (result == true)
+        {
+            console.log("Password Match");
+        }
+        else
+        {
+            console.log("Password dont Match");
+        }
+    })
 });
 
 app.get('/my-account', function(req, res){
