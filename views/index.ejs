@@ -1,0 +1,32 @@
+
+
+<% include header %>
+
+<div class="ui main container" style="margin-top: 7em" >
+
+<div class="ui fixed inverted menu">
+	<a href="/test" class="header item">Test</a>
+</div>
+
+
+<p> <%= test %> </p>
+
+<% if (locals.error) { %>
+	<div class="ui negative message">
+		<%= error %>
+	</div>
+<% } %>
+
+<form action="/test" method="post" class="ui form">
+	<div class="field">
+		<label for="message">Message</label>
+		<textarea name="message" id="message"></textarea>
+	</div>
+	<button type="submit" class="ui blue labeled icon button">
+		<i class="icon edit"></i>Envoyer
+	</button>
+</form>
+
+</div>
+
+<% include footer %>

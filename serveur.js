@@ -1,15 +1,43 @@
-var express = require('express');
-var bodyParser = require("body-parser");
-var app = express();
-var bdd = require('./bdd_functions.js');
-
-app.use(bodyParser.urlencoded({ extended: true}));
+let express = require('express');
+let app = express();
+let bodyParser = require("body-parser");
+let session = require("express-session");  //pour avoir les variables de session
 
 
+let bdd = require('./bdd_functions.js');
 
+//moteur de template
+app.set('view engine', 'ejs'); //set le template engine pour express
+
+
+//middle ware
+//le middle ware s'interpose entre notre entre et notre route
+app.use('/assets', express.static('public')); //defini le dossier pour les fichier static
+
+app.use(bodyParser.urlencoded({ extended: true})); 
+
+app.use(bodyParser.json());
+
+app.use(session({ //pour gerer les sessions
+	  secret: 'sdjfkl',
+	  resave: false,
+	  saveUninitialized: true,
+	  cookie: { secure: false }
+}));
+//routes
 
 app.get('/test', (req, res) => {
-	res.send('Salut');
+	console.log(req.session.test);
+	res.render('index', {test: 'Salut'});
+});
+app.post('/test', (req, res) => {
+	// console.log(req.body);
+	if (req.body.message == undefined || req.body.message == ""){
+		req.session.test = "Il y a une erreur";
+		res.redirect('/test');  // pour rediriger vers une url
+		// res.render('index', {error: "Vous n'avez pas entrez de message", 
+		// 					test: "salut"});
+	}
 });
 
 
