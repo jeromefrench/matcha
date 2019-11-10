@@ -1,10 +1,17 @@
 var express = require('express');
 var bodyParser = require("body-parser");
-
+var app = express();
 var bdd = require('./bdd_functions.js');
 
-var app = express();
 app.use(bodyParser.urlencoded({ extended: true}));
+
+
+
+
+app.get('/test', (req, res) => {
+	res.send('Salut');
+});
+
 
 app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/plain');
@@ -28,20 +35,18 @@ app.get('/sign-in', function(req, res){
     res.render('sign-in.ejs');
 });
 
-app.post('/sign-in', function(req, res){
+app.post('/sign-in', (req, res) => {
     // console.log("login=" + req.body.login);
     // console.log("passwd=" + req.body.passwd);
-    bdd.isLoginPasswdMatch(req.body.login, req.body.passwd);
-    bdd.myEvent.on('endPasswordMatch', function(result){
-        if (result == true)
-        {
+    bdd.isLoginPasswdMatch(req.body.login, req.body.passwd, function(match){
+    	if (match) {
             console.log("Password Match");
-        }
-        else
-        {
+    	}
+        else {
             console.log("Password dont Match");
         }
-    })
+    });
+    res.send('hello');
 });
 
 app.get('/my-account', function(req, res){
