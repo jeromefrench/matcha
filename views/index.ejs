@@ -11,11 +11,18 @@
 
 <p> <%= test %> </p>
 
-<% if (locals.error) { %>
+<!-- <% if (locals.error) { %> -->
+<!-- 	<div class="ui negative message"> -->
+<!-- 		<%= error %> -->
+<!-- 	</div> -->
+<!-- <% } %> -->
+
+<% if (locals.flash && locals.flash.error) { %>
 	<div class="ui negative message">
-		<%= error %>
+		<%= flash.error %>
 	</div>
 <% } %>
+
 
 <form action="/test" method="post" class="ui form">
 	<div class="field">

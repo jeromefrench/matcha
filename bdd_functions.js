@@ -54,6 +54,14 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 	console.log("ici");
 }
 
+exports.insert_message = function (content, date){
+	var sql = "INSERT INTO messages (content, createat) VALUES (?, ?)";
+	var todo = [content, date];
+	connection.query(sql, todo, function (err, result) {
+	  	if (err) throw err;
+	  	console.log("1 record inserted");
+	});
+}
 
 
 

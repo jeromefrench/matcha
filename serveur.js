@@ -24,22 +24,43 @@ app.use(session({ //pour gerer les sessions
 	  saveUninitialized: true,
 	  cookie: { secure: false }
 }));
+
+app.use(require('./middlewares/flash'));
+
+
 //routes
 
 app.get('/test', (req, res) => {
+	console.log(req.session.flash);
+	console.log("hello");
+
 	if (req.session.test){
+	console.log("hello2");
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
 	}
-	res.render('index', {test: 'Salut'});
+	console.log("hello3");
+	res.render('index', {test : 'Salut'});
 });
+
+
 app.post('/test', (req, res) => {
 	// console.log(req.body);
 	if (req.body.message == undefined || req.body.message == ""){
+		req.flash('error', "Vous n'avez pas poste de message");
 		req.session.test = "Il y a une erreur";
 		res.redirect('/test');  // pour rediriger vers une url
 		// res.render('index', {error: "Vous n'avez pas entrez de message",
 		// 					test: "salut"});
+	}
+	else
+	{
+		var Message = require('./models/Message');
+		Message.create(req.body.message, function (){
+
+			req.flash('success', "Merci !");
+			res.redirect('/test');  // pour rediriger vers une url
+		})
 	}
 });
 
