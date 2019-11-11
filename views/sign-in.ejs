@@ -1,16 +1,15 @@
-<head>
-    <meta charset="utf-8">
-    <title>Sign In</title>
-</head>
+<% include header %>
 <h1>Sign In</h1>
-<form method="POST" action="/sign-in">
-    <label for="login">Login</label> :
-    <input type="text" name="login" id="login" required>
-    <span id="helplogin"></span>
-    <br/>
-    <label for="passwd">Password</label> :
-    <input type="password" name="passwd" id="passwd" required>
-    <span id="helppasswd"></span>
-    <input type="submit" value="Connexion">
+<form method="POST" action="/sign-in" class="ui fluid form">
+    <div class="inline field">
+        <input type="text" name="login" placeholder="Login" required>
+        <div class="ui left pointing red basic label">
+            Please insert your login
+        </div>
+    </div>
+    <div class="inline field">
+    <input type="password" name="passwd" placeholder="Password" required>
+    </div>
+    <input type="submit" class="ui primary button" value="Connexion">
 </form>
-<!-- <script src="login.js"></script> -->
+<% include footer %>

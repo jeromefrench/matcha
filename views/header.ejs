@@ -2,7 +2,18 @@
 
 <html>
 	<head>
-		<title>Demo</title>
+		<title>
+			<% if (locals.title) {%>
+			<%= locals.title %>
+			<% }else{%>
+			<%= "Matcha"%>
+			<%}%>
+		</title>
 		<link rel="stylesheet" href="/assets/semantic/semantic.min.css">
 	</head>
 	<body>
+		<div class="ui main container" style="margin-top: 7em" >
+
+		<div class="ui fixed inverted menu">
+			<a href="/test" class="header item">Test</a>
+		</div>

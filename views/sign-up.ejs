@@ -1,24 +1,21 @@
-<head>
-    <meta charset="utf-8">
-    <title>Sign Up</title>
-</head>
+<% include header.ejs %>
 <h1>Sign Up</h1>
-<form method="POST" action="/sign-up">
-    <label for="lastname">Last name</label> :
-    <input type="text" name="lastname" id="lastname" required>
-    <br/>
-    <label for="firstname">First name</label> :
-    <input type="text" name="firstname" id="firstname" required>
-    <br/>
-    <label for="email">Email</label> :
-    <input type="email" name="email" id="email" required>
-    <br/>
-    <label for="login">Login</label> :
-    <input type="text" name="login" id="login" required>
-    <span id="helplogin"></span>
-    <br/>
-    <label for="passwd">Password</label> :
-    <input type="password" name="passwd" id="passwd" required>
-    <span id="helppasswd"></span>
-    <input type="submit" value="Create">
+<form method="POST" action="/sign-up" class="ui fluid form">
+    <div class="inline field">
+        <input type="text" name="lastname" placeholder="Last name" required>
+    </div>
+    <div class="inline field">
+    <input type="text" name="firstname" placeholder="First name" required>
+    </div>
+    <div class="inline field">
+    <input type="email" name="email" placeholder="Email" required>
+    </div>
+    <div class="inline field">
+    <input type="text" name="login" placeholder="Login" required>
+    </div>
+    <div class="inline field">
+    <input type="password" name="passwd" placeholder="Password" required>
+    </div>
+    <input type="submit" class="ui primary button" value="Create">
 </form>
+<% include footer.ejs %>
