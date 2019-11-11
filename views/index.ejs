@@ -23,6 +23,11 @@
 	</div>
 <% } %>
 
+<% if (locals.flash && locals.flash.success) { %>
+	<div class="ui positive message">
+		<%= flash.success %>
+	</div>
+<% } %>
 
 <form action="/test" method="post" class="ui form">
 	<div class="field">

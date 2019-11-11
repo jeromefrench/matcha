@@ -58,7 +58,7 @@ app.post('/test', (req, res) => {
 		var Message = require('./models/Message');
 		Message.create(req.body.message, function (){
 
-			req.flash('success', "Merci !");
+			req.flash('success', "Merci petit chat!");
 			res.redirect('/test');  // pour rediriger vers une url
 		})
 	}
