@@ -14,7 +14,7 @@ app.set('view engine', 'ejs'); //set le template engine pour express
 //le middle ware s'interpose entre notre entre et notre route
 app.use('/assets', express.static('public')); //defini le dossier pour les fichier static
 
-app.use(bodyParser.urlencoded({ extended: true})); 
+app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(bodyParser.json());
 
@@ -27,7 +27,10 @@ app.use(session({ //pour gerer les sessions
 //routes
 
 app.get('/test', (req, res) => {
-	console.log(req.session.test);
+	if (req.session.test){
+		res.locals.error = req.session.test;
+		req.session.test = undefined;
+	}
 	res.render('index', {test: 'Salut'});
 });
 app.post('/test', (req, res) => {
@@ -35,7 +38,7 @@ app.post('/test', (req, res) => {
 	if (req.body.message == undefined || req.body.message == ""){
 		req.session.test = "Il y a une erreur";
 		res.redirect('/test');  // pour rediriger vers une url
-		// res.render('index', {error: "Vous n'avez pas entrez de message", 
+		// res.render('index', {error: "Vous n'avez pas entrez de message",
 		// 					test: "salut"});
 	}
 });
