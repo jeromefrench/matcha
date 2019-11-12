@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le :  lun. 11 nov. 2019 à 16:03
+-- Généré le :  mar. 12 nov. 2019 à 20:05
 -- Version du serveur :  5.7.28
 -- Version de PHP :  7.2.23
 
@@ -35,16 +35,17 @@ CREATE TABLE IF NOT EXISTS `info_user` (
   `id_user` int(11) NOT NULL,
   `gender` enum('male','female','other','') NOT NULL,
   `orientation` enum('men','women','everyone','') NOT NULL,
-  `interest` set('mnkl','fdskfx','grsfgsvdf') NOT NULL,
+  `bio` tinytext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `info_user`
 --
 
-INSERT INTO `info_user` (`id`, `id_user`, `gender`, `orientation`, `interest`) VALUES
-(1, 2, 'female', 'everyone', 'mnkl,fdskfx');
+INSERT INTO `info_user` (`id`, `id_user`, `gender`, `orientation`, `bio`) VALUES
+(1, 2, 'female', 'everyone', 'mnkl,fdskfx'),
+(2, 4, 'male', 'men', 'blabla');
 
 -- --------------------------------------------------------
 
@@ -59,19 +60,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fname` text NOT NULL,
   `lname` text NOT NULL,
   `mail` text NOT NULL,
+  `etat` enum('attente','valide') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`) VALUES
-(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2'),
-(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond'),
-(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr'),
-(5, 'hgf', 'ersgrts', 'hgf', 'hg', 'hgf@grds.fgt'),
-(6, 'hgf', 'ersgrts', 'hgf', 'hg', 'hgf@grds.fgt');
+INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `etat`) VALUES
+(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2', 'valide'),
+(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond', 'valide'),
+(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr', 'valide'),
+(22, 'lalali', 'lala', 'lili', 'lala', 'lalali@lili.fr', 'valide');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
