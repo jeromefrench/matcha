@@ -43,9 +43,9 @@ exports.get_id_user = function (login, callback){
 	});
 }
 
-exports.insert_info = function (id_user, gender, orientation, interest) {
-	var sql = "INSERT INTO `info_user` (id_user, gender, orientation, interest) VALUES (?, ?, ?, ?)";
-	var todo = [id_user, gender, orientation, interest];
+exports.insert_info = function (id_user, gender, orientation, bio) {
+	var sql = "INSERT INTO `info_user` (id_user, gender, orientation, bio) VALUES (?, ?, ?, ?)";
+	var todo = [id_user, gender, orientation, bio];
 	connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 		console.log("infos added");

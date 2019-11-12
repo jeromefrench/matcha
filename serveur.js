@@ -124,7 +124,10 @@ app.post('/about-you', function(req, res) {
 	bio = req.body.bio;
 	bdd.get_id_user(log, (id_user) => {
 		var id = id_user;
-		bdd.insert_info(id, gender, orientation, bio);
+		console.log(id);
+		id = Number(id);
+		console.log(id);
+		// bdd.insert_info(id, gender, orientation, bio);
 	});
 
 });
