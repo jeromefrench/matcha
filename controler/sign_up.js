@@ -14,4 +14,5 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
     var login = req.body.login;
     var passwd = req.body.passwd;
     bdd.insert_user(login, passwd, fname, lname, email);
+    res.redirect('/sign-up');
 }

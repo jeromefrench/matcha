@@ -30,7 +30,7 @@ app.set('view engine', 'ejs'); //set le template engine pour express
 
 
 //MIDDLE WARES*****************************************************************
-//le middle ware s'interpose entre notre entre et notre route
+//le middle ware s'interpose entre notre réponse et notre route
 app.use('/assets', express.static('public')); //defini le dossier pour les fichier static
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
