@@ -9,12 +9,8 @@ var io = socket(server);
 console.log("my socket server is running");
 io.sockets.on('connection', newConnection);
 
-<<<<<<< HEAD
-
 var log;
 
-=======
->>>>>>> 8940860e9fcca37f67b571c61c511817010c36f2
 function newConnection(socket){
 	console.log("new connection: " + socket.id);
 	socket.on('newmessage', f_new_message);
@@ -27,10 +23,6 @@ function f_new_message(data){
 	console.log("le Message: " + data);
 }
 
-<<<<<<< HEAD
-=======
-var log;
->>>>>>> 8940860e9fcca37f67b571c61c511817010c36f2
 let bdd = require('./models/bdd_functions.js');
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
