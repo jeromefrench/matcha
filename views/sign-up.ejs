@@ -1,5 +1,17 @@
 <% include header.ejs %>
 <h1>Sign Up</h1>
+
+<% if (locals.flash && locals.flash.error) { %>
+	<div class="ui negative message">
+		<%= flash.error %>
+	</div>
+<% } %>
+
+<% if (locals.flash && locals.flash.success) { %>
+	<div class="ui positive message">
+		<%= flash.success %>
+	</div>
+<% } %>
 <form method="POST" action="/sign-up" class="ui fluid form">
     <div class="inline field">
         <input type="text" name="lastname" placeholder="Last name" required>

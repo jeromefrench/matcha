@@ -21,9 +21,8 @@ exports.get_user = function (){
 function check_login(login, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
-	connection.query(sql, todo, function (err, result) {
+	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
@@ -34,9 +33,8 @@ function check_login(login, callback){
 function check_mail(mail, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 	var todo = [mail];
-	connection.query(sql, todo, function (err, result) {
+	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
@@ -44,18 +42,18 @@ function check_mail(mail, callback){
 	});
 };
 
-exports.insert_user = function (name, passwd, fname, lname, mail){
+exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 	check_login(name, function (answer){
 		if (answer)
-			console.log("login exists");
+			callback(1);
 		else{
 			check_mail(mail, function (reponse){
 				if (reponse)
-					console.log("mail exists");
+					callback(2);
 				else{
 					var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
 					var todo = [name, passwd, fname, lname, mail];
-					connection.query(sql, todo, function (err, result) {
+					conn.connection.query(sql, todo, function (err, result) {
 						  if (err) throw err;
 						  console.log("1 record inserted");
 					});
