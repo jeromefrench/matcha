@@ -4,7 +4,7 @@ let bdd = require('../models/bdd_functions.js');
 
 module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
 	res.locals.title = "About You";
-	res.render('about-you.ejs');
+	res.render('about-you.ejs', {session: req.session});
 }
 
 
