@@ -71,7 +71,7 @@ app.get('/my-account', function(req, res){
 	ctrl_my_account.ctrl_myAccountGet(req, res);
 });
 //**************ABOUT YOU******************************************************
-var ctrl_my_about_you = require('./controler/about_you.js');
+var ctrl_about_you = require('./controler/about_you.js');
 app.get('/about-you', function(req, res) {
 	ctrl_about_you.ctrl_aboutYouGet(req, res);
 });

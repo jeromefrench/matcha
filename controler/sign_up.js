@@ -3,7 +3,7 @@ let bdd = require('../models/bdd_functions.js');
 
 module.exports.ctrl_signUpGet = function signUpGet(req, res){
     res.locals.title = "Sign Up";
-    res.render('sign-up.ejs');
+    res.render('sign-up.ejs', {session: req.session});
 }
 
 
