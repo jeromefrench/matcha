@@ -74,7 +74,7 @@ exports.get_id_user = function (login, callback){
 	var todo = [login];
 	conn.connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
-		callback(result);
+		callback(result[0].id);
 	});
 }
 

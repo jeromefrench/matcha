@@ -1,9 +1,10 @@
-
 let bdd = require('../models/bdd_functions.js');
 
 
 module.exports.ctrl_profileLoginGet = function profileLoginGet(req, res){
-    res.render('profile.ejs', {login: req.params.login});
+	res.locals.login_profil = req.params.login;
+	res.locals.session = req.session;
+    res.render('profile.ejs');
 }
 
 
