@@ -23,6 +23,7 @@ function check_login(login, callback){
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
+		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
@@ -35,6 +36,7 @@ function check_mail(mail, callback){
 	var todo = [mail];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
+		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
@@ -43,24 +45,30 @@ function check_mail(mail, callback){
 };
 
 exports.insert_user = function (name, passwd, fname, lname, mail, callback){
+	var result1 = 0;
+	var result2 = 0;
 	check_login(name, function (answer){
 		if (answer)
-			callback(1);
-		else{
-			check_mail(mail, function (reponse){
-				if (reponse)
-					callback(2);
-				else{
-					var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-					var todo = [name, passwd, fname, lname, mail];
-					conn.connection.query(sql, todo, function (err, result) {
-						  if (err) throw err;
-						  console.log("1 record inserted");
-					});
-				}
-			});
-		}
+			result1 = 1;
+		else
+			result1 = 0;
+		check_mail(mail, function (answer){
+			if (answer)
+				result2 = 1;
+			else
+				result2 = 0;
+			if (result1 == 0 && result2 == 0){
+				var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+				var todo = [name, passwd, fname, lname, mail];
+				conn.connection.query(sql, todo, function (err, result) {
+					if (err) throw err;
+					console.log("1 record inserted");
+				});
+			}
+			callback(result1, result2);
+		});
 	});
+
 }
 
 exports.get_id_user = function (login, callback){
