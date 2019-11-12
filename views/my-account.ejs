@@ -1,9 +1,18 @@
-<head>
-    <meta charset="utf-8">
-    <title>My Account</title>
-</head>
+<% include header %>
+<h1>My Account</h1>
 Login :
 <input type="text" name="login" id="login" value=<%= login %>>
 <br/>
 First name : 
 <input type="text" name="fname" id="fname" value=<%= fname %>>
+</br>
+Last name :
+<input type="text" name="lname" id="lname" value=<%= lname %>>
+<br/>
+Mail :
+<input type="text" name="mail" id="mail" value=<%= mail %>>
+<br/>
+Password :
+<input type="password" name="passwd" id="passwd" value=<%= passwd %>>
+<br/>
+<% include footer %>

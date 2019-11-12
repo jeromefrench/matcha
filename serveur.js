@@ -34,8 +34,10 @@ function f_new_message(data){
 
 
 
+=======
+var log;
 
-let bdd = require('./bdd_functions.js');
+let bdd = require('./models/bdd_functions.js');
 
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
@@ -83,14 +85,11 @@ app.get('/tchat', (req, res) => {
 
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
-	console.log("hello");
 
 	if (req.session.test){
-	console.log("hello2");
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
 	}
-	console.log("hello3");
 	res.render('index', {test : 'Salut'});
 });
 
@@ -122,6 +121,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/sign-up', function(req, res){
+    res.locals.title = "Sign Up";
     res.render('sign-up.ejs');
 });
 
@@ -135,15 +135,15 @@ app.post('/sign-up', function(req, res){
 });
 
 app.get('/sign-in', function(req, res){
+    res.locals.title = "Sign In";
     res.render('sign-in.ejs');
 });
 
 app.post('/sign-in', (req, res) => {
-    // console.log("login=" + req.body.login);
-    // console.log("passwd=" + req.body.passwd);
     bdd.isLoginPasswdMatch(req.body.login, req.body.passwd, function(match){
     	if (match) {
-            console.log("Password Match");
+			console.log("Password Match");
+			log = req.body.login;
     	}
         else {
             console.log("Password dont Match");
@@ -153,7 +153,32 @@ app.post('/sign-in', (req, res) => {
 });
 
 app.get('/my-account', function(req, res){
-    res.render('my-account.ejs', {login: log, fname: fname});
+	res.locals.title = "My Account";
+	bdd.recover_user(log, (info) => {
+		console.log(info);
+		res.locals.login = info[0].login;
+		res.locals.fname = info[0].fname;
+		res.locals.lname = info[0].lname;
+		res.locals.mail = info[0].mail;
+		res.locals.passwd = info[0].passwd;
+		res.render('my-account.ejs');
+	});
+});
+
+app.get('/about-you', function(req, res) {
+	res.locals.title = "About You";
+	res.render('about-you.ejs');
+});
+
+app.post('/about-you', function(req, res) {
+	gender = req.body.gender;
+	orientation = req.body.orientation;
+	bio = req.body.bio;
+	bdd.get_id_user(log, (id_user) => {
+		var id = id_user;
+		bdd.insert_info(id, gender, orientation, bio);
+	});
+
 });
 
 app.get('/profile/:login', function(req, res){

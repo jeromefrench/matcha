@@ -1,5 +1,5 @@
 
-let bdd = require('../bdd_functions.js');
+let bdd = require('./bdd_functions.js/index.js');
 
 
 class Message {

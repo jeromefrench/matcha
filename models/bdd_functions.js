@@ -34,6 +34,23 @@ exports.insert_user = function (name, passwd, fname, lname, mail){
 	});
 }
 
+exports.get_id_user = function (login, callback){
+	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		callback(result);
+	});
+}
+
+exports.insert_info = function (id_user, gender, orientation, interest) {
+	var sql = "INSERT INTO `info_user` (id_user, gender, orientation, interest) VALUES (?, ?, ?, ?)";
+	var todo = [id_user, gender, orientation, interest];
+	connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		console.log("infos added");
+	});
+}
 
 exports.isLoginPasswdMatch = function (login, passwd, callback){
 	var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
@@ -63,7 +80,15 @@ exports.insert_message = function (content, date){
 	});
 }
 
-
+exports.recover_user = function (login, callback){
+	var sql = "SELECT * FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	connection.query(sql, todo, function (err, results) {
+		if (err) throw err;
+		console.log(results[0].login);
+		callback(results);
+	});
+};
 
 
 
