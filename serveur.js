@@ -83,6 +83,21 @@ var ctrl_profile_login = require('./controler/profile_login.js');
 app.get('/profile/:login', function(req, res){
 	ctrl_profile_login.ctrl_profileLoginGet(req, res);
 });
+
+
+//*************LIKE THIS USER BUTTON******************************************
+var ctrl_like_this_user = require('./controler/like-this-user.js');
+app.get('/like-this-user/:login', function(req, res){
+	ctrl_like_this_user.ctrl_like_this_userGet(req, res);
+});
+app.post('/like-this-user/:login', function(req, res){
+	ctrl_like_this_user.ctrl_like_this_userPost(req, res);
+});
+
+
+
+
+
 //**************LIST USER ECHERCHER********************************************
 var ctrl_research = require('./controler/research.js');
 app.get('/research', function(req, res){
@@ -91,6 +106,9 @@ app.get('/research', function(req, res){
 app.post('/research', function(req, res){
 	ctrl_research.ctrl_researchPost(req, res);
 });
+
+
+
 
 
 

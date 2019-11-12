@@ -1,5 +1,8 @@
-<head>
-    <meta charset="uft-8">
-    <title><%= login %>'s Personnal Page</title>
-</head>
-Bonjour je suis <%= login %>
+<% include header %>
+
+
+
+</br>
+je suis <%= locals.session.login %></br>
+Vous etes sur le profile de <%= locals.login_profil %>
+<% include footer %>

@@ -13,7 +13,7 @@ module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res){
 	orientation = req.body.orientation;
 	bio = req.body.bio;
 	bdd.get_id_user(log, (id_user) => {
-		var id = id_user[0].id;
+		var id = id_user;
 		console.log(id);
 		bdd.insert_info(id, gender, orientation, bio);
 	});
