@@ -32,9 +32,6 @@ function f_new_message(data){
 
 
 
-
-
-=======
 var log;
 
 let bdd = require('./models/bdd_functions.js');
