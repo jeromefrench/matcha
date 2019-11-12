@@ -23,7 +23,6 @@ function check_login(login, callback){
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
@@ -36,7 +35,6 @@ function check_mail(mail, callback){
 	var todo = [mail];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		console.log(result[0].count);
 		if (result[0].count != 0)
 			callback(true);
 		else
