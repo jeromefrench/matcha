@@ -3,6 +3,35 @@ let app = express();
 let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
 
+var socket = require('socket.io');
+
+var port = 8080;
+
+var server = app.listen(port);
+
+var io = socket(server);
+
+
+console.log("my socket server is running");
+io.sockets.on('connection', newConnection);
+
+
+function newConnection(socket){
+	console.log("new connection: " + socket.id);
+	socket.on('newmessage', f_new_message);
+	io.sockets.on('disconnect', () =>
+		{
+			console.log("new disconnect: " + socket.id);
+		});
+}
+
+function f_new_message(data){
+	console.log("le Message: " + data);
+}
+
+
+
+
 var log;
 
 let bdd = require('./models/bdd_functions.js');
@@ -30,6 +59,26 @@ app.use(require('./middlewares/flash'));
 
 
 //routes
+
+var fs = require('fs');
+
+// fs.readFile('./client.js','utf8', (err, data) => {
+// 		console.log(data);
+// });
+
+
+
+app.get('/tchat', (req, res) => {
+	// console.log("hello");
+	fs.readFile('./client.js', 'utf8', (err, data) => {
+		// console.log(data);
+		res.send(data);
+	})
+});
+
+
+
+
 
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
@@ -140,4 +189,3 @@ app.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable');
 });
-app.listen(8080);
