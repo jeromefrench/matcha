@@ -83,10 +83,13 @@ var ctrl_profile_login = require('./controler/profile_login.js');
 app.get('/profile/:login', function(req, res){
 	ctrl_profile_login.ctrl_profileLoginGet(req, res);
 });
-//**************404************************************************************
-app.use(function(req, res, next){
-    res.setHeader('Content-Type', 'text/plain');
-    res.status(404).send('Page introuvable');
+//**************LIST USER ECHERCHER********************************************
+var ctrl_research = require('./controler/research.js');
+app.get('/research', function(req, res){
+	ctrl_research.ctrl_researchGet(req, res);
+});
+app.post('/research', function(req, res){
+	ctrl_research.ctrl_researchPost(req, res);
 });
 
 
@@ -96,8 +99,11 @@ app.use(function(req, res, next){
 
 
 
-
-
+//**************404************************************************************
+app.use(function(req, res, next){
+    res.setHeader('Content-Type', 'text/plain');
+    res.status(404).send('Page introuvable');
+});
 
 
 
