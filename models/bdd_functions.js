@@ -25,7 +25,18 @@ exports.get_user = function (){
 	});
 }
 
-exports.insert_user = function (name, passwd, fname, lname, mail){
+exports.check_log_exist = function (login, callback){
+	var sql = "SELECT * FROM `user` WHERE LOGIN LIKE ?";
+	var todo = [login];
+	connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
+		console.log(result[0]);
+		callback(result[0]);
+	});
+};
+
+exports.insert_user = function (name, passwd, fname, lname, mail, callback){
+	
 	var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
 	var todo = [name, passwd, fname, lname, mail];
 	connection.query(sql, todo, function (err, result) {
@@ -89,6 +100,7 @@ exports.recover_user = function (login, callback){
 		callback(results);
 	});
 };
+
 
 
 
