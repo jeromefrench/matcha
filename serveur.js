@@ -12,6 +12,8 @@ console.log("my socket server is running");
 io.sockets.on('connection', newConnection);
 
 
+var log;
+
 function newConnection(socket){
 	console.log("new connection: " + socket.id);
 	socket.on('newmessage', f_new_message);
@@ -24,9 +26,6 @@ function newConnection(socket){
 function f_new_message(data){
 	console.log("le Message: " + data);
 }
-
-
-var log;
 
 let bdd = require('./models/bdd_functions.js');
 
@@ -130,7 +129,7 @@ app.get('/my-account', function(req, res){
 	ctrl_my_account.ctrl_myAccountGet(req, res);
 });
 //**************ABOUT YOU******************************************************
-var ctrl_my_about_you = require('./controler/about_you.js');
+var ctrl_about_you = require('./controler/about_you.js');
 app.get('/about-you', function(req, res) {
 	ctrl_about_you.ctrl_aboutYouGet(req, res);
 });

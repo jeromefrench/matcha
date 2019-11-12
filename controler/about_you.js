@@ -2,18 +2,19 @@
 let bdd = require('../models/bdd_functions.js');
 
 
-module.exports.ctrl_aboutYou = function aboutYouGet(req, res){
+module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
 	res.locals.title = "About You";
 	res.render('about-you.ejs');
 }
 
 
-module.exports.ctrl_aboutYou = function aboutYouPost(req, res){
+module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res){
 	gender = req.body.gender;
 	orientation = req.body.orientation;
 	bio = req.body.bio;
 	bdd.get_id_user(log, (id_user) => {
-		var id = id_user;
+		var id = id_user[0].id;
+		console.log(id);
 		bdd.insert_info(id, gender, orientation, bio);
 	});
 }
