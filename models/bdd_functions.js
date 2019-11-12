@@ -1,25 +1,18 @@
-var mysql      = require('mysql');
-
-var connection = mysql.createConnection({
-	host     : '192.168.99.100',
-	user     : 'root',
-	password : 'tiger',
-	port	: '3306',
-	database : 'docker'
-});
+var conn = require('./connection_bdd.js');
 
 
-connection.connect(function(err) {
+
+conn.connection.connect(function(err) {
 	if (err) {
 	  	console.error('error connecting: ' + err.stack);
 	  	return;
 	}
-	console.log('connected as id ' + connection.threadId);
+	console.log('connected as id ' + conn.connection.threadId);
 });
 
 
 exports.get_user = function (){
-	connection.query('SELECT * FROM `user` ', function (error, results, fields) {
+	conn.connection.query('SELECT * FROM `user` ', function (error, results, fields) {
 		console.log(results);
 		return results;
 	});
@@ -75,7 +68,7 @@ exports.insert_user = function (name, passwd, fname, lname, mail){
 exports.get_id_user = function (login, callback){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
-	connection.query(sql, todo, (error, result) => {
+	conn.connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 		callback(result);
 	});
@@ -84,7 +77,7 @@ exports.get_id_user = function (login, callback){
 exports.insert_info = function (id_user, gender, orientation, bio) {
 	var sql = "INSERT INTO `info_user` (id_user, gender, orientation, bio) VALUES (?, ?, ?, ?)";
 	var todo = [id_user, gender, orientation, bio];
-	connection.query(sql, todo, (error, result) => {
+	conn.connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 		console.log("infos added");
 	});
@@ -94,7 +87,7 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 	var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
 	var todo = [login];
 	var stop = false;
-	connection.query(sql, todo, (error, results, fields) => {
+	conn.connection.query(sql, todo, (error, results, fields) => {
 		if (error) throw error;
 		console.log(results);
 		console.log(results[0].login);
@@ -112,7 +105,7 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 exports.insert_message = function (content, date){
 	var sql = "INSERT INTO messages (content, createat) VALUES (?, ?)";
 	var todo = [content, date];
-	connection.query(sql, todo, function (err, result) {
+	conn.connection.query(sql, todo, function (err, result) {
 	  	if (err) throw err;
 	  	console.log("1 record inserted");
 	});
@@ -121,7 +114,7 @@ exports.insert_message = function (content, date){
 exports.recover_user = function (login, callback){
 	var sql = "SELECT * FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
-	connection.query(sql, todo, function (err, results) {
+	conn.connection.query(sql, todo, function (err, results) {
 		if (err) throw err;
 		console.log(results[0].login);
 		callback(results);
