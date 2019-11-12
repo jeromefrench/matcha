@@ -36,7 +36,7 @@
 		<div style="margin-left: 5vmin" >
 
 
-			<% if (locals.session.logon) {%>
+			<% if (locals.session && locals.session.logon) {%>
 			<%= locals.session.login %>
 			<% }else{%>
 			<%= "Your not log on"%>
