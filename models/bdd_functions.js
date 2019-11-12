@@ -25,23 +25,50 @@ exports.get_user = function (){
 	});
 }
 
-exports.check_log_exist = function (login, callback){
-	var sql = "SELECT * FROM `user` WHERE LOGIN LIKE ?";
+function check_login(login, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
 	connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		console.log(result[0]);
-		callback(result[0]);
+		console.log(result[0].count);
+		if (result[0].count != 0)
+			callback(true);
+		else
+			callback(false);
 	});
 };
 
-exports.insert_user = function (name, passwd, fname, lname, mail, callback){
-	
-	var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-	var todo = [name, passwd, fname, lname, mail];
+function check_mail(mail, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+	var todo = [mail];
 	connection.query(sql, todo, function (err, result) {
-	  	if (err) throw err;
-	  	console.log("1 record inserted");
+		if (err) throw err;
+		console.log(result[0].count);
+		if (result[0].count != 0)
+			callback(true);
+		else
+			callback(false);
+	});
+};
+
+exports.insert_user = function (name, passwd, fname, lname, mail){
+	check_login(name, function (answer){
+		if (answer)
+			console.log("login exists");
+		else{
+			check_mail(mail, function (reponse){
+				if (reponse)
+					console.log("mail exists");
+				else{
+					var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+					var todo = [name, passwd, fname, lname, mail];
+					connection.query(sql, todo, function (err, result) {
+						  if (err) throw err;
+						  console.log("1 record inserted");
+					});
+				}
+			});
+		}
 	});
 }
 
