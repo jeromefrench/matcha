@@ -4,13 +4,9 @@ let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
 
 var socket = require('socket.io');
-
 var port = 8080;
-
 var server = app.listen(port);
-
 var io = socket(server);
-
 
 console.log("my socket server is running");
 io.sockets.on('connection', newConnection);
@@ -28,8 +24,6 @@ function newConnection(socket){
 function f_new_message(data){
 	console.log("le Message: " + data);
 }
-
-
 
 
 var log;
@@ -78,8 +72,6 @@ app.get('/tchat', (req, res) => {
 
 
 
-
-
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
 
@@ -104,7 +96,6 @@ app.post('/test', (req, res) => {
 	{
 		var Message = require('./models/Message');
 		Message.create(req.body.message, function (){
-
 			req.flash('success', "Merci petit chat!");
 			res.redirect('/test');  // pour rediriger vers une url
 		})
@@ -117,66 +108,39 @@ app.get('/', function(req, res){
 	res.send('Vous etes a l\'accueil');
 });
 
+//**************SIGN UP********************************************************
+var ctrl_sign_up = require('./controler/sign_up.js');
 app.get('/sign-up', function(req, res){
-    res.locals.title = "Sign Up";
-    res.render('sign-up.ejs');
+	ctrl_sign_up.ctrl_signUpGet(req, res);
 });
-
 app.post('/sign-up', function(req, res){
-    var lname = req.body.lastname;
-    var fname = req.body.firstname;
-    var email = req.body.email;
-    var login = req.body.login;
-    var passwd = req.body.passwd;
-    bdd.insert_user(login, passwd, fname, lname, email);
+	ctrl_sign_up.ctrl_signUpPost(req, res);
 });
-
+//**************SIGN IN********************************************************
+var ctrl_sign_in = require('./controler/sign_in.js');
 app.get('/sign-in', function(req, res){
-    res.locals.title = "Sign In";
-    res.render('sign-in.ejs');
+	ctrl_sign_in.ctrl_signInGet(req, res);
 });
-
 app.post('/sign-in', (req, res) => {
-    bdd.isLoginPasswdMatch(req.body.login, req.body.passwd, function(match){
-    	if (match) {
-			console.log("Password Match");
-			log = req.body.login;
-    	}
-        else {
-            console.log("Password dont Match");
-        }
-    });
-    res.send('hello');
+	ctrl_sign_in.ctrl_signInPost(req, res);
 });
-
+//**************MY ACCOUNT*****************************************************
+var ctrl_my_account = require('./controler/my_account.js');
 app.get('/my-account', function(req, res){
-	res.locals.title = "My Account";
-	bdd.recover_user(log, (info) => {
-		console.log(info);
-		res.locals.login = info[0].login;
-		res.locals.fname = info[0].fname;
-		res.locals.lname = info[0].lname;
-		res.locals.mail = info[0].mail;
-		res.locals.passwd = info[0].passwd;
-		res.render('my-account.ejs');
-	});
+	ctrl_my_account.ctrl_myAccountGet(req, res);
 });
-
+//**************ABOUT YOU******************************************************
+var ctrl_my_about_you = require('./controler/about_you.js');
 app.get('/about-you', function(req, res) {
-	res.locals.title = "About You";
-	res.render('about-you.ejs');
+	ctrl_about_you.ctrl_aboutYouGet(req, res);
 });
-
 app.post('/about-you', function(req, res) {
-	gender = req.body.gender;
-	orientation = req.body.orientation;
-	bio = req.body.bio;
-	bdd.get_id_user(log, (id_user) => {
-		var id = id_user;
-		bdd.insert_info(id, gender, orientation, bio);
-	});
-
+	ctrl_about_you.ctrl_aboutYouPost(req, res);
 });
+
+
+
+
 
 app.get('/profile/:login', function(req, res){
     res.render('profile.ejs', {login: req.params.login});
