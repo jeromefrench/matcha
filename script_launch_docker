@@ -1,0 +1,2 @@
+#!/bin/zsh
+docker-machine start Web && docker-machine env Web && eval $(docker-machine env Web) && docker-compose up -d
