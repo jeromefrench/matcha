@@ -79,6 +79,13 @@ app.get('/research', function(req, res){
 app.post('/research', function(req, res){
 	ctrl_research.ctrl_researchPost(req, res);
 });
+
+//***************CONFIRMATION**************************************************
+var ctrl_confirm = require('./controler/confirm.js');
+app.get('/confirm/:login/:num', function(req, res){
+	ctrl_confirm.ctrl_confirmGet(req, res);
+});
+
 //**************404************************************************************
 app.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');

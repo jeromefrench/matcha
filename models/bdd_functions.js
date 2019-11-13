@@ -28,7 +28,7 @@ function check_login(login, callback){
 		else
 			callback(false);
 	});
-};
+}
 
 function check_mail(mail, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
@@ -40,11 +40,36 @@ function check_mail(mail, callback){
 		else
 			callback(false);
 	});
-};
+}
+
+exports.recover_user_data = function (num, callback){
+	var sql = "SELECT * FROM `user_sub` WHERE `num` LIKE ?";
+	var todo = [num];
+	conn.connection.query(sql, todo, (err, res) => {
+		if (err) throw err;
+		callback(res[0]);
+	});
+}
+
+exports.valide_user = function (login, passwd, lname, fname, mail, num){
+	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+	var todo = [login, passwd, fname, lname, mail];
+	conn.connection.query(sql, todo, (err, res) => {
+		if (err) throw err;
+		console.log(login + "added in user");
+	});
+	sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+	todo = [login];
+	conn.connection.query(sql, todo, (err, res) => {
+		if (err) throw err;
+		console.log(login + "deleted from user_sub");
+	});
+}
 
 exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 	var result1 = 0;
 	var result2 = 0;
+	var num = getRandomInt(10000);
 	check_login(name, function (answer){
 		if (answer)
 			result1 = 1;
@@ -56,13 +81,14 @@ exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 			else
 				result2 = 0;
 			if (result1 == 0 && result2 == 0){
-				sendmail(mail);
-			// 	var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-			// 	var todo = [name, passwd, fname, lname, mail];
-			// 	conn.connection.query(sql, todo, function (err, result) {
-			// 		if (err) throw err;
-			// 		console.log("1 record inserted");
-			// 	});
+				var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
+				var todo = [name, passwd, fname, lname, mail];
+				conn.connection.query(sql, todo, function (err, result) {
+					if (err) throw err;
+					console.log("1 record inserted");
+				});
+				sendmail(name, num, mail);
+
 			}
 			callback(result1, result2);
 		});
@@ -126,7 +152,7 @@ exports.recover_user = function (login, callback){
 	});
 }
 
-function sendmail(mail){
+function sendmail(login, num, mail){
 	var transporter = mailer.createTransport({
 		sendmail: true,
 		newline: 'unix',
@@ -136,7 +162,7 @@ function sendmail(mail){
 		from: 'matcha42.jeronemo@gmail.com',
 		to: mail,
 		subject: 'Subscription',
-		text: 'Clique sur ce lien pour confirmer ton inscription : '
+		html: 'Clique sur ce lien pour confirmer ton inscription : <a href="http://localhost:8080/confirm/'+ login + '/' + num + '">Confirmer</a>'
 	}
 	transporter.sendMail(letter, (err, res) => {
 		if (err){
@@ -149,6 +175,9 @@ function sendmail(mail){
 	});
 }
 
+function getRandomInt(max){
+	return Math.floor(Math.random() * Math.floor(max));
+}
 
 
 
