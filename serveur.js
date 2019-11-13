@@ -2,39 +2,18 @@ let express = require('express');
 let app = express();
 let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
-var socket = require('socket.io');
 var port = 8080;
 var server = app.listen(port);
-var io = socket(server);
-console.log("my socket server is running");
-io.sockets.on('connection', newConnection);
 
 
-var log;
 
-function newConnection(socket){
-	console.log("new connection: " + socket.id);
-	socket.on('newmessage', f_new_message);
-	io.sockets.on('disconnect', () =>
-		{
-			console.log("new disconnect: " + socket.id);
-		});
-}
-function f_new_message(data){
-	console.log("le Message: " + data);
-}
-
-let bdd = require('./models/bdd_functions.js');
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
-
-
 //MIDDLE WARES*****************************************************************
-//le middle ware s'interpose entre notre réponse et notre route
-app.use('/assets', express.static('public')); //defini le dossier pour les fichier static
+app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
-app.use(session({ //pour gerer les sessions
+app.use(session({ 
 	  secret: 'sdjfkl',
 	  resave: false,
 	  saveUninitialized: true,
@@ -111,6 +90,10 @@ app.use(function(req, res, next){
 
 
 
+
+
+
+
 var fs = require('fs');
 
 // fs.readFile('./client.js','utf8', (err, data) => {
@@ -131,15 +114,12 @@ app.get('/tchat', (req, res) => {
 
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
-
 	if (req.session.test){
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
 	}
 	res.render('index', {test : 'Salut'});
 });
-
-
 app.post('/test', (req, res) => {
 	// console.log(req.body);
 	if (req.body.message == undefined || req.body.message == ""){
@@ -158,10 +138,4 @@ app.post('/test', (req, res) => {
 		})
 	}
 });
-
-
-
-
-
-
 
