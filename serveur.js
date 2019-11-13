@@ -93,6 +93,13 @@ app.get('/research', function(req, res){
 app.post('/research', function(req, res){
 	ctrl_research.ctrl_researchPost(req, res);
 });
+
+//***************CONFIRMATION**************************************************
+var ctrl_confirm = require('./controler/confirm.js');
+app.get('/confirm/:login/:num', function(req, res){
+	ctrl_confirm.ctrl_confirmGet(req, res);
+});
+
 //**************CHAT***********************************************************
 var ctrl_chat = require('./controler/chat.js');
 app.get('/chat/:login', function(req, res){
@@ -104,7 +111,6 @@ app.post('/chat/:login', function(req, res){
 });
 console.log("routing");
 //*****************************************************************************
-
 
 //**************404************************************************************
 app.use(function(req, res, next){
