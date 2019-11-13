@@ -23,7 +23,7 @@
 					<td data-label="Does it like me"><%- include('elements/green_check_red_cross', {bool: user.does_it_like_me}); %></td>
 					<td data-label="Do I like it"><%- include('elements/green_check_red_cross', {bool: user.do_i_like});  %></td>
 					<td data-label="Match"><%- include('elements/green_check_red_cross', {bool: user.match});  %></td>
-					<td data-label="Profile"><a href="/profile/<%= user.login %>">View Profile</a></td>
+					<td data-label="Profile"><%- include('elements/view_profile', {login: user.login}); %></td>
 					<td data-label="Chat"><%- include('elements/chat_button', {match: user.match});   %></td>
 				</tr>
 			<% });  %>
