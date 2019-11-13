@@ -1,5 +1,5 @@
 var conn = require('./connection_bdd.js');
-
+var mailer = require("nodemailer");
 
 
 conn.connection.connect(function(err) {
@@ -56,12 +56,13 @@ exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 			else
 				result2 = 0;
 			if (result1 == 0 && result2 == 0){
-				var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-				var todo = [name, passwd, fname, lname, mail];
-				conn.connection.query(sql, todo, function (err, result) {
-					if (err) throw err;
-					console.log("1 record inserted");
-				});
+				sendmail(mail);
+			// 	var sql = "INSERT INTO user (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+			// 	var todo = [name, passwd, fname, lname, mail];
+			// 	conn.connection.query(sql, todo, function (err, result) {
+			// 		if (err) throw err;
+			// 		console.log("1 record inserted");
+			// 	});
 			}
 			callback(result1, result2);
 		});
@@ -123,9 +124,30 @@ exports.recover_user = function (login, callback){
 		console.log(results[0].login);
 		callback(results);
 	});
-};
+}
 
-
+function sendmail(mail){
+	var transporter = mailer.createTransport({
+		sendmail: true,
+		newline: 'unix',
+		path: '/usr/sbin/sendmail'
+	});
+	var letter = {
+		from: 'matcha42.jeronemo@gmail.com',
+		to: mail,
+		subject: 'Subscription',
+		text: 'Clique sur ce lien pour confirmer ton inscription : '
+	}
+	transporter.sendMail(letter, (err, res) => {
+		if (err){
+			console.log("Erreur lors de l'envoi du mail");
+			console.log(err);
+		}
+		else
+			console.log("Mail envoyé avec succès !");
+		transporter.close();
+	});
+}
 
 
 
