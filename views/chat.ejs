@@ -4,7 +4,7 @@
 
 <h1>Chat</h1>
 <div class="ui comments">
-	<h3 class="ui dividing header">Chat - <%= locals.my_login  %>   witch <%= locals.the_login_i_chat %></h3>
+	<h3 class="ui dividing header">Chat - <%= locals.my_login  %> with <%= locals.the_login_i_chat %></h3>
 
 	<% locals.messages.forEach(function(messages) {  %>
 		<%- include('elements/green_check_red_cross', {bool: user.match});  %>
