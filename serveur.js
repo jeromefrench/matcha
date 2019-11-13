@@ -2,8 +2,8 @@ let express = require('express');
 let app = express();
 let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
-var port = 8080;
-var server = app.listen(port);
+var server = app.listen(8080);
+var connection = [];
 
 
 
@@ -20,8 +20,6 @@ app.use(session({
 	  cookie: { secure: false }
 }));
 app.use(require('./middlewares/flash'));
-
-
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
