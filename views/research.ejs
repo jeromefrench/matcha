@@ -1,37 +1,33 @@
-<% include header %>
+<% include elements/header %>
 <h1>Research</h1>
 
 <table class="ui celled table">
-  	<thead> <tr>
-      	  	<th>Login</th>
-    		<th>First name</th>
-    		<th>Last name</th>
-    		<th>Like button</th>
-    		<!-- <th>Like me</th> -->
-    		<th>I like</th>
-    		<!-- <th>Match</th> -->
-    		<th>Profile</th>
-    		<!-- <th>Chat</th> -->
-  		</tr></thead>
-  		<tbody>
-
-
+	<thead> <tr>
+			<th>Login</th>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>Like button</th>
+			<th>Does it like me</th>
+			<th>Do I like it</th>
+			<!-- <th>Match</th> -->
+			<th>Profile</th>
+			<!-- <th>Chat</th> -->
+		</tr></thead>
+		<tbody>
 			<% locals.users.forEach(function(user) {  %>
-    			<tr>
-      				<td data-label="Login"><%= user.login %></td>
-      				<td data-label="First name"><%= user.fname  %></td>
-      				<td data-label="Last name"><%= user.lname   %></td>
-      				<td data-label="Like button"><%- include('like_button', {login: user.login}); %></td>
-      				<!-- <td data-label="Like me"><%=   %></td> -->
-      				<td data-label="I like"><%- include('like_icon', {like: user.do_i_like});  %></td>
-      				<!-- <td data-label="Match"><%=   %></td> -->
-      				<td data-label="Profile"><a href="/profile/<%= user.login %>">View Profile</a></td>
-      				<!-- <td data-label="Chat"><%=   %></td> -->
-    			</tr>
+				<tr>
+					<td data-label="Login"><%= user.login %></td>
+					<td data-label="First name"><%= user.fname  %></td>
+					<td data-label="Last name"><%= user.lname   %></td>
+					<td data-label="Like button"><%- include('elements/like_button', {login: user.login}); %></td>
+					<td data-label="Does it like me">hello<%-  include('elements/check_cross', {like: user.does_it_like_me}); %></td>
+					<td data-label="Do I like it"><%- include('elements/check_cross', {like: user.do_i_like});  %></td>
+					<!-- <td data-label="Match"><%=   %></td> -->
+					<td data-label="Profile"><a href="/profile/<%= user.login %>">View Profile</a></td>
+					<!-- <td data-label="Chat"><%=   %></td> -->
+				</tr>
 			<% });  %>
-
-
-  		</tbody>
+		</tbody>
 </table>
 
-<% include footer %>
+<% include elements/footer %>

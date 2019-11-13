@@ -25,6 +25,27 @@ exports.addLike = function (my_login, the_login_i_like){
 	});
 };
 
+exports.doesItLikeMe = function (my_login, the_login_i_search, callback){
+	bdd.get_id_user(my_login, (my_id) => {
+		bdd.get_id_user(the_login_i_search, (id_i_like) => {
+			//verifier si on a pas deja liker cette personne
+			console.log("my id " + my_id);
+			console.log("the id i like" + id_i_like);
+			var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
+			var todo = [id_i_like, my_id];
+			conn.connection.query(sql, todo, (error, result) => {
+				if (error) throw error;
+				if (result[0] == undefined) {
+					callback(false);
+				}
+				else {
+					callback(true);
+				}
+			});
+		});
+	});
+}
+
 exports.doILike = function (my_login, the_login_i_search, callback){
 	bdd.get_id_user(my_login, (my_id) => {
 		bdd.get_id_user(the_login_i_search, (id_i_like) => {
@@ -35,16 +56,10 @@ exports.doILike = function (my_login, the_login_i_search, callback){
 			var todo = [my_id, id_i_like];
 			conn.connection.query(sql, todo, (error, result) => {
 				if (error) throw error;
-				// console.log("result===========");
-				// console.log(result);
-				if (result[0] == undefined)
-				{
-					// console.log("vide");
+				if (result[0] == undefined) {
 					callback(false);
 				}
-				else
-				{
-					// console.log("pas vide");
+				else {
 					callback(true);
 				}
 			});
