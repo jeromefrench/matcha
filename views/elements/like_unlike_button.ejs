@@ -1,0 +1,13 @@
+<% if (like == true) {%>
+	<a href="/like-this-user/<%= login %>">
+		<div class="ui black button">
+	  		<i class="heart icon"></i> Unlike
+		</div>
+	</a>
+<% }else{%>
+	<a href="/like-this-user/<%= login %>">
+		<div class="ui red button">
+	  		<i class="heart icon"></i> Like
+		</div>
+	</a>
+<%}%>
