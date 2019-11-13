@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le :  mar. 12 nov. 2019 à 20:05
+-- Généré le :  mer. 13 nov. 2019 à 10:36
 -- Version du serveur :  5.7.28
 -- Version de PHP :  7.2.23
 
@@ -37,15 +37,37 @@ CREATE TABLE IF NOT EXISTS `info_user` (
   `orientation` enum('men','women','everyone','') NOT NULL,
   `bio` tinytext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `info_user`
 --
 
 INSERT INTO `info_user` (`id`, `id_user`, `gender`, `orientation`, `bio`) VALUES
-(1, 2, 'female', 'everyone', 'mnkl,fdskfx'),
-(2, 4, 'male', 'men', 'blabla');
+(1, 2, 'female', 'everyone', '');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `like_table`
+--
+
+CREATE TABLE IF NOT EXISTS `like_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `id_i_like` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `like_table`
+--
+
+INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
+(1, 3, 1),
+(2, 3, 3),
+(3, 3, 4),
+(4, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -60,19 +82,34 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fname` text NOT NULL,
   `lname` text NOT NULL,
   `mail` text NOT NULL,
-  `etat` enum('attente','valide') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `etat`) VALUES
-(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2', 'valide'),
-(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond', 'valide'),
-(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr', 'valide'),
-(22, 'lalali', 'lala', 'lili', 'lala', 'lalali@lili.fr', 'valide');
+INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`) VALUES
+(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2'),
+(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond'),
+(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user_sub`
+--
+
+CREATE TABLE IF NOT EXISTS `user_sub` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` text NOT NULL,
+  `passwd` text NOT NULL,
+  `lname` text NOT NULL,
+  `fname` text NOT NULL,
+  `mail` text NOT NULL,
+  `num` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
