@@ -5,7 +5,21 @@ let session = require("express-session");  //pour avoir les variables de session
 var server = app.listen(8080);
 var connection = [];
 
-
+var socket = require('socket.io');
+var io = socket(server);
+console.log("my socket server is running");
+io.sockets.on('connection', newConnection);
+function newConnection(socket){
+	console.log("new connection: " + socket.id);
+	socket.on('newmessage', f_new_message);
+	io.sockets.on('disconnect', () =>
+		{
+			console.log("new disconnect: " + socket.id);
+		});
+}
+function f_new_message(data){
+	console.log("le Message: " + data);
+}
 
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
@@ -14,10 +28,10 @@ app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 app.use(session({ 
-	  secret: 'sdjfkl',
-	  resave: false,
-	  saveUninitialized: true,
-	  cookie: { secure: false }
+	secret: 'sdjfkl',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: false }
 }));
 app.use(require('./middlewares/flash'));
 //*****************************************************************************
@@ -66,7 +80,7 @@ var ctrl_profile_login = require('./controler/profile_login.js');
 app.get('/profile/:login', function(req, res){
 	ctrl_profile_login.ctrl_profileLoginGet(req, res);
 });
-//*************LIKE THIS USER BUTTON******************************************
+//*************LIKE THIS USER BUTTON*******************************************
 var ctrl_like_this_user = require('./controler/like-this-user.js');
 app.get('/like-this-user/:login', function(req, res){
 	ctrl_like_this_user.ctrl_like_this_userGet(req, res);
@@ -79,13 +93,24 @@ app.get('/research', function(req, res){
 app.post('/research', function(req, res){
 	ctrl_research.ctrl_researchPost(req, res);
 });
+//**************CHAT***********************************************************
+var ctrl_chat = require('./controler/chat.js');
+app.get('/chat/:login', function(req, res){
+	console.log("ici !!!!!!!!!!!!!!!!");
+	ctrl_chat.ctrl_chatGet(req, res);
+});
+app.post('/chat/:login', function(req, res){
+	ctrl_chat.ctrl_chatPost(req, res);
+});
+console.log("routing");
+//*****************************************************************************
+
+
 //**************404************************************************************
 app.use(function(req, res, next){
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Page introuvable');
 });
-
-
 
 
 

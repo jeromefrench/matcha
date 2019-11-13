@@ -1,15 +1,20 @@
+var conn = require('./connection_bdd.js');
 
-let bdd = require('./bdd_functions.js/index.js');
 
-
-class Message {
-
-	static create (content, callback){
-		var date = new Date();
-		bdd.insert_message(content, date);
-		callback();
-	}
+exports.save_message = function (id_author, id_recever, message_content, data_stamp){
+	var sql = "INSERT INTO `messages` (id_author, id_recever, message_content, data_stamp) VALUES (?, ?, ?, ?, ?)";
+	var todo = [my_id, id_i_like];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		console.log("infos added");
+	});
 }
 
-
-module.exports = Message;
+exports.get_message = function (id_author, id_recever, callback){
+	var sql = "SELECT * FROM `messages` WHERE `id_author` = ? AND `id_recever` = ?";
+	var todo = [id_author, id_recever];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		callback(result);
+	});
+}
