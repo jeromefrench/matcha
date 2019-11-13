@@ -43,11 +43,17 @@ app.use(session({ //pour gerer les sessions
 app.use(require('./middlewares/flash'));
 
 
-//ROUTES***********************************************************************
+//*****************************************************************************
+//****************************ROUTES*******************************************
+//*****************************************************************************
 //**************/**************************************************************
 app.get('/', function(req, res){
-	res.setHeader('Content-Type', 'text/plain');
-	res.send('Vous etes a l\'accueil');
+	res.redirect('/sign-in');  // pour rediriger vers une url
+});
+//**************SIGN OUT*******************************************************
+var ctrl_sign_out = require('./controler/sign_out.js');
+app.get('/sign-out', function(req, res){
+	ctrl_sign_out.ctrl_signOutGet(req, res);
 });
 //**************SIGN UP********************************************************
 var ctrl_sign_up = require('./controler/sign_up.js');
