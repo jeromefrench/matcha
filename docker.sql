@@ -1,9 +1,9 @@
---  phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Nov 14, 2019 at 11:51 AM
+-- Generation Time: Nov 14, 2019 at 06:35 PM
 -- Server version: 5.7.28
 -- PHP Version: 7.2.23
 
@@ -23,28 +23,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `info_user`
---
-
-CREATE TABLE IF NOT EXISTS `info_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_user` int(11) NOT NULL,
-  `gender` enum('male','female','other','') NOT NULL,
-  `orientation` enum('men','women','everyone','') NOT NULL,
-  `bio` tinytext NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `info_user`
---
-
-INSERT INTO `info_user` (`id`, `id_user`, `gender`, `orientation`, `bio`) VALUES
-(1, 2, 'female', 'everyone', '');
 
 -- --------------------------------------------------------
 
@@ -109,6 +87,30 @@ INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`) VALUES
 (1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2'),
 (3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond'),
 (4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_info`
+--
+
+CREATE TABLE IF NOT EXISTS `user_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `gender` enum('male','female','other','') DEFAULT NULL,
+  `orientation` enum('men','women','everyone','') DEFAULT NULL,
+  `bio` tinytext,
+  `interests` set('voyage','cuisine','escalade','equitation','sieste','soleil') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_info`
+--
+
+INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES
+(4, 3, 'female', NULL, '', NULL),
+(5, 4, 'male', NULL, '', NULL);
 
 -- --------------------------------------------------------
 
