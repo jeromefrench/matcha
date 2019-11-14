@@ -1,14 +1,10 @@
 <% include elements/header %>
-
 <h1>Chat</h1>
 <div class="ui comments">
 	<h3 class="ui dividing header">Chat - <%= locals.my_login  %> with <%= locals.the_login_i_chat %></h3>
-
 	<% locals.messages.forEach(function(message) {  %>
 		<%- include('elements/chat_message', {message: message});  %>
 	<% });  %>
-
 	<% include elements/chat_send_form %>
-
 </div>
-	<% include elements/footer %>
+<% include elements/footer %>

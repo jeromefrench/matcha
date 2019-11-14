@@ -10,11 +10,21 @@ module.exports.ctrl_chatGet = function chatGet(req, res){
 		id_author = result;
 		bdd.get_id_user(le_recever, (result) => {
 			id_recever = result;
-			bdd_message.get_message(id_author, id_recever, (result) => {
-				console.log("JE VEUS LES RESULTAT");
-				console.log(result);
-				res.locals.messages = result;
-    			res.render('chat', { session: req.session});
+			bdd_message.get_message(id_author, id_recever, (messages) => {
+				itemsProcessed = 0;
+				messages.forEach(function (message){
+					if (message.id_author == id_author){
+						message.author = author;
+					}
+					else {
+						message.author = le_recever;
+					}
+					itemsProcessed++;
+					if(itemsProcessed === messages.length) {
+						res.locals.messages = messages;
+    					res.render('chat', { session: req.session});
+    				}
+				});
 			})
 		});
 	});

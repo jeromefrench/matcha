@@ -1,27 +1,46 @@
 <% include elements/header %>
 <form method="POST" action="about-you" class="ui fluid form">
     Gender : <select name="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
+    	<option hidden disabled selected value> -- select an option -- </option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select>
     </br>
     Show Me : <select name="orientation">
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="everyone">Everyone</option>
-            </select>
+        <option value="men">Men</option>
+        <option value="women">Women</option>
+        <option value="everyone">Everyone</option>
+    </select>
     </br>
     Bio : <input type="text" name="bio">
     </br>
-    Interests : <a class="ui tag label" id="voyage">Voyage</a>
-    <a class="ui tag label" id="cuisine">Cuisine</a>
-    <a class="ui tag label" id="escalade">Escalade</a>
-    <a class="ui tag label" id="equitation">Equitation</a>
-    <a class="ui tag label" id="sieste">Sieste</a>
-    <a class="ui tag label" id="soleil">Soleil</a>
+	Interests : <select multiple  name="interests">
+        <option value="Voyage">Voyage</option>
+        <option value="Cuisine">Cuisine</option>
+        <option value="Escalade">Escalade</option>
+        <option value="Equitation">Equitation</option>
+        <option value="Soleil">Soleil</option>
+        <option value="Sieste">Sieste</option>
+    </select>
+    <p> Hold command to select multiple</p>
     </br>
-    Photos : <input type="file" name="photo">
+
+	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Cuisine </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Escalade </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Equitation </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Soleil </label> -->
+	<!-- <label class="ui tag label"> <input type="checkbox"> Sieste </label> -->
+
+    Photos : <input id="file" type="file" name="photo">
     <input type="submit" class="ui primary button" value="Valider">
 </form>
 <% include elements/footer %>
+
+<script>
+	document.getElementById("file").onchange = function() {
+    	document.getElementById("form").submit();
+    };
+</script>
