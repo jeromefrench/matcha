@@ -1,6 +1,6 @@
 let bdd = require('../models/bdd_functions.js');
 
-module.exports.ctrl_signInGet = function sign_in(req, res){
+module.exports.ctrl_signInGet = function sign_inGet(req, res){
     res.locals.title = "Sign In";
 	res.render('sign-in.ejs', { session: req.session});
 }

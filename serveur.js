@@ -100,6 +100,12 @@ app.get('/confirm/:login/:num', function(req, res){
 	ctrl_confirm.ctrl_confirmGet(req, res);
 });
 
+//*****************ENVOI MOT DE PASSE OUBLIE***********************************
+var ctrl_send_passwd = require('./controler/forgotten-passwd.js');
+app.get('/forgotten-passwd', function(req, res){
+	ctrl_send_passwd.ctrl_send_passGet(req, res);
+});
+
 //**************CHAT***********************************************************
 var ctrl_chat = require('./controler/chat.js');
 app.get('/chat/:login', function(req, res){

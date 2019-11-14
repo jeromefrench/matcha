@@ -145,7 +145,7 @@ exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 					if (err) throw err;
 					console.log("1 record inserted");
 				});
-				sendmail(name, num, mail);
+				sendmail(name, num, mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
 			}
 			callback(result1, result2);
 		});
@@ -208,7 +208,7 @@ exports.recover_user = function (login, callback){
 	});
 }
 
-function sendmail(login, num, mail){
+function sendmail(login, num, mail, subject, text){
 	var transporter = mailer.createTransport({
 		sendmail: true,
 		newline: 'unix',
@@ -217,8 +217,8 @@ function sendmail(login, num, mail){
 	var letter = {
 		from: emoji.emojify('Matcha\'s Team :heart: matcha@no-reply.fr'),
 		to: mail,
-		subject: 'Subscription',
-		html: 'Clique sur ce lien pour confirmer ton inscription : <a href="http://localhost:8080/confirm/'+ login + '/' + num + '">Confirmer</a>'
+		subject: subject,
+		html: text
 	}
 	transporter.sendMail(letter, (err, res) => {
 		if (err){
