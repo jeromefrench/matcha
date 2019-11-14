@@ -52,13 +52,9 @@ exports.check_log = function (login, callback){
 		todo = [login];
 		conn.connection.query(sql, todo, function (err1, result1){
 			if (err1) throw err1;
+			console.log(result[0].count);
 			console.log(result1[0].count);
-			if (result1[0].count != 0){
-				callback(true);
-			}
-			else{
-				callback(false);
-			}
+			callback(result[0].count, result1[0].count);
 		});
 	});
 }

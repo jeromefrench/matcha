@@ -3,6 +3,13 @@ let bdd = require('../models/bdd_functions.js');
 module.exports.ctrl_signUpGet = function signUpGet(req, res){
     res.locals.title = "Sign Up";
     res.render('sign-up.ejs', {session: req.session});
+    req.session.lnamewrong = 0;
+    req.session.fnamewrong = 0;
+    req.session.emailwrong = 0;
+    req.session.loginwrong = 0;
+    req.session.passwrong = 0;
+    req.session.logexist = 0;
+    req.session.mailexist = 0;
 }
 
 module.exports.ctrl_signUpPost = function signUpPost(req, res){
