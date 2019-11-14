@@ -1,2 +1,3 @@
 #!/bin/zsh
-docker-machine start Web && docker-machine env Web && eval $(docker-machine env Web) && docker-compose up -d
+
+cd /sgoinfre/goinfre/Perso/$1/docker-compose-lamp && docker-machine start Web && docker-machine env Web && eval $(docker-machine env Web) && docker-compose up -d

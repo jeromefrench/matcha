@@ -1,5 +1,6 @@
 var conn = require('./connection_bdd.js');
 var mailer = require("nodemailer");
+var emoji = require('node-emoji');
 
 
 conn.connection.connect(function(err) {
@@ -159,7 +160,7 @@ function sendmail(login, num, mail){
 		path: '/usr/sbin/sendmail'
 	});
 	var letter = {
-		from: 'matcha42.jeronemo@gmail.com',
+		from: emoji.emojify('Matcha\'s Team :heart: matcha@no-reply.fr'),
 		to: mail,
 		subject: 'Subscription',
 		html: 'Clique sur ce lien pour confirmer ton inscription : <a href="http://localhost:8080/confirm/'+ login + '/' + num + '">Confirmer</a>'
