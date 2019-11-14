@@ -1,4 +1,12 @@
 <% include elements/header %>
+
+
+<% if (locals.infos && locals.infos.gender) {%>
+				<p> On est pas la</p>
+<%= locals.infos.gender %>
+<%}%>
+
+
 <form method="POST" action="about-you" class="ui fluid form">
     Gender : <select name="gender">
     	<option hidden disabled selected value> -- select an option -- </option>
@@ -8,6 +16,7 @@
     </select>
     </br>
     Show Me : <select name="orientation">
+    	<option hidden disabled selected value> -- select an option -- </option>
         <option value="men">Men</option>
         <option value="women">Women</option>
         <option value="everyone">Everyone</option>
@@ -16,12 +25,13 @@
     Bio : <input type="text" name="bio">
     </br>
 	Interests : <select multiple  name="interests">
-        <option value="Voyage">Voyage</option>
-        <option value="Cuisine">Cuisine</option>
-        <option value="Escalade">Escalade</option>
-        <option value="Equitation">Equitation</option>
-        <option value="Soleil">Soleil</option>
-        <option value="Sieste">Sieste</option>
+    	<option hidden disabled selected value> -- select an option -- </option>
+        <option value="voyage">Voyage</option>
+        <option value="cuisine">Cuisine</option>
+        <option value="escalade">Escalade</option>
+        <option value="equitation">Equitation</option>
+        <option value="soleil">Soleil</option>
+        <option value="sieste">Sieste</option>
     </select>
     <p> Hold command to select multiple</p>
     </br>
