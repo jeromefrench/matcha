@@ -1,0 +1,23 @@
+<% if (logexist == 1){ %>
+    <div class="ui left pointing red basic label">
+        Login already exists, please try another one.
+    </div>
+<% } %>
+
+<% if (logexist == 2){ %>
+    <div class="ui left pointing red basic label">
+        Login doesn't exist.
+    </div>
+<% } %>
+
+<% if (logexist == 3){ %>
+    <div class="ui left pointing red basic label">
+        You need to confirm your account first, please check your mailbox.
+    </div>
+<% } %>
+
+<% if (empty == 1){ %>
+    <div class="ui left pointing red basic label">
+        Please fill in this field correctly.
+    </div>
+<% } %>
