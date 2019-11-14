@@ -11,11 +11,55 @@ conn.connection.connect(function(err) {
 	console.log('connected as id ' + conn.connection.threadId);
 });
 
-
 exports.get_user = function (){
 	conn.connection.query('SELECT * FROM `user` ', function (error, results, fields) {
 		console.log(results);
 		return results;
+	});
+}
+
+function help_noempty(champs){
+	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
+		return false;
+	return true;
+}
+
+exports.check_noempty = function (lname, fname, mail, login, passwd, callback){
+	var i1 = 0;
+	var i2 = 0;
+	var i3 = 0;
+	var i4 = 0;
+	var i5 = 0;
+	if (help_noempty(lname) == false)
+		i1 = 1;
+	if (help_noempty(fname) == false)
+		i2 = 1;
+	if (help_noempty(mail) == false)
+		i3 = 1;
+	if (help_noempty(login) == false)
+		i4 = 1;
+	if (help_noempty(passwd) == false)
+		i5 = 1;
+	callback(i1, i2, i3, i4, i5);
+}
+
+exports.check_log = function (login, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
+		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+		todo = [login];
+		conn.connection.query(sql, todo, function (err1, result1){
+			if (err1) throw err1;
+			console.log(result1[0].count);
+			if (result1[0].count != 0){
+				callback(true);
+			}
+			else{
+				callback(false);
+			}
+		});
 	});
 }
 
@@ -24,10 +68,17 @@ function check_login(login, callback){
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		if (result[0].count != 0)
-			callback(true);
-		else
-			callback(false);
+		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+		todo = [login];
+		conn.connection.query(sql, todo, function (err1, result1){
+			if (err1) throw err1;
+			if (result[0].count != 0 || result1[0].count != 0){
+				callback(true);
+			}
+			else{
+				callback(false);
+			}
+		});
 	});
 }
 
@@ -36,10 +87,18 @@ function check_mail(mail, callback){
 	var todo = [mail];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
-		if (result[0].count != 0)
-			callback(true);
-		else
-			callback(false);
+		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
+		todo = [mail];
+		conn.connection.query(sql, todo, function (err1, result1){
+			if (err1) throw err1;
+			console.log(result1[0].count);
+			if (result[0].count != 0)
+				callback(1);
+			else if (result1[0].count != 0)
+				callback(2);
+			else
+				callback(0);
+		});
 	});
 }
 
@@ -77,8 +136,10 @@ exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 		else
 			result1 = 0;
 		check_mail(mail, function (answer){
-			if (answer)
+			if (answer == 1)
 				result2 = 1;
+			else if (answer == 2)
+				result2 = 2;
 			else
 				result2 = 0;
 			if (result1 == 0 && result2 == 0){
@@ -89,7 +150,6 @@ exports.insert_user = function (name, passwd, fname, lname, mail, callback){
 					console.log("1 record inserted");
 				});
 				sendmail(name, num, mail);
-
 			}
 			callback(result1, result2);
 		});
@@ -123,7 +183,6 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 		if (error) throw error;
 		console.log(results);
 		console.log(results[0].login);
-
 		if (results[0].passwd == passwd) {
             callback(true) ;
 		}
@@ -131,7 +190,7 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
             callback(false) ;
 		}
 	});
-	console.log("ici");
+	// console.log("ici");
 }
 
 exports.insert_message = function (content, date){
