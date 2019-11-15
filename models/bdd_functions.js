@@ -250,9 +250,7 @@ exports.changePass = function (login, npass){
 }
 
 exports.IsNewVerifMatch = function (npass, verif, callback){
-	diff = npass.localeCompare(verif, 'en', {sensitivity: 'base'});
-	console.log(diff);
-	if (diff == 0){
+	if (npass == verif){
 		callback(true);
 	}
 	else{
