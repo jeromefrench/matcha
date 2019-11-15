@@ -1,0 +1,7 @@
+<% pics.forEach(function(pic) {  
+pic_link = pic.replace('public/', '');%>
+<div class="ui image floated">
+	<img class="ui medium rounded image" src="/assets<%= pic_link %>"/>  
+	<a href="<%= pic %>"><i class="red x icon"></i></a>
+</div>
+<% });  %>

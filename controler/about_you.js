@@ -6,12 +6,21 @@ module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
 
 	bdd_about.get_info_user(req.session.login, (result) => {
 		if (result != undefined) {
-		   res.locals.infos = result[0];
+		   	res.locals.infos = result[0];
 		}
 		if (res.locals.infos.interests != null){
 			res.locals.infos.interArray = res.locals.infos.interests.split(",");
 		}
-		res.render('about-you.ejs', {session: req.session});
+		bdd.get_id_user(req.session.login,  (id_user) => {
+			bdd_about.getPic(id_user, (result) => {
+				console.log(result);
+				if (result != false){
+					res.locals.pic = Array.from(result, ({path_photo}) => path_photo);
+				}
+				console.log(res.locals.pic);
+				res.render('about-you.ejs', {session: req.session});
+			})
+		});
 	})
 }
 
@@ -42,7 +51,6 @@ function addPicture(id_user, req, rootPath){
 					console.log(req.files.photo);
 					//on add le nom de la photo dans la base
 					bdd_about.savePic(id_user, "/public/photo/"+req.session.login+"/"+number)
-
 				}
 				else {
 					console.log("le nombre de photo est superieur a 5");
@@ -55,9 +63,6 @@ function addPicture(id_user, req, rootPath){
 		console.log("size 0");
 	}
 }
-
-
-
 
 module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res, rootPath){
 	gender = req.body.gender;

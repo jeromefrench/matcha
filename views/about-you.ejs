@@ -33,6 +33,11 @@
     </select>
     <p> Hold command to select multiple</p>
     </br>
+Photos : 
+    </br>
+	<% if (locals.pic) {%>
+		<%- include('elements/picture', {pics: locals.pic});  %>
+<%}%>
 
 	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
 	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
@@ -42,7 +47,7 @@
 	<!-- <label class="ui tag label"> <input type="checkbox"> Soleil </label> -->
 	<!-- <label class="ui tag label"> <input type="checkbox"> Sieste </label> -->
 
-    Photos : <input id="file" type="file" name="photo">
+    <input id="file" type="file" name="photo">
     <input type="submit" class="ui primary button" value="Valider">
 </form>
 <% include elements/footer %>

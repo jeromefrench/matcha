@@ -1,4 +1,4 @@
 
 node_modules/*
-./public/photo/*
-./public/tmp/*
+public/photo/*
+public/tmp/*

@@ -76,7 +76,6 @@ exports.is_info_user_exist = function (login, callback){
 	})
 }
 
-
 exports.count_photo = function (id_user, callback){
 		var sql = "SELECT count(*) as 'count' FROM `photo` WHERE `id_user` = ?";
 		var todo = [id_user];
@@ -92,12 +91,33 @@ exports.count_photo = function (id_user, callback){
 		});
 }
 
-
-
 exports.savePic = function (id_user, path){
 	var sql = "INSERT INTO `photo` (`id_user`, `path_photo`) VALUES (?, ?);";
 	var todo = [id_user, path];
 	conn.connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 	});
+}
+
+
+exports.getPic = function (id_user, callback){
+		var sql = "SELECT * FROM `photo` WHERE `id_user` = ?";
+		var todo = [id_user];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			if (result[0] == undefined) {
+				callback(false);
+			}
+			else {
+				callback(result);
+			}
+		});
+}
+
+exports.delPic = function (path){
+		var sql = "	DELETE FROM `photo` WHERE `path_photo` LIKE ?";
+		var todo = [path];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+		});
 }

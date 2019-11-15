@@ -139,7 +139,18 @@ app.get('/chat/:login', function(req, res){
 app.post('/chat/:login', function(req, res){
 	ctrl_chat.ctrl_chatPost(req, res);
 });
-console.log("routing");
+//**************CHAT***********************************************************
+var ctrl_delPic = require('./controler/delPic.js');
+app.get('/public/photo/:login/:num', function(req, res){
+	ctrl_delPic.ctrl_delPicGet(req, res);
+});
+
+
+
+
+
+
+
 //*****************************************************************************
 
 //**************404************************************************************
