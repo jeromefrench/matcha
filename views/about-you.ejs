@@ -4,7 +4,7 @@
 <% if (locals.infos && locals.infos.gender) {%> <%= selected="selected"%> <%}%>
 
 
-<form method="POST" action="about-you" class="ui fluid form">
+<form id="form" method="POST" action="about-you" encType="multipart/form-data" class="ui fluid form">
     Gender : <select name="gender">
     	<option hidden disabled selected value> -- select an option -- </option>
         <option  <% if (locals.infos && locals.infos.gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>

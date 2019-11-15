@@ -35,8 +35,6 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 	var sql = "UPDATE `user_info` SET `gender` = ?, `orientation` = ?, `bio` = ?, `interests` = ?  WHERE `id_user` = ?";
 	inter = "";
 	itemsProcessed = 0;
-	console.log("avant le for each");
-	console.log(interests);
 	if (interests !=undefined && interests != null && Array.isArray(interests)){
 		interests.forEach(function(interest) {
 			if (inter == ""){

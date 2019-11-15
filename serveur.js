@@ -4,6 +4,7 @@ let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
 var server = app.listen(8080);
 var connection = [];
+const fileUpload = require('express-fileupload');
 
 var socket = require('socket.io');
 var io = socket(server);
@@ -34,6 +35,17 @@ app.use(session({
 	cookie: { secure: false }
 }));
 app.use(require('./middlewares/flash'));
+app.use(fileUpload({
+	    useTempFiles : true,
+	tempFileDir : __dirname+'/public/tmp',
+createParentPath : true
+}));
+
+
+var rootPath = __dirname;
+
+
+
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
@@ -73,7 +85,7 @@ app.get('/about-you', function(req, res) {
 	ctrl_about_you.ctrl_aboutYouGet(req, res);
 });
 app.post('/about-you', function(req, res) {
-	ctrl_about_you.ctrl_aboutYouPost(req, res);
+	ctrl_about_you.ctrl_aboutYouPost(req, res, rootPath);
 });
 //**************PROFILE / :LOGIN***********************************************
 var ctrl_profile_login = require('./controler/profile_login.js');
