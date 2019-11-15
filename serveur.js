@@ -109,6 +109,15 @@ app.post('/forgotten-passwd', function (req, res){
 	ctrl_send_passwd.ctrl_send_passPost(req, res);
 });
 
+//*****************CHGMT PASSWD************************************************
+var ctrl_changePass = require('./controler/change-passwd.js');
+app.get('/change-passwd/:login/:num', function(req, res){
+	ctrl_changePass.ctrl_changePassGet(req, res);
+});
+app.post('/change-passwd/:login/:num', function (req, res){
+	ctrl_changePass.ctrl_changePassPost(req, res);
+});
+
 //**************CHAT***********************************************************
 var ctrl_chat = require('./controler/chat.js');
 app.get('/chat/:login', function(req, res){
