@@ -75,3 +75,29 @@ exports.is_info_user_exist = function (login, callback){
 		});
 	})
 }
+
+
+exports.count_photo = function (id_user, callback){
+		var sql = "SELECT count(*) as 'count' FROM `photo` WHERE `id_user` = ?";
+		var todo = [id_user];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			console.log(result);
+			if (result[0] == undefined) {
+				callback(0);
+			}
+			else {
+				callback(result[0].count);
+			}
+		});
+}
+
+
+
+exports.savePic = function (id_user, path){
+	var sql = "INSERT INTO `photo` (`id_user`, `path_photo`) VALUES (?, ?);";
+	var todo = [id_user, path];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+	});
+}
