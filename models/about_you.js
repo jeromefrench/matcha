@@ -33,27 +33,19 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 
 exports.update_info_user = function (id_user, gender, orientation, bio, interests){
 	var sql = "UPDATE `user_info` SET `gender` = ?, `orientation` = ?, `bio` = ?, `interests` = ?  WHERE `id_user` = ?";
-	console.log("interest =>");
-	console.log(interests);
 	inter = "";
 	itemsProcessed = 0;
-	if (interests !=undefined){
+	console.log("avant le for each");
+	console.log(interests);
+	if (interests !=undefined && interests != null && Array.isArray(interests)){
 		interests.forEach(function(interest) {
 			if (inter == ""){
-				console.log("1");
-				console.log(inter);
-				console.log(interest);
 				inter += interest;
 			}else{
-				console.log("2");
-				console.log(inter);
-				console.log(interest);
 				inter += "," + interest;
 			}
 			itemsProcessed++;
 			if(itemsProcessed === interests.length) {
-				console.log("interest =>=>");
-				console.log(inter);
 				var todo = [gender, orientation, bio, inter, id_user];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
@@ -62,24 +54,13 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 		});
 	}
 	else {
-		inter = null;
+		inter = interests;
 		var todo = [gender, orientation, bio, inter, id_user];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
 		});
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
 
 exports.is_info_user_exist = function (login, callback){
 	bdd.get_id_user(login,  (id_user) => {
@@ -96,21 +77,3 @@ exports.is_info_user_exist = function (login, callback){
 		});
 	})
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
