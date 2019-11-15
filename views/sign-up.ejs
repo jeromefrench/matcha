@@ -32,7 +32,7 @@
     </div>
     <div class="inline field">
         <input type="password" name="passwd" placeholder="Password" <%- include('elements/values_signup.ejs', {val: session.passwd}); %>required>
-        <%- include('elements/passwd.ejs', {empty: session.passwrong}); %>
+        <%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: 0}); %>
     </div>
     <input type="submit" class="ui primary button" value="Create">
 </form>

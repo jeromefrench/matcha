@@ -1,13 +1,13 @@
 <% include elements/header %>
 
-<form method="POST" action="/forgotten-passwd" class="ui form">
+<form method="POST" action="/change-passwd/<%= locals.login %>/<%= locals.num %>" class="ui form">
     <div class="inline field">
         <input type="password" name="npass" placeholder="New password" <%- include('elements/values_signup.ejs', {val: session.passwd}); %>required>
-        <%- include('elements/passwd.ejs', {empty: session.passwrong}); %>
+        <%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: 0}); %>
     </div>
     <div class="inline field">
         <input type="password" name="verif" placeholder="Verification" <%- include('elements/values_signup.ejs', {val: session.vpasswd}); %>required>
-        <%- include('elements/passwd.ejs', {empty: session.vpasswrong}); %>
+        <%- include('elements/passwd.ejs', {empty: session.vpasswrong, vpass: session.vwrong}); %>
     </div>
     <input type="submit" class="ui primary button" value="Submit">        
 </form>

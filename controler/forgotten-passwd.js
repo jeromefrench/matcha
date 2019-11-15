@@ -1,4 +1,4 @@
-let bdd = require('../models/bdd_functions.js');
+let bdd = require('../models/forgotten-passwd.js');
 
 module.exports.ctrl_send_passGet = function send_passGet(req, res){
     res.locals.title = "Forgotten Password";
