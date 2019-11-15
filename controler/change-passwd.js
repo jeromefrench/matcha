@@ -15,11 +15,20 @@ module.exports.ctrl_changePassGet = function changePassGet(req, res){
 
 module.exports.ctrl_changePassPost = function changePassPost(req, res){
     var login = req.params.login;
-    bdd.IsFieldEmpty(req.session.npass, (answer) => {
+    var npass = req.session.npass;
+    var verif = req.session.verif;
+    bdd.IsFieldEmpty(npass, (answer) => {
         if (answer){
-            bdd.IsFieldEmpty(req.session.verif, (answer1) => {
+            bdd.IsFieldEmpty(verif, (answer1) => {
                 if (answer1){
-                    bdd.IsNewVerifMatch(npass, verif, ());
+                    bdd.IsNewVerifMatch(npass, verif, (result) => {
+                        if (result){
+                            bdd.changePass(login, npass);
+                        }
+                        else{
+                            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+                        }
+                    });
                 }
                 else{
                     res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);

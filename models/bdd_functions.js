@@ -240,6 +240,15 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 	// console.log("ici");
 }
 
+exports.changePass = function (login, npass){
+	var sql = "UPDATE `user` SET `passwd` = ? WHERE `login` LIKE ?";
+	var todo = [npass, login];
+	conn.connection.query(sql, todo, (err, result) => {
+		if (err) throw err;
+		console.log("pass changé !");
+	});
+}
+
 exports.IsNewVerifMatch = function (npass, verif, callback){
 	diff = npass.localeCompare(verif, 'en', {sensitivity: 'base'});
 	console.log(diff);
