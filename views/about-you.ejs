@@ -1,37 +1,35 @@
 <% include elements/header %>
 
 
-<% if (locals.infos && locals.infos.gender) {%>
-				<p> On est pas la</p>
-<%= locals.infos.gender %>
-<%}%>
+<% if (locals.infos && locals.infos.gender) {%> <%= selected="selected"%> <%}%>
 
 
 <form method="POST" action="about-you" class="ui fluid form">
     Gender : <select name="gender">
     	<option hidden disabled selected value> -- select an option -- </option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
+        <option  <% if (locals.infos && locals.infos.gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>
+        <option <% if (locals.infos && locals.infos.gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
+        <option <% if (locals.infos && locals.infos.gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
     </select>
     </br>
     Show Me : <select name="orientation">
     	<option hidden disabled selected value> -- select an option -- </option>
-        <option value="men">Men</option>
-        <option value="women">Women</option>
-        <option value="everyone">Everyone</option>
+        <option <% if (locals.infos && locals.infos.orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
+        <option <% if (locals.infos && locals.infos.orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
+        <option <% if (locals.infos && locals.infos.orientation == "everyone") {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
     </select>
     </br>
-    Bio : <input type="text" name="bio">
+    Bio : <input <% if (locals.infos && locals.infos.bio != "") {%> value="<%= locals.infos.bio %>" <%}%> type="text" name="bio">
     </br>
+
 	Interests : <select multiple  name="interests">
-    	<option hidden disabled selected value> -- select an option -- </option>
-        <option value="voyage">Voyage</option>
-        <option value="cuisine">Cuisine</option>
-        <option value="escalade">Escalade</option>
-        <option value="equitation">Equitation</option>
-        <option value="soleil">Soleil</option>
-        <option value="sieste">Sieste</option>
+    	<option  hidden disabled selected value> -- select an option -- </option>
+        <option <%- include('elements/interest', {value: "voyage"});  %>  value="voyage">Voyage</option>
+        <option <%- include('elements/interest', {value: "cuisine"});  %> value="cuisine">Cuisine</option>
+        <option <%- include('elements/interest', {value: "escalade"});  %> value="escalade">Escalade</option>
+        <option <%- include('elements/interest', {value: "equitation"});  %> value="equitation">Equitation</option>
+        <option <%- include('elements/interest', {value: "soleil"});  %> value="soleil">Soleil</option>
+        <option <%- include('elements/interest', {value: "sieste"});  %> value="sieste">Sieste</option>
     </select>
     <p> Hold command to select multiple</p>
     </br>
