@@ -1,4 +1,5 @@
 let bdd = require('../models/bdd_functions.js');
+var cp = require('../models/change-passwd.js');
 
 module.exports.ctrl_changePassGet = function changePassGet(req, res){
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
@@ -22,13 +23,13 @@ module.exports.ctrl_changePassPost = function changePassPost(req, res){
     req.session.passwrong = 0;
     req.session.vpasswrong = 0;
     req.session.vwrong = 0;
-    bdd.IsFieldEmpty(npass, (answer) => {
+    cp.IsFieldEmpty(npass, (answer) => {
         if (answer){
-            bdd.IsFieldEmpty(verif, (answer1) => {
+            cp.IsFieldEmpty(verif, (answer1) => {
                 if (answer1){
-                    bdd.IsNewVerifMatch(npass, verif, (result) => {
+                    cp.IsNewVerifMatch(npass, verif, (result) => {
                         if (result){
-                            bdd.changePass(login, npass);
+                            cp.changePass(login, npass);
                             res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
                         }
                         else{

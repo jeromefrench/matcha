@@ -1,4 +1,4 @@
-let bdd = require('../models/bdd_functions.js');
+let bdd = require('../models/sign_up.js');
 
 module.exports.ctrl_signUpGet = function signUpGet(req, res){
     res.locals.title = "Sign Up";
