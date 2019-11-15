@@ -19,7 +19,6 @@ function addPicture(id_user, req, rootPath){
 	//on regarde combien de photo il a
 
 	//si inferieur a 5 on add la photo
-	number = 0;
 	console.log("on try la photo");
 	console.log(req.files);
 	if (req.files != undefined && req.files.photo && req.files.photo.size != 0){
@@ -28,17 +27,32 @@ function addPicture(id_user, req, rootPath){
 			console.log("le format est pas bon")
 		}
 		else{
-			console.log("on add la photo");
-			console.log(req.files.photo);
-			console.log(req.files.photo.mimetype);
-			number++;
-			name = rootPath+"/public/photo/"+req.session.login+"/"+number;
-			console.log("le name");
-			console.log(name);
-			req.files.photo.mv(name);
-			console.log(req.files.photo);
-			//on add le nom de la photo dans la base
+			bdd_about.count_photo(id_user, (number) => {
+				console.log("number");
+				console.log(number);
+				if (number < 5){
+					console.log("on add la photo");
+					console.log(req.files.photo);
+					console.log(req.files.photo.mimetype);
+					number++;
+					name = rootPath+"/public/photo/"+req.session.login+"/"+number;
+					console.log("le name");
+					console.log(name);
+					req.files.photo.mv(name);
+					console.log(req.files.photo);
+					//on add le nom de la photo dans la base
+					bdd_about.savePic(id_user, "/public/photo/"+req.session.login+"/"+number)
+
+				}
+				else {
+					console.log("le nombre de photo est superieur a 5");
+				}
+			});
 		}
+	}
+	else
+	{
+		console.log("size 0");
 	}
 }
 
@@ -61,5 +75,5 @@ module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res, rootPath){
 			}
 		})
 	});
-	// res.redirect('/about-you');
+	res.redirect('/about-you');
 }
