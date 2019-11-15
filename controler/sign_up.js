@@ -6,8 +6,8 @@ module.exports.ctrl_signUpGet = function signUpGet(req, res){
 }
 
 module.exports.ctrl_signUpPost = function signUpPost(req, res){
-    var lname = req.body.lastname;
-    var fname = req.body.firstname;
+    var lname = req.body.lname;
+    var fname = req.body.fname;
     var email = req.body.email;
     var login = req.body.login;
     var passwd = req.body.passwd;
@@ -23,8 +23,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
     req.session.email = email;
     req.session.login = login;
     req.session.passwd = passwd;
-    bdd.insert_user(login, passwd, fname, lname, email, function (result1, result2){
-        bdd.check_noempty(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5) => {
+        bdd.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
             if (i1 == 1){
                 req.session.lnamewrong = 1;
                 req.session.lname = undefined;
@@ -57,7 +56,12 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
                 req.session.mailexist = 2;
                 req.session.login = undefined;
             }
-            res.redirect('/sign-up');
+            if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0){
+                bdd.insert_user(login, passwd, fname, lname, email);
+                res.redirect('/sign-up');
+            }
+            else{
+                res.redirect('/sign-up');
+            }
         });
-    });
 }

@@ -1,11 +1,12 @@
-<% include('elements/header.ejs'); %>
+<% include elements/header %>
 
 Enter the email address associated with your Matcha's account.</br>
-<div class="ui input">
-    <input type="text" placeholder="Email address" required>
-  </div>
-  <button class="ui primary button">
-    Send
-  </button>
+<form method="POST" action="/forgotten-passwd" class="ui form">
+    <div class="ui input">
+        <input type="email" name="email" placeholder="Email" required>
+        <%- include('elements/signup_email.ejs', {mailexist: session.mailexist, empty: 0}); %>
+    </div>
+    <input type="submit" class="ui primary button" value="Send">        
+</form>
 
-<% include('elements/footer.ejs'); %>
+<% include elements/footer %>

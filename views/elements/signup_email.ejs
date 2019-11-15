@@ -10,6 +10,12 @@
     </div>
 <% } %>
 
+<% if (mailexist == 3){ %>
+    <div class="ui left pointing red basic label">
+        This email address doesn't exist.
+    </div>
+<% } %>
+
 <% if (empty == 1){ %>
     <div class="ui left pointing red basic label">
         Please fill in this field correctly.

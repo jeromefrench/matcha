@@ -105,6 +105,9 @@ var ctrl_send_passwd = require('./controler/forgotten-passwd.js');
 app.get('/forgotten-passwd', function(req, res){
 	ctrl_send_passwd.ctrl_send_passGet(req, res);
 });
+app.post('/forgotten-passwd', function (req, res){
+	ctrl_send_passwd.ctrl_send_passPost(req, res);
+});
 
 //**************CHAT***********************************************************
 var ctrl_chat = require('./controler/chat.js');

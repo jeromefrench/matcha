@@ -24,22 +24,38 @@ function help_noempty(champs){
 	return true;
 }
 
-exports.check_noempty = function (lname, fname, mail, login, passwd, callback){
+exports.check_fieldOk = function (lname, fname, mail, login, passwd, callback){
+	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
+		console.log(i1, i2, i3, i4, i5);
+		check_login(login, (result1) => {
+			check_mail(mail, (result2) => {
+				callback(i1, i2, i3, i4, i5, result1, result2);
+			});
+		});
+	});
+}
+
+function check_noempty(lname, fname, mail, login, passwd, callback){
 	var i1 = 0;
 	var i2 = 0;
 	var i3 = 0;
 	var i4 = 0;
 	var i5 = 0;
-	if (help_noempty(lname) == false)
+	if (help_noempty(lname) == false){
 		i1 = 1;
-	if (help_noempty(fname) == false)
+	}
+	if (help_noempty(fname) == false){
 		i2 = 1;
-	if (help_noempty(mail) == false)
+	}
+	if (help_noempty(mail) == false){
 		i3 = 1;
-	if (help_noempty(login) == false)
+	}
+	if (help_noempty(login) == false){
 		i4 = 1;
-	if (help_noempty(passwd) == false)
+	}
+	if (help_noempty(passwd) == false){
 		i5 = 1;
+	}
 	callback(i1, i2, i3, i4, i5);
 }
 
@@ -98,6 +114,50 @@ function check_mail(mail, callback){
 	});
 }
 
+function recoveruser_wmail(email, callback){
+	var sql = "SELECT * FROM `user` WHERE `mail` LIKE ?";
+	var todo = [email];
+	conn.connection.query(sql, todo, function (err, results) {
+		if (err) throw err;
+		console.log(results[0]);
+		callback(results[0]);
+	});
+}
+
+exports.send_passwd = function (mail, callback){
+	check_mail(mail, function (answer){
+		if (answer == 1){
+			recoveruser_wmail(mail, (user) => {
+				login = user.login;
+				num = getRandomInt(10000);
+				console.log(login);
+				console.log(num);
+				var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
+				var todo = [num, login];
+				conn.connection.query(sql, todo, (err, res) => {
+					if (err) throw err;
+					console.log("address ok et num added");
+					// sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ login + '/' + num + "\">Confirmer</a>");
+					callback(answer);
+				});
+			});
+		}
+	});
+}
+
+exports.IsLoginNumMatch = function (login, passwd, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ? AND `passwd` LIKE ?";
+	var todo = [login, passwd];
+	conn.connection.query(sql, todo, (err, result) => {
+		if (result[0].count == 0){
+			callback(false);
+		}
+		else{
+			callback(true);
+		}
+	});
+}
+
 exports.recover_user_data = function (num, callback){
 	var sql = "SELECT * FROM `user_sub` WHERE `num` LIKE ?";
 	var todo = [num];
@@ -122,35 +182,15 @@ exports.valide_user = function (login, passwd, lname, fname, mail, num){
 	});
 }
 
-exports.insert_user = function (name, passwd, fname, lname, mail, callback){
-	var result1 = 0;
-	var result2 = 0;
+exports.insert_user = function (name, passwd, fname, lname, mail){
 	var num = getRandomInt(10000);
-	check_login(name, function (answer){
-		if (answer)
-			result1 = 1;
-		else
-			result1 = 0;
-		check_mail(mail, function (answer){
-			if (answer == 1)
-				result2 = 1;
-			else if (answer == 2)
-				result2 = 2;
-			else
-				result2 = 0;
-			if (result1 == 0 && result2 == 0){
-				var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
-				var todo = [name, passwd, fname, lname, mail];
-				conn.connection.query(sql, todo, function (err, result) {
-					if (err) throw err;
-					console.log("1 record inserted");
-				});
-				sendmail(name, num, mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
-			}
-			callback(result1, result2);
-		});
+	var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
+	var todo = [name, passwd, fname, lname, mail];
+	conn.connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
+		console.log("1 record inserted");
 	});
-
+	sendmail(mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
 }
 
 exports.get_id_user = function (login, callback){
@@ -208,7 +248,7 @@ exports.recover_user = function (login, callback){
 	});
 }
 
-function sendmail(login, num, mail, subject, text){
+function sendmail(mail, subject, text){
 	var transporter = mailer.createTransport({
 		sendmail: true,
 		newline: 'unix',

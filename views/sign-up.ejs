@@ -15,11 +15,11 @@
 
 <form method="POST" action="/sign-up" class="ui fluid form">
     <div class="inline field">
-        <input type="text" name="lastname" placeholder="Last name" <%- include('elements/values_signup.ejs', {val: session.lname}); %>required>
+        <input type="text" name="lname" placeholder="Last name" <%- include('elements/values_signup.ejs', {val: session.lname}); %>required>
         <%- include('elements/empty.ejs', {empty: session.lnamewrong}); %>
     </div>
     <div class="inline field">
-        <input type="text" name="firstname" placeholder="First name" <%- include('elements/values_signup.ejs', {val: session.fname}); %>required>
+        <input type="text" name="fname" placeholder="First name" <%- include('elements/values_signup.ejs', {val: session.fname}); %>required>
         <%- include('elements/empty.ejs', {empty: session.fnamewrong}); %>
     </div>
     <div class="inline field">
