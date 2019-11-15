@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Nov 14, 2019 at 06:35 PM
--- Server version: 5.7.28
--- PHP Version: 7.2.23
+-- Hôte : mysql:3306
+-- Généré le :  ven. 15 nov. 2019 à 15:52
+-- Version du serveur :  5.7.28
+-- Version de PHP :  7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `docker`
+-- Base de données :  `docker`
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
@@ -27,7 +27,7 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `like_table`
+-- Structure de la table `like_table`
 --
 
 CREATE TABLE IF NOT EXISTS `like_table` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `like_table` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `like_table`
+-- Déchargement des données de la table `like_table`
 --
 
 INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Structure de la table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Structure de la table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -76,22 +76,24 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fname` text NOT NULL,
   `lname` text NOT NULL,
   `mail` text NOT NULL,
+  `num` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`) VALUES
-(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2'),
-(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond'),
-(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr');
+INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VALUES
+(1, 'jean2', 'jean-passwd2', 'jeanname2', 'dupond2', 'jean@dupond2', 0),
+(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond', 0),
+(4, 'blabli', 'blabli', 'bli', 'bla', 'bli@bla.fr', 4308),
+(10, 'bbchat', 'bbchat', 'lejeune', 'laetitia', 'laetitia-lejeune@live.fr', 6265);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_info`
+-- Structure de la table `user_info`
 --
 
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -105,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_info`
+-- Déchargement des données de la table `user_info`
 --
 
 INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES
@@ -115,7 +117,7 @@ INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `inter
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_sub`
+-- Structure de la table `user_sub`
 --
 
 CREATE TABLE IF NOT EXISTS `user_sub` (
@@ -127,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
   `mail` text NOT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,0 +1,15 @@
+<% include elements/header %>
+
+<form method="POST" action="/forgotten-passwd" class="ui form">
+    <div class="inline field">
+        <input type="password" name="npass" placeholder="New password" <%- include('elements/values_signup.ejs', {val: session.passwd}); %>required>
+        <%- include('elements/passwd.ejs', {empty: session.passwrong}); %>
+    </div>
+    <div class="inline field">
+        <input type="password" name="verif" placeholder="Verification" <%- include('elements/values_signup.ejs', {val: session.vpasswd}); %>required>
+        <%- include('elements/passwd.ejs', {empty: session.vpasswrong}); %>
+    </div>
+    <input type="submit" class="ui primary button" value="Submit">        
+</form>
+
+<% include elements/footer %>

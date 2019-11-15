@@ -24,6 +24,12 @@ function help_noempty(champs){
 	return true;
 }
 
+exports.IsFieldEmpty = function IsFieldEmpty(field, callback){
+	if (field == undefined || field == "" || field.indexOf(" ") > -1)
+		callback(false);
+	callback(true);
+}
+
 exports.check_fieldOk = function (lname, fname, mail, login, passwd, callback){
 	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
 		console.log(i1, i2, i3, i4, i5);
@@ -103,7 +109,6 @@ function check_mail(mail, callback){
 		todo = [mail];
 		conn.connection.query(sql, todo, function (err1, result1){
 			if (err1) throw err1;
-			console.log(result1[0].count);
 			if (result[0].count != 0)
 				callback(1);
 			else if (result1[0].count != 0)
@@ -137,23 +142,29 @@ exports.send_passwd = function (mail, callback){
 				conn.connection.query(sql, todo, (err, res) => {
 					if (err) throw err;
 					console.log("address ok et num added");
-					// sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ login + '/' + num + "\">Confirmer</a>");
+					sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
 					callback(answer);
 				});
 			});
 		}
+		else{
+			callback(answer);
+		}
 	});
 }
 
-exports.IsLoginNumMatch = function (login, passwd, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ? AND `passwd` LIKE ?";
-	var todo = [login, passwd];
+exports.IsLoginNumMatch = function (login, num, cat, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
+	var todo = [login, num];
 	conn.connection.query(sql, todo, (err, result) => {
+		// console.log(sql);
 		if (result[0].count == 0){
 			callback(false);
+			console.log("login num pas ok");
 		}
 		else{
 			callback(true);
+			console.log("login num ok");
 		}
 	});
 }
@@ -227,6 +238,17 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 		}
 	});
 	// console.log("ici");
+}
+
+exports.IsNewVerifMatch = function (npass, verif, callback){
+	diff = npass.localeCompare(verif, 'en', {sensitivity: 'base'});
+	console.log(diff);
+	if (diff == 0){
+		callback(true);
+	}
+	else{
+		callback(false);
+	}
 }
 
 exports.insert_message = function (content, date){
