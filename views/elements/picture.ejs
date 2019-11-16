@@ -1,7 +1,26 @@
+
+
+
+
 <% pics.forEach(function(pic) {  
-pic_link = pic.replace('public/', '');%>
+pic_link = pic.path_photo.replace('public/', '');%>
 <div class="ui image floated">
-	<img class="ui medium rounded image" src="/assets<%= pic_link %>"/>  
-	<a href="<%= pic %>"><i class="red x icon"></i></a>
+	<p>la pic : </p><%= pics.profile %>
+
+			<% if (pic.profile == 1) {%>
+				<a href="<%= pic.path_photo %>/profile"> <img class="ui medium circular image" src="/assets<%= pic_link %>"/>  </a>
+	console.log("circular");
+
+
+			<% }else{%>
+				<a href="<%= pic.path_photo %>/profile"><img class="ui medium rounded image" src="/assets<%= pic_link %>"/>  </a>
+	<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
+	console.log("NO circular");
+
+
+			<%}%>
+
+
+	<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
 </div>
 <% });  %>

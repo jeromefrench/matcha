@@ -139,13 +139,17 @@ app.get('/chat/:login', function(req, res){
 app.post('/chat/:login', function(req, res){
 	ctrl_chat.ctrl_chatPost(req, res);
 });
-//**************CHAT***********************************************************
+//**************DEL PICURE*****************************************************
 var ctrl_delPic = require('./controler/delPic.js');
 app.get('/public/photo/:login/:num', function(req, res){
 	ctrl_delPic.ctrl_delPicGet(req, res);
 });
-
-
+//**************MAKE AS PROFILE PICURE*****************************************
+var ctrl_makeProfilePic = require('./controler/make_profile_pic.js');
+app.get('/public/photo/:login/:num/profile', function(req, res){
+	console.log("IIIIIIIIIIICCCCCCCCCCCCCCCCIIIIIIIIIIIIIIII");
+	ctrl_makeProfilePic.ctrl_makeProfilePic(req, res);
+});
 
 
 
