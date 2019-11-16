@@ -36,7 +36,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 			}
 			itemsProcessed++;
 			if(itemsProcessed === interests.length) {
-				var todo = [gender, orientation, bio, inter, id_user];
+				var todo = [id_user, gender, orientation, bio, inter];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
 				})
