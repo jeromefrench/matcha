@@ -91,14 +91,15 @@ exports.count_photo = function (id_user, callback){
 		});
 }
 
-exports.savePic = function (id_user, path){
-	var sql = "INSERT INTO `photo` (`id_user`, `path_photo`) VALUES (?, ?);";
-	var todo = [id_user, path];
+exports.savePic = function (id_user, path, profile){
+	var sql = "INSERT INTO `photo` (`id_user`, `path_photo`, `profile`) VALUES (?, ?, ?);";
+	var todo = [id_user, path, profile];
+	console.log("model save pic profile +>");
+	console.log(profile);
 	conn.connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 	});
 }
-
 
 exports.getPic = function (id_user, callback){
 		var sql = "SELECT * FROM `photo` WHERE `id_user` = ?";
@@ -119,5 +120,26 @@ exports.delPic = function (path){
 		var todo = [path];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
+		});
+}
+
+exports.profileToZero = function (id_user, callback){
+	console.log("Profile to zero");
+		var sql = "UPDATE `photo` SET `profile`= 0 WHERE `id_user` = ?";
+		var todo = [id_user];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback();
+		});
+}
+
+exports.profileToOne = function (path, callback){
+		var sql = "UPDATE `photo` SET `profile`= 1 WHERE `path_photo` LIKE ?";
+	console.log("finale path");
+	console.log(path);
+		var todo = [path];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback();
 		});
 }

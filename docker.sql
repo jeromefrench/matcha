@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : mysql:3306
--- Généré le :  ven. 15 nov. 2019 à 15:52
--- Version du serveur :  5.7.28
--- Version de PHP :  7.2.23
+-- Host: mysql:3306
+-- Generation Time: Nov 16, 2019 at 11:23 AM
+-- Server version: 5.7.28
+-- PHP Version: 7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `docker`
+-- Database: `docker`
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
@@ -27,7 +27,7 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `like_table`
+-- Table structure for table `like_table`
 --
 
 CREATE TABLE IF NOT EXISTS `like_table` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `like_table` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `like_table`
+-- Dumping data for table `like_table`
 --
 
 INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -66,7 +66,29 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `photo`
+--
+
+CREATE TABLE IF NOT EXISTS `photo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` text NOT NULL,
+  `path_photo` text NOT NULL,
+  `profile` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `photo`
+--
+
+INSERT INTO `photo` (`id`, `id_user`, `path_photo`, `profile`) VALUES
+(11, '3', '/public/photo/jean/0', 0),
+(12, '3', '/public/photo/jean/1', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -81,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VALUES
@@ -93,7 +115,7 @@ INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VA
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user_info`
+-- Table structure for table `user_info`
 --
 
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -107,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `user_info`
+-- Dumping data for table `user_info`
 --
 
 INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES
@@ -117,7 +139,7 @@ INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `inter
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user_sub`
+-- Table structure for table `user_sub`
 --
 
 CREATE TABLE IF NOT EXISTS `user_sub` (
