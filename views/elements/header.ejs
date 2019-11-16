@@ -10,29 +10,24 @@
 		</title>
 		<link rel="stylesheet" href="/assets/semantic/semantic.min.css">
 	</head>
-	<body>
-		<div class="ui menu inverted">
-  			<div class="header item">
-				<a href="/test" class="header item">Test</a>
-  			</div>
-  			<div class="header item">
-				<a href="/sign-in" class="header item">Sign In</a>
-  			</div>
-  			<div class="header item">
-				<a href="/sign-up" class="header item">Sign Up</a>
-  			</div>
-  			<div class="header item">
-				<a href="/about-you" class="header item">About you</a>
-  			</div>
-  			<div class="header item">
-				<a href="/my-account" class="header item">My account</a>
-  			</div>
-  			<div class="header item">
-				<a href="/research" class="header item">Research</a>
-  			</div>
-  			<div class="header item">
-				<a href="/sign-out" class="header item">Sign Out</a>
-  			</div>
+	<body>		  
+		<div class="ui inverted segment">
+  			<div class="ui inverted secondary menu">
+				<a href="/about-you" class="item">About you</a>
+				<a href="/my-account" class="item">My account</a>
+				<a href="/research" class="item">Research</a>
+                <div class="ui teal buttons">
+                    <div class="ui button">Connexion</div>
+                    <div class="ui simple dropdown icon button">
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item"><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
+                            <div class="item"><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
+                            <div class="item"><a href="/sign-out" style="color:black"><b>Sign out</b></a></div>
+                        </div>
+                    </div>
+                </div>
+			</div>
   		</div>
 		<div style="margin-left: 5vmin" >
 
@@ -43,5 +38,3 @@
 			<%= "Your not log on"%>
 			<%}%>
 			</br>
-
-
