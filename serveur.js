@@ -152,6 +152,12 @@ app.get('/public/photo/:login/:num/profile', function(req, res){
 });
 
 
+//**************FAAKER BABY****************************************************
+var faker = require('./faker.js');
+app.get('/faker', function(req, res){
+	console.log("IIIIIIIIIIICCCCCCCCCCCCCCCCIIIIIIIIIIIIIIII");
+	faker.faker(req, res);
+});
 
 
 
