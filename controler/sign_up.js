@@ -2,7 +2,12 @@ let bdd = require('../models/sign_up.js');
 
 module.exports.ctrl_signUpGet = function signUpGet(req, res){
     res.locals.title = "Sign Up";
-    res.render('sign-up.ejs', {session: req.session});
+    if (req.session.upOk == 1){
+        res.render('signup_envoye.ejs');
+    }
+    else{
+        res.render('sign-up.ejs', {session: req.session});
+    }
 }
 
 module.exports.ctrl_signUpPost = function signUpPost(req, res){
@@ -23,6 +28,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
     req.session.email = email;
     req.session.login = login;
     req.session.passwd = passwd;
+    req.session.upOk = 0;
         bdd.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
             if (i1 == 1){
                 req.session.lnamewrong = 1;
@@ -58,6 +64,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
             }
             if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0){
                 bdd.insert_user(login, passwd, fname, lname, email);
+                req.session.upOk = 1;
                 res.redirect('/sign-up');
             }
             else{
