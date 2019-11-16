@@ -77,6 +77,8 @@ module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res, rootPath){
 	interests = req.body.interests;
 	bdd.get_id_user(req.session.login,  (id_user) => {
 		id_user = id_user;
+		console.log("id_user");
+		console.log(id_user);
 		bdd_about.is_info_user_exist(req.session.login, (userExist) => {
 			if (userExist){
 				bdd_about.update_info_user(id_user, gender, orientation, bio, interests);

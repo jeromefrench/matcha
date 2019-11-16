@@ -24,11 +24,43 @@ exports.get_info_user = function (login, callback){
 }
 
 exports.insert_info_user = function (id_user, gender, orientation, bio, interests){
-	var sql = "	INSERT INTO `user_info` (`id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES (?, ?, ?, ?, ?);";
-	var todo = [id_user, gender, orientation, bio, interests];
-	conn.connection.query(sql, todo, (error, result) => {
-		if (error) throw error;
-	});
+	var sql = "INSERT INTO `user_info` (`id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES (?, ?, ?, ?, ?);";
+	// var todo = [id_user, gender, orientation, bio, interests];
+	// conn.connection.query(sql, todo, (error, result) => {
+		// if (error) throw error;
+	// });
+
+
+	inter = "";
+	itemsProcessed = 0;
+	if (interests !=undefined && interests != null && Array.isArray(interests)){
+		interests.forEach(function(interest) {
+			if (inter == ""){
+				inter += interest;
+			}else{
+				inter += "," + interest;
+			}
+			itemsProcessed++;
+			if(itemsProcessed === interests.length) {
+				var todo = [gender, orientation, bio, inter, id_user];
+				conn.connection.query(sql, todo, (error, result) => {
+					if (error) throw error;
+				})
+			}
+		});
+	}
+	else {
+		inter = interests;
+		var todo = [id_user, gender, orientation, bio, inter];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+		});
+	}
+
+
+
+
+
 }
 
 exports.update_info_user = function (id_user, gender, orientation, bio, interests){
