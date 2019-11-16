@@ -8,7 +8,7 @@ module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
 		if (result != undefined) {
 		   	res.locals.infos = result[0];
 		}
-		if (res.locals.infos.interests != null){
+		if (res.locals.infos != undefined && res.locals.infos.interests != null){
 			res.locals.infos.interArray = res.locals.infos.interests.split(",");
 		}
 		bdd.get_id_user(req.session.login,  (id_user) => {
