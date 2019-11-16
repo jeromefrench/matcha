@@ -5,7 +5,8 @@ let bdd_like = require('../models/like.js');
 module.exports.ctrl_researchGet = function profileLoginGet(req, res){
 	uneVariable = 3;
 	itemsProcessed = 0;
-	bdd.get_user(uneVariable, (all_user) => {
+	bdd.get_user(req.session.login, (all_user) => {
+		console.log(all_user);
 		all_user.forEach(function (user){
 			bdd_like.doILike(req.session.login, user.login, function (result){
 				user.do_i_like = result;
