@@ -15,6 +15,7 @@
     Show Me : <select name="orientation">
     	<option hidden disabled selected value> -- select an option -- </option>
         <option <% if (locals.infos && locals.infos.orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
+        <option <% if (locals.infos && locals.infos.orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
         <option <% if (locals.infos && locals.infos.orientation == "everyone") {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
     </select>
     </br>

@@ -25,12 +25,6 @@ exports.get_info_user = function (login, callback){
 
 exports.insert_info_user = function (id_user, gender, orientation, bio, interests){
 	var sql = "INSERT INTO `user_info` (`id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES (?, ?, ?, ?, ?);";
-	// var todo = [id_user, gender, orientation, bio, interests];
-	// conn.connection.query(sql, todo, (error, result) => {
-		// if (error) throw error;
-	// });
-
-
 	inter = "";
 	itemsProcessed = 0;
 	if (interests !=undefined && interests != null && Array.isArray(interests)){
@@ -56,11 +50,6 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 			if (error) throw error;
 		});
 	}
-
-
-
-
-
 }
 
 exports.update_info_user = function (id_user, gender, orientation, bio, interests){
@@ -173,5 +162,15 @@ exports.profileToOne = function (path, callback){
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
 			callback();
+		});
+}
+
+
+exports.isProfile = function (path, callback){
+		var sql = "SELECT `profile` FROM `photo` WHERE `path_photo` LIKE ?";
+		var todo = [path];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback(result);
 		});
 }
