@@ -117,3 +117,4 @@ exports.insert_user = function (name, passwd, fname, lname, mail){
 	});
 	sendmail(mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
 }
+

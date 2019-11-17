@@ -3,24 +3,38 @@
 
 
 <% pics.forEach(function(pic) {
-pic_link = pic.path_photo.replace('public/', '');%>
+	//regex pour savoir si c'est un lien ou une image sur le disk
+	var str = pic.path_photo;
+	var patt = /^http/;
+	var res = patt.test(str)
+
+	if (res){
+		//c'est un lien
+		pic_link = pic.path_photo;
+	}else {
+		//c'est pas un lien
+		pic_link = pic.path_photo.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
+
 <div class="ui image floated">
 	<p>la pic : </p><%= pics.profile %>
 
-			<% if (pic.profile == 1) {%>
-				<a href="<%= pic.path_photo %>/profile"> <img class="ui medium circular image" src="/assets<%= pic_link %>"/>  </a>
+<% if (pic.profile == 1) {%>
+	<a href="<%= pic.path_photo %>/profile"> <img class="ui medium circular image" src="<%= pic_link %>"/>  </a>
 	console.log("circular");
 
-
-			<% }else{%>
-				<a href="<%= pic.path_photo %>/profile"><img class="ui medium rounded image" src="/assets<%= pic_link %>"/>  </a>
+<% }else{%>
+	<a href="<%= pic.path_photo %>/profile"><img class="ui medium rounded image" src="<%= pic_link %>"/>  </a>
 	<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
 	console.log("NO circular");
 
 
-			<%}%>
+<%}%>
 
 
-	<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
+<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
 </div>
 <% });  %>

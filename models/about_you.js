@@ -39,6 +39,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 				var todo = [id_user, gender, orientation, bio, inter];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
+					isCompleted(id_user, gender, orientation, bio, interests);
 				})
 			}
 		});
@@ -48,6 +49,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 		var todo = [id_user, gender, orientation, bio, inter];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
+			isCompleted(id_user, gender, orientation, bio, interests);
 		});
 	}
 }
@@ -55,11 +57,16 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 function isCompleted(id_user, gender, orientation, bio, interests){
 	count_photo(id_user, (result) => {
 		if (gender != null && orientation != null && bio != null && interests != null && result > 0)
+		{
 			var sql = "UPDATE `user_info` SET `completed` = 1 WHERE `id_user` = ?";
-		var todo = [id_user];
-		conn.connection.query(sql, todo, (error, result) => {
-			if (error) throw error;
-		})
+			console.log("liduser")
+			console.log(id_user);
+			var todo = [id_user];
+			conn.connection.query(sql, todo, (error, result) => {
+				if (error) throw error;
+			})
+
+		}
 	})
 }
 

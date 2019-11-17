@@ -1,4 +1,18 @@
+<%
+	var str = user.path_photo;
+	var patt = /^http/;
+	var res = patt.test(str)
 
+	if (res){
+		//c'est un lien
+		pic_link = user.path_photo;
+	}else {
+		//c'est pas un lien
+		pic_link = user.path_photo.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
 
 
 <div class="card">
@@ -11,8 +25,8 @@
 				</div>
 			</div>
 		</div>
-		<% pic_link = user.path_photo.replace('public/', '');%>
-		<img src="/assets<%= pic_link %>" >
+		<!-- <% pic_link = user.path_photo.replace('public/', '');%> -->
+	<img src="<%= pic_link %>" >
 	</div>
 	<div class="content">
 		<a class="header"><%= user.login %> </a>

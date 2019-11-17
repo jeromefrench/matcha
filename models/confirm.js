@@ -24,3 +24,17 @@ exports.valide_user = function (login, passwd, lname, fname, mail, num){
 	});
 }
 
+exports.valide_user_fake = function (login, passwd, lname, fname, mail){
+	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+	var todo = [login, passwd, fname, lname, mail];
+	conn.connection.query(sql, todo, (err, res) => {
+		if (err) throw err;
+		console.log(login + "added in user");
+	});
+	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+	// todo = [login];
+	// conn.connection.query(sql, todo, (err, res) => {
+		// if (err) throw err;
+		// console.log(login + "deleted from user_sub");
+	// });
+}

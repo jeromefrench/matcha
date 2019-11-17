@@ -133,7 +133,6 @@ app.post('/change-passwd/:login/:num', function (req, res){
 //**************CHAT***********************************************************
 var ctrl_chat = require('./controler/chat.js');
 app.get('/chat/:login', function(req, res){
-	console.log("ici !!!!!!!!!!!!!!!!");
 	ctrl_chat.ctrl_chatGet(req, res);
 });
 app.post('/chat/:login', function(req, res){
@@ -147,7 +146,6 @@ app.get('/public/photo/:login/:num', function(req, res){
 //**************MAKE AS PROFILE PICURE*****************************************
 var ctrl_makeProfilePic = require('./controler/make_profile_pic.js');
 app.get('/public/photo/:login/:num/profile', function(req, res){
-	console.log("IIIIIIIIIIICCCCCCCCCCCCCCCCIIIIIIIIIIIIIIII");
 	ctrl_makeProfilePic.ctrl_makeProfilePic(req, res);
 });
 
@@ -155,7 +153,6 @@ app.get('/public/photo/:login/:num/profile', function(req, res){
 //**************FAAKER BABY****************************************************
 var faker = require('./faker.js');
 app.get('/faker', function(req, res){
-	console.log("IIIIIIIIIIICCCCCCCCCCCCCCCCIIIIIIIIIIIIIIII");
 	faker.faker(req, res);
 });
 
