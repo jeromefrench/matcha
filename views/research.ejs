@@ -1,71 +1,19 @@
 <% include elements/header %>
 <h1>Research</h1>
 
-<table class="ui celled table">
-	<thead> <tr>
-			<th>Login</th>
-			<th>First name</th>
-			<th>Last name</th>
-			<th>Like / Unlike</th>
-			<th>Does it like me</th>
-			<th>Do I like it</th>
-			<th>Match</th>
-			<th>Profile</th>
-			<th>Chat</th>
-		</tr></thead>
-		<tbody>
-			<% locals.users.forEach(function(user) {  %>
-				<tr>
-					<td data-label="Login"><%= user.login %></td>
-					<td data-label="First name"><%= user.fname  %></td>
-					<td data-label="Last name"><%= user.lname   %></td>
-					<td data-label="Like / Unlike"><%- include('elements/like_unlike_button', {login: user.login, like: user.do_i_like}); %></td>
-					<td data-label="Does it like me"><%- include('elements/green_check_red_cross', {bool: user.does_it_like_me}); %></td>
-					<td data-label="Do I like it"><%- include('elements/green_check_red_cross', {bool: user.do_i_like});  %></td>
-					<td data-label="Match"><%- include('elements/green_check_red_cross', {bool: user.match});  %></td>
-					<td data-label="Profile"><%- include('elements/view_profile', {login: user.login}); %></td>
-					<td data-label="Chat"><%- include('elements/chat_button', {match: user.match, login:user.login});   %></td>
-				</tr>
-			<% });  %>
-		</tbody>
-</table>
 
 <div class="ui special cards">
 	<% locals.users.forEach(function(user) {  %>
 		<%- include('elements/profile_card', {user: user}) %>
 	<% });  %>
 
-	<!-- <div class="card"> -->
-	<!-- 	<div class="blurring dimmable image"> -->
-	<!-- 		<div class="ui inverted dimmer"> -->
-	<!-- 			<div class="content"> -->
-	<!-- 				<div class="center"> -->
-	<!-- 					<div class="ui primary button">See profile</div> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 		<img src="/images/avatar/large/jenny.jpg"> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="content"> -->
-	<!-- 		<a class="header">Team Hess</a> -->
-	<!-- 		<div class="meta"> -->
-	<!-- 			<span class="date">Created in Aug 2014</span> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-	<!-- 	<div class="extra content"> -->
-	<!-- 		<a> -->
-	<!-- 			<i class="users icon"></i> -->
-	<!-- 			2 Members -->
-	<!-- 		</a> -->
-	<!-- 	</div> -->
-	<!-- </div> -->
 </div>
 
-	<script>
-$('.special.cards .image').dimmer({
-  on: 'hover'
-});
+<script>
+	$('.special.cards .image').dimmer({
+  		on: 'hover'
+	});
 
-	</script>
+</script>
 
 <% include elements/footer %>

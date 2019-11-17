@@ -1,8 +1,61 @@
-<% include elements/header %>
+<%- include('elements/header'); %>
+
+<div class="ui container">
+
+	<h1 class="ui header">Your on <%= user.fname %> <%= user.lname %> profile</h1>
+	<div class="ui two column centered grid">
+  		<div class="column right aligned">
+			<!-- #############################################################################3 -->
+    		<div class="column">
+				<div class="ui raised  segment">
+					<%- include('elements/profile_pic', {pic: user.path_photo}); %>
+				</div>
+			</div>
+			<div class="ui raised segment">
+      			<h3 class="ui header"></h3>
+				<%- include('elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like}); %></br>
+				Like me :<%- include('elements/green_check_red_cross', {bool: user.does_it_like_me}); %></br>
+				Match :<%- include('elements/green_check_red_cross', {bool: user.match});  %></br>
+				<%- include('elements/chat_button', {match: user.match, login:user.login});   %>
+			</div>
+
+			<div class="ui raised segment">
+      			<h3 class="ui header">Connection log</h3>
+				<p>
+					missing
+				</p>
+			</div>
+
+  		</div>
+    	<div class="column">
+			<!-- #############################################################################3 -->
+			<div class="ui raised segment">
+      			<h3 class="ui header">Information</h3>
+				<p>
+					<strong>Firsname:</strong> <%= user.fname %>   </br>
+					<strong>Lastname: </strong><%= user.lname %>   </br>
+					<strong>Location: </strong>missing   </br>
+					<strong>Popularity score: </strong>missing   </br>
+					<strong>Age: </strong>missing </br>
+				</p>
+			</div>
+			<div class="ui raised segment">
+      			<h3 class="ui header">Biographie</h3>
+				<p>
+					<%= user.bio %>
+				</p>
+			</div>
+			<div class="ui raised segment">
+      			<h3 class="ui header">Interest tag</h3>
+				<p>
+					interest
+					<label class="ui tag label">Voyage</label>
+				</p>
+			</div>
+    	</div>
+	</div>
+</div>
 
 
 
-</br>
-je suis <%= locals.session.login %></br>
-Vous etes sur le profile de <%= locals.login_profil %>
-<% include elements/footer %>
+<%- include('elements/footer'); %>

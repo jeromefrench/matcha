@@ -1,0 +1,18 @@
+<% 
+	//regex pour savoir si c'est un lien ou une image sur le disk
+	var str = pic;
+	var patt = /^http/;
+	var res = patt.test(str)
+
+	if (res){
+		//c'est un lien
+		pic_link = pic;
+	}else {
+		//c'est pas un lien
+		pic_link = pic.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
+
+	<img class="ui medium image" style="display:inline-block" src="<%= pic_link %>"/>

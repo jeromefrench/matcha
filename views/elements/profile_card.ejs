@@ -25,8 +25,34 @@
 				</div>
 			</div>
 		</div>
-		<!-- <% pic_link = user.path_photo.replace('public/', '');%> -->
-	<img src="<%= pic_link %>" >
+
+
+
+
+		<!-- <1!-- <% pic_link = user.path_photo.replace('public/', '');%> --1> -->
+	<!-- <img src="<%= pic_link %>" > -->
+
+<% 
+	//regex pour savoir si c'est un lien ou une image sur le disk
+	var str = user.path_photo;
+	var patt = /^http/;
+	var res = patt.test(str)
+
+	if (res){
+		//c'est un lien
+		pic_link = user.path_photo;
+	}else {
+		//c'est pas un lien
+		pic_link = user.path_photo.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
+
+	<img class="ui medium image" src="<%= pic_link %>"/>
+
+
+
 	</div>
 	<div class="content">
 		<a class="header"><%= user.login %> </a>
