@@ -1,3 +1,16 @@
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Slider, { Range } from 'rc-slider';
+// We can just import Slider or Range to reduce bundle size
+// import Slider from 'rc-slider/lib/Slider';
+// import Range from 'rc-slider/lib/Range';
+import 'rc-slider/assets/index.css';
+
+
+
+
 let express = require('express');
 let app = express();
 let bodyParser = require("body-parser");
@@ -160,11 +173,6 @@ app.get('/faker', function(req, res){
 
 //*****************************************************************************
 
-//**************404************************************************************
-app.use(function(req, res, next){
-    res.setHeader('Content-Type', 'text/plain');
-    res.status(404).send('Page introuvable');
-});
 
 
 
@@ -189,14 +197,19 @@ app.get('/tchat', (req, res) => {
 
 
 
+
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
 	if (req.session.test){
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
 	}
+	// res.send("salut");
 	res.render('index', {test : 'Salut'});
 });
+
+
+
 app.post('/test', (req, res) => {
 	// console.log(req.body);
 	if (req.body.message == undefined || req.body.message == ""){
@@ -216,3 +229,8 @@ app.post('/test', (req, res) => {
 	}
 });
 
+//**************404************************************************************
+app.use(function(req, res, next){
+    res.setHeader('Content-Type', 'text/plain');
+    res.status(404).send('Page introuvable');
+});
