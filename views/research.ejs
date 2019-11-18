@@ -3,9 +3,14 @@
 
 
 <div class="ui special cards">
-	<% locals.users.forEach(function(user) {  %>
+	<% if (locals.users[0]){
+		locals.users.forEach(function(user) {  %>
 		<%- include('elements/profile_card', {user: user}) %>
-	<% });  %>
+	<% }); }
+else
+{
+	console.log("pas de user");
+}%>
 
 </div>
 
