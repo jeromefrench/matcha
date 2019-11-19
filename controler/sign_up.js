@@ -1,9 +1,10 @@
-let bdd = require('../models/sign_up.js');
+let su = require('../models/sign_up.js');
+var bdd = require('../models/bdd_functions.js');
 
 module.exports.ctrl_signUpGet = function signUpGet(req, res){
     res.locals.title = "Sign Up";
     if (req.session.upOk == 1){
-        res.render('signup_envoye.ejs');
+        res.render('signup_envoye.ejs', {session: req.session});
     }
     else{
         res.render('sign-up.ejs', {session: req.session});
@@ -29,7 +30,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
     req.session.login = login;
     req.session.passwd = passwd;
     req.session.upOk = 0;
-        bdd.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
+        su.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
             if (i1 == 1){
                 req.session.lnamewrong = 1;
                 req.session.lname = undefined;
@@ -48,7 +49,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
             }
             if (i5 == 1){
                 req.session.passwrong = 1;
-                req.session.login = undefined;
+                req.session.passwd = undefined;
             }
             if (result1 == 1){
                 req.session.logexist = 1;
@@ -63,7 +64,7 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
                 req.session.login = undefined;
             }
             if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0){
-                bdd.insert_user(login, passwd, fname, lname, email);
+                su.insert_user(login, passwd, fname, lname, email);
                 req.session.upOk = 1;
                 res.redirect('/sign-up');
             }

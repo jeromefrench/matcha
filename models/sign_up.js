@@ -8,12 +8,49 @@ function help_noempty(champs){
 	return true;
 }
 
+function check_passwd(passwd){
+	var letters = "abcdefghijklmnopqrstuvwxyz";
+	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var numbers = "0123456789";
+	var spec = "%#:$*@_-&^!>?()[]{}+=.,;";
+	var l = 0;
+	var m = 0;
+	var n = 0;
+	var s = 0;
+
+	for(var i = 0; i < letters.length; i++){
+		if (passwd.indexOf(letters.charAt(i)) != -1){
+			l++;
+		}
+	}
+	for (i = 0; i < maj.length; i++){
+		if (passwd.indexOf(maj.charAt(i)) != -1){
+			m++;
+		}
+	}
+	for (i = 0; i < numbers.length; i++){
+		if (passwd.indexOf(numbers.charAt(i)) != -1){
+			n++;
+		}
+	}
+	for (i = 0; i < spec.length; i++){
+		if (passwd.indexOf(spec.charAt(i)) != -1){
+			s++;
+		}
+	}
+	if (l == 0 || m == 0 || n == 0 || s == 0 || passwd.length < 9){
+		return false;
+	}
+	return true;
+}
+
 function check_noempty(lname, fname, mail, login, passwd, callback){
 	var i1 = 0;
 	var i2 = 0;
 	var i3 = 0;
 	var i4 = 0;
 	var i5 = 0;
+	console.log("checkpass = " + check_passwd(passwd));
 	if (help_noempty(lname) == false){
 		i1 = 1;
 	}
@@ -26,7 +63,7 @@ function check_noempty(lname, fname, mail, login, passwd, callback){
 	if (help_noempty(login) == false){
 		i4 = 1;
 	}
-	if (help_noempty(passwd) == false){
+	if (check_passwd(passwd) == false){
 		i5 = 1;
 	}
 	callback(i1, i2, i3, i4, i5);
