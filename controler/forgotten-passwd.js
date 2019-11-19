@@ -3,7 +3,7 @@ let bdd = require('../models/forgotten-passwd.js');
 module.exports.ctrl_send_passGet = function send_passGet(req, res){
     res.locals.title = "Forgotten Password";
     if (req.session.fpOk == 1){
-        res.render('fp_envoye.ejs');
+        res.render('fp_envoye.ejs', {session: req.session});
     }
     else{
         res.render('forgotten-passwd.ejs', {session: req.session});

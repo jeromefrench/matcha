@@ -3,15 +3,20 @@ var cp = require('../models/change-passwd.js');
 
 module.exports.ctrl_changePassGet = function changePassGet(req, res){
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
-        if (suspense){
-            res.locals.title = "Change Password";
-            res.locals.login = req.params.login;
-            res.locals.num = req.params.num;
-            res.render('change-passwd.ejs', {session: req.session});
+        if (req.session.changeOk == 1){
+            res.render('changepassok.ejs', {session: req.session});
         }
         else{
-            res.locals.title = "Sorry :(";
-            res.render('unconfirm.ejs');
+            if (suspense){
+                res.locals.title = "Change Password";
+                res.locals.login = req.params.login;
+                res.locals.num = req.params.num;
+                res.render('change-passwd.ejs', {session: req.session});
+            }
+            else{
+                res.locals.title = "Sorry :(";
+                res.render('unconfirm.ejs', {session: req.session});
+            }
         }
     });
 }
@@ -23,31 +28,23 @@ module.exports.ctrl_changePassPost = function changePassPost(req, res){
     req.session.passwrong = 0;
     req.session.vpasswrong = 0;
     req.session.vwrong = 0;
-    cp.IsFieldEmpty(npass, (answer) => {
-        if (answer){
-            cp.IsFieldEmpty(verif, (answer1) => {
-                if (answer1){
-                    cp.IsNewVerifMatch(npass, verif, (result) => {
-                        if (result){
-                            cp.changePass(login, npass);
-                            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
-                        }
-                        else{
-                            req.session.vwrong = 1;
-                            req.session.vpasswrong = 0;
-                            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
-                        }
-                    });
-                }
-                else{
-                    req.session.vpasswrong = 1;
-                    req.session.vwrong = 0;
-                }
-            });
+    req.session.changeOk = 0;
+    cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
+        if (!answer || !checkOk){
+            req.session.passwrong = 1;
+            req.session.passwd = undefined;
+        }
+        if (!answer1 || !match){
+            req.session.vwrong = 1;
+            req.session.passwd = npass;
+        }
+        if (answer, answer1, checkOk, match){
+            cp.changePass(login, npass);
+            req.session.changeOk = 1;
+            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
         }
         else{
-            req.session.passwrong = 1;
-            req.session.vwrong = 0;
+            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
         }
     });
 }

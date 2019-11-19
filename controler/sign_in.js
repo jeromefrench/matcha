@@ -29,9 +29,11 @@ module.exports.ctrl_signInPost = function signInPost(req, res){
 					login = req.body.login;
 					req.session.logon = true;
 					req.session.login = login;
+					req.session.vpass = 0;
 				}
 				else {
 					console.log("Password dont Match");
+					req.session.vpass = 2;
 					req.session.logon = false;
 				}
 				res.redirect('/sign-in');

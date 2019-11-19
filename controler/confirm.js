@@ -9,11 +9,11 @@ module.exports.ctrl_confirmGet = function confirmGet(req, res){
             cf.recover_user_data(req.params.num, (data) => {
                 cf.valide_user(data.login, data.passwd, data.lname, data.fname, data.mail);
             });
-            res.render('confirm.ejs');
+            res.render('confirm.ejs', {session: req.session});
         }
         else{
             res.locals.title = "Sorry :(";
-            res.render('unconfirm.ejs');
+            res.render('unconfirm.ejs', {session: req.session});
         }
     });
 }

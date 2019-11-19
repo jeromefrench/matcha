@@ -7,6 +7,7 @@
     </div>
     <div class="inline field">
     <input type="password" name="passwd" placeholder="Password" required>
+    <%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: session.vpass}); %>
     </div>
     <a href="http://localhost:8080/forgotten-passwd">Forgot your password?</a></br>
     <input type="submit" class="ui primary button" value="Connexion">
