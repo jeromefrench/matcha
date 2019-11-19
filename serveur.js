@@ -1,9 +1,6 @@
+const express = require('express');
 
-
-
-
-let express = require('express');
-let app = express();
+const app = express();
 let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
 var server = app.listen(8080);
@@ -50,6 +47,7 @@ var rootPath = __dirname;
 
 
 
+
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
@@ -58,10 +56,9 @@ app.get('/', function(req, res){
 	res.redirect('/sign-in');  // pour rediriger vers une url
 });
 //**************SIGN OUT*******************************************************
-var ctrl_sign_out = require('./controler/sign_out.js');
-app.get('/sign-out', function(req, res){
-	ctrl_sign_out.ctrl_signOutGet(req, res);
-});
+const signout = require('./controler/sign_out.js');
+app.use('/sign-out', signout);
+
 //**************SIGN UP********************************************************
 var ctrl_sign_up = require('./controler/sign_up.js');
 app.get('/sign-up', function(req, res){
