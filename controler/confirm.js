@@ -1,8 +1,8 @@
 let cf = require('../models/confirm.js');
 var bdd = require('../models/bdd_functions.js');
+const router = require('express').Router();
 
-
-module.exports.ctrl_confirmGet = function confirmGet(req, res){
+router.route('/:login/:num').get((req, res) => {
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user_sub", (suspense) => {
         if (suspense){
             res.locals.title = "Welcome " + req.params.login + "!";
@@ -16,4 +16,6 @@ module.exports.ctrl_confirmGet = function confirmGet(req, res){
             res.render('unconfirm.ejs', {session: req.session});
         }
     });
-}
+});
+
+module.exports = router;

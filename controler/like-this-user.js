@@ -1,6 +1,7 @@
 let bdd = require('../models/like.js');
+const router = require('express').Router();
 
-module.exports.ctrl_like_this_userGet = function sign_in(req, res){
+router.route('/:login').get((req, res) => {
 	my_login = req.session.login;
 	the_login_i_like = req.params.login;
 	bdd.doILike(my_login, the_login_i_like, (result) => {
@@ -12,5 +13,7 @@ module.exports.ctrl_like_this_userGet = function sign_in(req, res){
 			bdd.addLike(my_login, the_login_i_like);
 			res.redirect('back');
 		}
-	})
-}
+	});
+});
+
+module.exports = router;

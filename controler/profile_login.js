@@ -1,9 +1,9 @@
 let bdd = require('../models/bdd_functions.js');
 let bdd_re = require('../models/research.js');
 let bdd_like = require('../models/like.js');
+const router = require('express').Router();
 
-
-module.exports.ctrl_profileLoginGet = function profileLoginGet(req, res){
+router.route('/:login').get((req, res) => {
 	res.locals.login_profil = req.params.login;
 	res.locals.session = req.session;
 
@@ -24,4 +24,6 @@ module.exports.ctrl_profileLoginGet = function profileLoginGet(req, res){
 			});
 		})
 	})
-}
+});
+
+module.exports = router;

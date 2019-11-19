@@ -43,16 +43,27 @@ createParentPath : true
 }));
 
 
-var rootPath = __dirname;
+rootPath = __dirname;
 
 const signout = require('./controler/sign_out.js');
 const signup = require('./controler/sign_up.js');
 const signin = require('./controler/sign_in.js');
+const myaccount = require('./controler/my_account.js');
+const aboutyou = require('./controler/about_you.js');
+const profile = require('./controler/profile_login.js');
+const like = require('./controler/like-this-user.js');
+const research = require('./controler/research.js');
+const confirm = require('./controler/confirm.js');
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
 app.use('/sign-in', signin);
-
+app.use('/my-account', myaccount);
+app.use('/about-you', aboutyou);
+app.use('/profile/', profile);
+app.use('/like-this-user', like);
+app.use('/research', research);
+app.use('/confirm', confirm);
 
 //*****************************************************************************
 //****************************ROUTES*******************************************
@@ -61,46 +72,8 @@ app.use('/sign-in', signin);
 app.get('/', function(req, res){
 	res.redirect('/sign-in');  // pour rediriger vers une url
 });
-//**************MY ACCOUNT*****************************************************
-const myaccount = require('./controler/my_account.js');
-app.use('/my-account', myaccount);
-
-// var ctrl_my_account = require('./controler/my_account.js');
-// app.get('/my-account', function(req, res){
-// 	ctrl_my_account.ctrl_myAccountGet(req, res);
-// });
-//**************ABOUT YOU******************************************************
-var ctrl_about_you = require('./controler/about_you.js');
-app.get('/about-you', function(req, res) {
-	ctrl_about_you.ctrl_aboutYouGet(req, res);
-});
-app.post('/about-you', function(req, res) {
-	ctrl_about_you.ctrl_aboutYouPost(req, res, rootPath);
-});
-//**************PROFILE / :LOGIN***********************************************
-var ctrl_profile_login = require('./controler/profile_login.js');
-app.get('/profile/:login', function(req, res){
-	ctrl_profile_login.ctrl_profileLoginGet(req, res);
-});
-//*************LIKE THIS USER BUTTON*******************************************
-var ctrl_like_this_user = require('./controler/like-this-user.js');
-app.get('/like-this-user/:login', function(req, res){
-	ctrl_like_this_user.ctrl_like_this_userGet(req, res);
-});
-//**************LIST USER ECHERCHER********************************************
-var ctrl_research = require('./controler/research.js');
-app.get('/research', function(req, res){
-	ctrl_research.ctrl_researchGet(req, res);
-});
-app.post('/research', function(req, res){
-	ctrl_research.ctrl_researchPost(req, res);
-});
 
 //***************CONFIRMATION**************************************************
-var ctrl_confirm = require('./controler/confirm.js');
-app.get('/confirm/:login/:num', function(req, res){
-	ctrl_confirm.ctrl_confirmGet(req, res);
-});
 
 //*****************ENVOI MOT DE PASSE OUBLIE***********************************
 var ctrl_send_passwd = require('./controler/forgotten-passwd.js');

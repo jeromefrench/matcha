@@ -147,7 +147,7 @@ function getRandomInt(max){
 exports.insert_user = function (name, passwd, fname, lname, mail){
 	var num = getRandomInt(10000);
 	var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
-	var todo = [name, passwd, fname, lname, mail];
+	var todo = [name, passwd, lname, fname, mail];
 	conn.connection.query(sql, todo, function (err, result) {
 		if (err) throw err;
 		console.log("1 record inserted");
