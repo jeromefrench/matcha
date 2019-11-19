@@ -45,7 +45,13 @@ createParentPath : true
 
 var rootPath = __dirname;
 
+const signout = require('./controler/sign_out.js');
+const signup = require('./controler/sign_up.js');
+const signin = require('./controler/sign_in.js');
 
+app.use('/sign-out', signout);
+app.use('/sign-up', signup);
+app.use('/sign-in', signin);
 
 
 //*****************************************************************************
@@ -55,31 +61,14 @@ var rootPath = __dirname;
 app.get('/', function(req, res){
 	res.redirect('/sign-in');  // pour rediriger vers une url
 });
-//**************SIGN OUT*******************************************************
-const signout = require('./controler/sign_out.js');
-app.use('/sign-out', signout);
-
-//**************SIGN UP********************************************************
-var ctrl_sign_up = require('./controler/sign_up.js');
-app.get('/sign-up', function(req, res){
-	ctrl_sign_up.ctrl_signUpGet(req, res);
-});
-app.post('/sign-up', function(req, res){
-	ctrl_sign_up.ctrl_signUpPost(req, res);
-});
-//**************SIGN IN********************************************************
-var ctrl_sign_in = require('./controler/sign_in.js');
-app.get('/sign-in', function(req, res){
-	ctrl_sign_in.ctrl_signInGet(req, res);
-});
-app.post('/sign-in', (req, res) => {
-	ctrl_sign_in.ctrl_signInPost(req, res);
-});
 //**************MY ACCOUNT*****************************************************
-var ctrl_my_account = require('./controler/my_account.js');
-app.get('/my-account', function(req, res){
-	ctrl_my_account.ctrl_myAccountGet(req, res);
-});
+const myaccount = require('./controler/my_account.js');
+app.use('/my-account', myaccount);
+
+// var ctrl_my_account = require('./controler/my_account.js');
+// app.get('/my-account', function(req, res){
+// 	ctrl_my_account.ctrl_myAccountGet(req, res);
+// });
 //**************ABOUT YOU******************************************************
 var ctrl_about_you = require('./controler/about_you.js');
 app.get('/about-you', function(req, res) {

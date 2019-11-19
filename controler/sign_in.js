@@ -1,12 +1,13 @@
 let si = require('../models/sign_in.js');
 var bdd = require('../models/bdd_functions.js');
+const router = require('express').Router();
 
-module.exports.ctrl_signInGet = function sign_inGet(req, res){
-    res.locals.title = "Sign In";
+router.route('/').get((req, res) => {
+	res.locals.title = "Sign In";
 	res.render('sign-in.ejs', { session: req.session});
-}
+});
 
-module.exports.ctrl_signInPost = function signInPost(req, res){
+router.route('/').post((req, res) => {
 	console.log("la console" + req.body.login);
 	var login = req.body.login;
 	req.session.login = login;
@@ -40,5 +41,6 @@ module.exports.ctrl_signInPost = function signInPost(req, res){
 			});
 		}
 	})
-}
+});
 
+module.exports = router;

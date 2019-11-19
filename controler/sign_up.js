@@ -1,7 +1,8 @@
 let su = require('../models/sign_up.js');
 var bdd = require('../models/bdd_functions.js');
+const router = require('express').Router();
 
-module.exports.ctrl_signUpGet = function signUpGet(req, res){
+router.route('/').get((req, res) => {
     res.locals.title = "Sign Up";
     if (req.session.upOk == 1){
         res.render('signup_envoye.ejs', {session: req.session});
@@ -9,9 +10,9 @@ module.exports.ctrl_signUpGet = function signUpGet(req, res){
     else{
         res.render('sign-up.ejs', {session: req.session});
     }
-}
+});
 
-module.exports.ctrl_signUpPost = function signUpPost(req, res){
+router.route('/').post((req, res) => {
     var lname = req.body.lname;
     var fname = req.body.fname;
     var email = req.body.email;
@@ -72,4 +73,6 @@ module.exports.ctrl_signUpPost = function signUpPost(req, res){
                 res.redirect('/sign-up');
             }
         });
-}
+});
+
+module.exports = router;
