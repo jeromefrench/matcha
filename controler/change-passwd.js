@@ -1,7 +1,8 @@
 let bdd = require('../models/bdd_functions.js');
 var cp = require('../models/change-passwd.js');
+const router = require('express').Router();
 
-module.exports.ctrl_changePassGet = function changePassGet(req, res){
+router.route('/:login/:num').get((req, res) => {
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
         if (req.session.changeOk == 1){
             res.render('changepassok.ejs', {session: req.session});
@@ -19,9 +20,9 @@ module.exports.ctrl_changePassGet = function changePassGet(req, res){
             }
         }
     });
-}
+});
 
-module.exports.ctrl_changePassPost = function changePassPost(req, res){
+router.route('/:login/:num').post((req, res) => {
     var login = req.params.login;
     var npass = req.body.npass;
     var verif = req.body.verif;
@@ -47,4 +48,6 @@ module.exports.ctrl_changePassPost = function changePassPost(req, res){
             res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
         }
     });
-}
+});
+
+module.exports = router;

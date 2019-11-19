@@ -1,6 +1,7 @@
 let bdd = require('../models/forgotten-passwd.js');
+const router = require('express').Router();
 
-module.exports.ctrl_send_passGet = function send_passGet(req, res){
+router.route('/').get((req, res) => {
     res.locals.title = "Forgotten Password";
     if (req.session.fpOk == 1){
         res.render('fp_envoye.ejs', {session: req.session});
@@ -8,9 +9,9 @@ module.exports.ctrl_send_passGet = function send_passGet(req, res){
     else{
         res.render('forgotten-passwd.ejs', {session: req.session});
     }
-}
+});
 
-module.exports.ctrl_send_passPost = function send_passPost(req,res){
+router.route('/').post((req, res) => {
     var email = req.body.email;
     req.session.mailexist = 0;
     req.session.fpOk = 0;
@@ -27,4 +28,6 @@ module.exports.ctrl_send_passPost = function send_passPost(req,res){
         }
         res.redirect('/forgotten-passwd');
     });
-}
+});
+
+module.exports = router;

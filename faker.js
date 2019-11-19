@@ -3,10 +3,9 @@ let bdd_pic = require('./models/about_you');
 let bdd2 = require('./models/bdd_functions.js');
 
 var faker = require('faker');
+const router = require('express').Router();
 
-
-module.exports.faker = function (req, res){
-
+router.route('/').get((req, res) => {
 	var login = faker.internet.userName();
 	var mail = faker.internet.email();
 	var passwd = faker.internet.password();
@@ -51,4 +50,6 @@ module.exports.faker = function (req, res){
 
 
 	res.send("<p>Your on faker page");
-}
+});
+
+module.exports = router;
