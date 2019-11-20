@@ -39,8 +39,6 @@ router.route('/').get((req, res) => {
 			});
 
 		}
-
-
 	});
 });
 

@@ -96,13 +96,6 @@ app.use('/chat', chat);
 
 //*****************************************************************************
 
-import React from 'react';
-import { render } from 'react-dom';
-
-
-
-
-
 
 var fs = require('fs');
 
