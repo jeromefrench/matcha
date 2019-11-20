@@ -1,11 +1,17 @@
 <% if (empty == 1){ %>
     <div class="ui left pointing red basic label">
-        Please fill in this field correctly.
+        Your password must contain a least 8 characters, 1 uppercase letter,</br>1 lowercase letter, 1 number and 1 special character (%#:$*@_-&^!>?()[]{}+=.,;).
     </div>
 <% } %>
 
 <% if (vpass == 1){ %>
     <div class="ui left pointing red basic label">
         Please write the same password as above.
+    </div>
+<% } %>
+
+<% if (vpass == 2){ %>
+    <div class="ui left pointing red basic label">
+        Wrong password, try again.
     </div>
 <% } %>

@@ -1,7 +1,8 @@
 let bdd_about = require('../models/about_you.js');
 let bdd = require('../models/bdd_functions.js');
+const router = require('express').Router();
 
-module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
+router.route('/').get((req, res) => {
 	res.locals.title = "About You";
 
 	bdd_about.get_info_user(req.session.login, (result) => {
@@ -23,7 +24,7 @@ module.exports.ctrl_aboutYouGet = function aboutYouGet(req, res){
 			})
 		});
 	})
-}
+});
 
 function addPicture(id_user, req, rootPath){
 	//on regarde combien de photo il a
@@ -70,7 +71,7 @@ function addPicture(id_user, req, rootPath){
 	}
 }
 
-module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res, rootPath){
+router.route('/').post((req, res) => {
 	gender = req.body.gender;
 	orientation = req.body.orientation;
 	bio = req.body.bio;
@@ -90,5 +91,6 @@ module.exports.ctrl_aboutYouPost = function aboutYouPost(req, res, rootPath){
 		})
 	});
 	res.redirect('/about-you');
-}
+});
 
+module.exports = router;

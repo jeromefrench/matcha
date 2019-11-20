@@ -1,6 +1,7 @@
 let bdd_about = require('../models/about_you.js');
+const router = require('express').Router();
 
-module.exports.ctrl_delPicGet = function delPic(req, res){
+router.route('/:login/:num').get((req, res) => {
 	my_login = req.params.login;
 	num = req.params.num;
 			console.log(my_login);
@@ -25,4 +26,6 @@ module.exports.ctrl_delPicGet = function delPic(req, res){
 			res.redirect('back');
 		}
 	})
-}
+});
+
+module.exports = router;

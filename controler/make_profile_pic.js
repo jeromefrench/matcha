@@ -1,8 +1,8 @@
 let bdd_about = require('../models/about_you.js');
 let bdd = require('../models/bdd_functions.js');
+const router = require('express').Router();
 
-
-module.exports.ctrl_makeProfilePic = function makeProfilePic(req, res){
+router.route('/:login/:num/profile').get((req, res) => {
 	my_login = req.params.login;
 	num = req.params.num;
 
@@ -29,4 +29,6 @@ module.exports.ctrl_makeProfilePic = function makeProfilePic(req, res){
 	// path = "/public/photo/"+my_login+"/"+num;
 	// console.log(path);
 	// bdd_about.delPic(path);
-}
+});
+
+module.exports = router;

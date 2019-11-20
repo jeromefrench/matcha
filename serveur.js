@@ -1,9 +1,6 @@
+const express = require('express');
 
-
-
-
-let express = require('express');
-let app = express();
+const app = express();
 let bodyParser = require("body-parser");
 let session = require("express-session");  //pour avoir les variables de session
 var server = app.listen(8080);
@@ -46,9 +43,37 @@ createParentPath : true
 }));
 
 
-var rootPath = __dirname;
+rootPath = __dirname;
 
+const signout = require('./controler/sign_out.js');
+const signup = require('./controler/sign_up.js');
+const signin = require('./controler/sign_in.js');
+const myaccount = require('./controler/my_account.js');
+const aboutyou = require('./controler/about_you.js');
+const profile = require('./controler/profile_login.js');
+const like = require('./controler/like-this-user.js');
+const research = require('./controler/research.js');
+const confirm = require('./controler/confirm.js');
+const sendpass = require('./controler/forgotten-passwd.js');
+const changepass = require('./controler/change-passwd.js');
+const delpic = require('./controler/delPic.js');
+const makeProfilePic = require('./controler/make_profile_pic.js');
+const faker = require('./faker.js');
 
+app.use('/sign-out', signout);
+app.use('/sign-up', signup);
+app.use('/sign-in', signin);
+app.use('/my-account', myaccount);
+app.use('/about-you', aboutyou);
+app.use('/profile/', profile);
+app.use('/like-this-user', like);
+app.use('/research', research);
+app.use('/confirm', confirm);
+app.use('/forgotten-passwd', sendpass);
+app.use('/change-passwd', changepass);
+app.use('/public/photo', delpic);
+app.use('/public/photo', makeProfilePic);
+app.use('/faker', faker);
 
 //*****************************************************************************
 //****************************ROUTES*******************************************
@@ -57,110 +82,17 @@ var rootPath = __dirname;
 app.get('/', function(req, res){
 	res.redirect('/sign-in');  // pour rediriger vers une url
 });
-//**************SIGN OUT*******************************************************
-var ctrl_sign_out = require('./controler/sign_out.js');
-app.get('/sign-out', function(req, res){
-	ctrl_sign_out.ctrl_signOutGet(req, res);
-});
-//**************SIGN UP********************************************************
-var ctrl_sign_up = require('./controler/sign_up.js');
-app.get('/sign-up', function(req, res){
-	ctrl_sign_up.ctrl_signUpGet(req, res);
-});
-app.post('/sign-up', function(req, res){
-	ctrl_sign_up.ctrl_signUpPost(req, res);
-});
-//**************SIGN IN********************************************************
-var ctrl_sign_in = require('./controler/sign_in.js');
-app.get('/sign-in', function(req, res){
-	ctrl_sign_in.ctrl_signInGet(req, res);
-});
-app.post('/sign-in', (req, res) => {
-	ctrl_sign_in.ctrl_signInPost(req, res);
-});
-//**************MY ACCOUNT*****************************************************
-var ctrl_my_account = require('./controler/my_account.js');
-app.get('/my-account', function(req, res){
-	ctrl_my_account.ctrl_myAccountGet(req, res);
-});
-//**************ABOUT YOU******************************************************
-var ctrl_about_you = require('./controler/about_you.js');
-app.get('/about-you', function(req, res) {
-	ctrl_about_you.ctrl_aboutYouGet(req, res);
-});
-app.post('/about-you', function(req, res) {
-	ctrl_about_you.ctrl_aboutYouPost(req, res, rootPath);
-});
-//**************PROFILE / :LOGIN***********************************************
-var ctrl_profile_login = require('./controler/profile_login.js');
-app.get('/profile/:login', function(req, res){
-	ctrl_profile_login.ctrl_profileLoginGet(req, res);
-});
-//*************LIKE THIS USER BUTTON*******************************************
-var ctrl_like_this_user = require('./controler/like-this-user.js');
-app.get('/like-this-user/:login', function(req, res){
-	ctrl_like_this_user.ctrl_like_this_userGet(req, res);
-});
-//**************LIST USER ECHERCHER********************************************
-var ctrl_research = require('./controler/research.js');
-app.get('/research', function(req, res){
-	ctrl_research.ctrl_researchGet(req, res);
-});
-app.post('/research', function(req, res){
-	ctrl_research.ctrl_researchPost(req, res);
-});
-
-//***************CONFIRMATION**************************************************
-var ctrl_confirm = require('./controler/confirm.js');
-app.get('/confirm/:login/:num', function(req, res){
-	ctrl_confirm.ctrl_confirmGet(req, res);
-});
-
-//*****************ENVOI MOT DE PASSE OUBLIE***********************************
-var ctrl_send_passwd = require('./controler/forgotten-passwd.js');
-app.get('/forgotten-passwd', function(req, res){
-	ctrl_send_passwd.ctrl_send_passGet(req, res);
-});
-app.post('/forgotten-passwd', function (req, res){
-	ctrl_send_passwd.ctrl_send_passPost(req, res);
-});
-
-//*****************CHGMT PASSWD************************************************
-var ctrl_changePass = require('./controler/change-passwd.js');
-app.get('/change-passwd/:login/:num', function(req, res){
-	ctrl_changePass.ctrl_changePassGet(req, res);
-});
-app.post('/change-passwd/:login/:num', function (req, res){
-	ctrl_changePass.ctrl_changePassPost(req, res);
-});
 
 //**************CHAT***********************************************************
-var ctrl_chat = require('./controler/chat.js');
-app.get('/chat/:login', function(req, res){
-	ctrl_chat.ctrl_chatGet(req, res);
-});
-app.post('/chat/:login', function(req, res){
-	ctrl_chat.ctrl_chatPost(req, res);
-});
-//**************DEL PICURE*****************************************************
-var ctrl_delPic = require('./controler/delPic.js');
-app.get('/public/photo/:login/:num', function(req, res){
-	ctrl_delPic.ctrl_delPicGet(req, res);
-});
-//**************MAKE AS PROFILE PICURE*****************************************
-var ctrl_makeProfilePic = require('./controler/make_profile_pic.js');
-app.get('/public/photo/:login/:num/profile', function(req, res){
-	ctrl_makeProfilePic.ctrl_makeProfilePic(req, res);
-});
+const chat = require('./controler/chat.js');
 
-
-//**************FAAKER BABY****************************************************
-var faker = require('./faker.js');
-app.get('/faker', function(req, res){
-	faker.faker(req, res);
-});
-
-
+app.use('/chat', chat);
+// app.get('/chat/:login', function(req, res){
+// 	ctrl_chat.ctrl_chatGet(req, res);
+// });
+// app.post('/chat/:login', function(req, res){
+// 	ctrl_chat.ctrl_chatPost(req, res);
+// });
 
 //*****************************************************************************
 
