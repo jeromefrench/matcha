@@ -1,4 +1,12 @@
 const express = require('express');
+//************************************
+var React = require ("react");
+var myComponent = require("./HelloComponent");
+var ReactComponent = React.createFactory(myComponent);
+
+
+
+
 
 const app = express();
 let bodyParser = require("body-parser");
@@ -95,6 +103,21 @@ app.use('/chat', chat);
 // });
 
 //*****************************************************************************
+const ReactDOMServer = require('react-dom/server');
+
+app.get('/react', function(req, res){
+	var reactComponentMarkup = ReactComponent();
+	// var staticMarkup = React.renderToString(reactComponentMarkup);
+	var staticMarkup = ReactDOMServer.renderToString(reactComponentMarkup);
+	//res.send(staticMarkup);
+	res.render('template_react', { helloComponentMarkup: staticMarkup })
+});
+
+
+
+
+
+
 
 
 var fs = require('fs');
@@ -102,6 +125,7 @@ var fs = require('fs');
 // fs.readFile('./client.js','utf8', (err, data) => {
 // 		console.log(data);
 // });
+
 
 
 
@@ -146,6 +170,8 @@ app.post('/test', (req, res) => {
 		})
 	}
 });
+
+
 
 //**************404************************************************************
 app.use(function(req, res, next){
