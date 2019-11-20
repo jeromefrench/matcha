@@ -164,6 +164,8 @@ app.get('/faker', function(req, res){
 
 //*****************************************************************************
 
+import React from 'react';
+import { render } from 'react-dom';
 
 
 
