@@ -8,7 +8,6 @@ router.route('/').get((req, res) => {
 	bdd.get_user(req.session.login, (all_user) => {
 		console.log("ici");
 		console.log(all_user);
-
 		if (all_user[0] == undefined){
     		res.render('research.ejs', {session: req.session});
 		}else{

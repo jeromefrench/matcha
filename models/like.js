@@ -74,3 +74,20 @@ exports.unLike = function (my_login, the_login_i_like){
 		});
 	});
 };
+
+exports.countLike = function (login, callback){
+	var sql = "SELECT * FROM `user` WHERE `login` = ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, (err, user) => {
+		if (err) throw err;
+		var id_user = user[0].id;
+		console.log("ID PROFILE =====" + id_user);
+		sql = "SELECT COUNT(*) AS 'count' FROM `like_table` WHERE `id_i_like` = ?";
+		todo = [id_user];
+		conn.connection.query(sql, todo, (err, like) => {
+			if (err) throw err;
+			console.log(like[0].count);
+			callback(like[0].count);
+		});
+	});
+}

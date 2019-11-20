@@ -14,13 +14,16 @@ router.route('/:login').get((req, res) => {
 			user.do_i_like = result;
 			bdd_like.doesItLikeMe(req.session.login, user.login, function (result){
 				user.does_it_like_me = result;
-				if (user.do_i_like && user.does_it_like_me){
-					user.match = true;
-				}
-				else {
-					user.match = false;
-				}
-    			res.render('profile.ejs', {session: req.session, user: user});
+				bdd_like.countLike(req.params.login, (count_like) => {
+					console.log("COUNT LIKE =" + count_like);
+					if (user.do_i_like && user.does_it_like_me){
+						user.match = true;
+					}
+					else {
+						user.match = false;
+					}
+					res.render('profile.ejs', {session: req.session, user: user});
+				});
 			});
 		})
 	})
