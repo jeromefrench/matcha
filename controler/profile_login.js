@@ -16,7 +16,8 @@ router.route('/:login').get((req, res) => {
 				bdd_like.doesItLikeMe(req.session.login, user.login, function (result){
 					user.does_it_like_me = result;
 					bdd_like.countLike(req.params.login, (count_like) => {
-						console.log("COUNT LIKE =" + count_like);
+						req.session.pop = Math.round((count_like / nbVue) * 5);
+						console.log("pop =========" + req.session.pop);
 						if (user.do_i_like && user.does_it_like_me){
 							user.match = true;
 						}
@@ -29,26 +30,6 @@ router.route('/:login').get((req, res) => {
 			});
 		});
 	});
-	// bdd_re.get_user_profile(req.params.login, (result) => {
-	// 	console.log(result[0]);
-	// 	user = result[0];
-	// 	bdd_like.doILike(req.session.login, user.login, function (result){
-	// 		user.do_i_like = result;
-	// 		bdd_like.doesItLikeMe(req.session.login, user.login, function (result){
-	// 			user.does_it_like_me = result;
-	// 			bdd_like.countLike(req.params.login, (count_like) => {
-	// 				console.log("COUNT LIKE =" + count_like);
-	// 				if (user.do_i_like && user.does_it_like_me){
-	// 					user.match = true;
-	// 				}
-	// 				else {
-	// 					user.match = false;
-	// 				}
-	// 				res.render('profile.ejs', {session: req.session, user: user});
-	// 			});
-	// 		});
-	// 	})
-	// })
 });
 
 module.exports = router;
