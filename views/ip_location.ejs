@@ -1,14 +1,41 @@
 <%- include('elements/header'); %>
 
 <div class="ui container">
+	<form id="newid" class="ui form" method="post" >
+  		<input id="latitude" type="hidden" value="latitude" name="latitude">
+  		<input id="longitude" type="hidden" value="longitude" name="longitude">
 
-	<form class="ui form" method="post" >
 		<h4 class="ui dividing header">Localisation</h4>
 
+  		<input id="monid" type="submit" class="ui button" value="Localise Me" name="hello">
+  		</br>
+  		</br>
 
-  		<button class="ui button" type="submit">Localise Me</button>
-  		</br>
-  		</br>
+
+
+	  	<% if (session.try_locali && session.try_locali == 1) { %>
+
+	  		<script>
+  					/* geolocation is available */
+					navigator.geolocation.getCurrentPosition(function(position) {
+						console.log(position.coords.latitude);
+						console.log(position.coords.longitude);
+						var elementLatitude = document.getElementById("latitude");
+						var elementLongitude = document.getElementById("longitude");
+						elementLatitude.value = position.coords.latitude;
+						elementLongitude.value = position.coords.longitude;
+						alert("on submit");
+    					document.getElementById("newid").submit();
+					});
+
+  					/* geolocation IS NOT available */
+  					//on demande avec l'api
+	  		</script>
+
+
+		<% } %>
+
+
 
   		<div class="field">
     		<label>Country</label>
@@ -39,7 +66,6 @@
 											  value ="<%= session.localisation['zipcode'] %>"
 										  <% } %> >
   		</div>
-
   		</br>
   		</br>
   		<button class="ui button" type="submit">Submit</button>
