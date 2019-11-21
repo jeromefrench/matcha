@@ -4,7 +4,7 @@ var React = require ("react");
 var myComponent = require("./HelloComponent");
 var ReactComponent = React.createFactory(myComponent);
 
-
+const expressip = require('express-ip');
 
 
 
@@ -37,7 +37,7 @@ app.set('view engine', 'ejs'); //set le template engine pour express
 app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
-app.use(session({ 
+app.use(session({
 	secret: 'sdjfkl',
 	resave: false,
 	saveUninitialized: true,
@@ -45,10 +45,15 @@ app.use(session({
 }));
 app.use(require('./middlewares/flash'));
 app.use(fileUpload({
-	    useTempFiles : true,
-	tempFileDir : __dirname+'/public/tmp',
-createParentPath : true
+		useTempFiles : true,
+		tempFileDir : __dirname+'/public/tmp',
+		createParentPath : true
 }));
+
+//pour avoir les ip
+app.set('trust proxy', true)
+app.use(expressip().getIpInfoMiddleware);
+
 
 
 rootPath = __dirname;
@@ -67,6 +72,7 @@ const changepass = require('./controler/change-passwd.js');
 const delpic = require('./controler/delPic.js');
 const makeProfilePic = require('./controler/make_profile_pic.js');
 const faker = require('./faker.js');
+const ip_location = require('./controler/ip_location.js');
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
@@ -82,6 +88,15 @@ app.use('/change-passwd', changepass);
 app.use('/public/photo', delpic);
 app.use('/public/photo', makeProfilePic);
 app.use('/faker', faker);
+app.use('/ip', ip_location);
+
+
+
+
+
+
+
+
 
 //*****************************************************************************
 //****************************ROUTES*******************************************
@@ -112,7 +127,6 @@ app.get('/react', function(req, res){
 	//res.send(staticMarkup);
 	res.render('template_react', { helloComponentMarkup: staticMarkup })
 });
-
 
 
 
