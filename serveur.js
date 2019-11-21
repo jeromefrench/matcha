@@ -23,6 +23,7 @@ function f_new_message(data){
 	console.log("le Message: " + data);
 }
 
+
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
 //MIDDLE WARES*****************************************************************
