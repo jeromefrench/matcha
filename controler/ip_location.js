@@ -24,13 +24,23 @@ opencage.geocode({q: '' + loc}).then(data => {
   if (data.status.code == 200) {
     if (data.results.length > 0) {
       var place = data.results[0];
-      	// console.log(place);
+      	console.log(place);
       // console.log(place.formatted);
       // console.log(place.geometry);
       // console.log(place.annotations.timezone.name);
       	console.log("country=> " + place.components.country);
       	console.log("city=> " + place.components.city);
       	console.log("zip code=> " + place.components.postcode);
+
+      	console.log(plave.components.geometry.lat);
+      	console.log(place.components.geometry.lng);
+
+
+      	//save id bdd  place.components.country
+      	//save id bdd  place.components.city
+      	//save id bdd  place.components.postcode
+
+
     }
   } else if (data.status.code == 402) {
     console.log('hit free-trial daily limit');
