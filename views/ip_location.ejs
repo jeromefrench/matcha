@@ -1,0 +1,48 @@
+<%- include('elements/header'); %>
+
+<div class="ui container">
+
+	<form class="ui form" method="post" >
+		<h4 class="ui dividing header">Localisation</h4>
+
+
+  		<button class="ui button" type="submit">Localise Me</button>
+  		</br>
+  		</br>
+
+  		<div class="field">
+    		<label>Country</label>
+  		</div>
+  		<div class="ui input">
+      		<input type="text" name="country" placeholder="First Name"    
+	  		<% if (session.localisation && session.localisation['country']) { %>
+											  value ="<%= session.localisation['country'] %>"
+										  <% } %> >
+  		</div>
+
+  		<div class="field">
+    		<label>City</label>
+  		</div>
+  		<div class="ui input">
+      		<input type="text" name="city" placeholder="First Name"
+	  		<% if (session.localisation && session.localisation['city']) { %>
+										   value ="<%= session.localisation['city'] %>"
+									   <% } %> >
+  		</div>
+
+  		<div class="field">
+    		<label>Zip Code</label>
+  		</div>
+  		<div class="ui input">
+      		<input type="text" name="zipcode" placeholder="First Name"
+	  		<% if (session.localisation && session.localisation['zipcode']) { %>
+											  value ="<%= session.localisation['zipcode'] %>"
+										  <% } %> >
+  		</div>
+
+  		</br>
+  		</br>
+  		<button class="ui button" type="submit">Submit</button>
+	</form>
+</div>
+<%- include('elements/footer'); %>

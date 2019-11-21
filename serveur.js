@@ -1,8 +1,5 @@
 const express = require('express');
 //************************************
-var React = require ("react");
-var myComponent = require("./HelloComponent");
-var ReactComponent = React.createFactory(myComponent);
 
 const expressip = require('express-ip');
 
@@ -118,7 +115,6 @@ app.use('/chat', chat);
 // });
 
 //*****************************************************************************
-const ReactDOMServer = require('react-dom/server');
 
 app.get('/react', function(req, res){
 	var reactComponentMarkup = ReactComponent();
