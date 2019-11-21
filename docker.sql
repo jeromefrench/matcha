@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le :  mar. 19 nov. 2019 à 17:34
+-- Généré le :  jeu. 21 nov. 2019 à 11:39
 -- Version du serveur :  5.7.28
 -- Version de PHP :  7.2.23
 
@@ -166,6 +166,19 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
   `num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `vue_profile`
+--
+
+CREATE TABLE IF NOT EXISTS `vue_profile` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `vue` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
