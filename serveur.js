@@ -139,13 +139,13 @@ var fs = require('fs');
 
 
 
-app.get('/tchat', (req, res) => {
-	// console.log("hello");
-	fs.readFile('./client.js', 'utf8', (err, data) => {
-		// console.log(data);
-		res.send(data);
-	})
-});
+// app.get('/tchat', (req, res) => {
+// 	// console.log("hello");
+// 	fs.readFile('./client.js', 'utf8', (err, data) => {
+// 		// console.log(data);
+// 		res.send(data);
+// 	})
+// });
 
 
 
