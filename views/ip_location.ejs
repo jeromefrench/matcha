@@ -2,73 +2,59 @@
 
 <div class="ui container">
 	<form id="newid" class="ui form" method="post" >
-  		<input id="latitude" type="hidden" value="latitude" name="latitude">
-  		<input id="longitude" type="hidden" value="longitude" name="longitude">
-
+		<input id="latitude" type="hidden" value="latitude" name="latitude">
+		<input id="longitude" type="hidden" value="longitude" name="longitude">
 		<h4 class="ui dividing header">Localisation</h4>
-
-  		<input id="monid" type="submit" class="ui button" value="Localise Me" name="hello">
-  		</br>
-  		</br>
-
-
-
-	  	<% if (session.try_locali && session.try_locali == 1) { %>
-
-	  		<script>
-  					/* geolocation is available */
-					navigator.geolocation.getCurrentPosition(function(position) {
-						console.log(position.coords.latitude);
-						console.log(position.coords.longitude);
-						var elementLatitude = document.getElementById("latitude");
-						var elementLongitude = document.getElementById("longitude");
-						elementLatitude.value = position.coords.latitude;
-						elementLongitude.value = position.coords.longitude;
-						alert("on submit");
-    					document.getElementById("newid").submit();
-					});
-
-  					/* geolocation IS NOT available */
-  					//on demande avec l'api
-	  		</script>
-
-
+		<input id="monid" type="submit" class="ui button" value="Localise Me" name="hello">
+		</br>
+		</br>
+		<% if (session.try_locali && session.try_locali == 1) { %>
+			<script>
+				/* geolocation is available */
+				navigator.geolocation.getCurrentPosition(function(position) {
+					console.log(position.coords.latitude);
+					console.log(position.coords.longitude);
+					var elementLatitude = document.getElementById("latitude");
+					var elementLongitude = document.getElementById("longitude");
+					elementLatitude.value = position.coords.latitude;
+					elementLongitude.value = position.coords.longitude;
+					alert("on submit");
+					document.getElementById("newid").submit();
+				});
+				/* geolocation IS NOT available */
+				//on demande avec l'api
+			</script>
 		<% } %>
-
-
-
-  		<div class="field">
-    		<label>Country</label>
-  		</div>
-  		<div class="ui input">
-      		<input type="text" name="country" placeholder="First Name"    
-	  		<% if (session.localisation && session.localisation['country']) { %>
-											  value ="<%= session.localisation['country'] %>"
-										  <% } %> >
-  		</div>
-
-  		<div class="field">
-    		<label>City</label>
-  		</div>
-  		<div class="ui input">
-      		<input type="text" name="city" placeholder="First Name"
-	  		<% if (session.localisation && session.localisation['city']) { %>
-										   value ="<%= session.localisation['city'] %>"
-									   <% } %> >
-  		</div>
-
-  		<div class="field">
-    		<label>Zip Code</label>
-  		</div>
-  		<div class="ui input">
-      		<input type="text" name="zipcode" placeholder="First Name"
-	  		<% if (session.localisation && session.localisation['zipcode']) { %>
-											  value ="<%= session.localisation['zipcode'] %>"
-										  <% } %> >
-  		</div>
-  		</br>
-  		</br>
-  		<button class="ui button" type="submit">Submit</button>
+		<div class="field">
+			<label>Country</label>
+		</div>
+		<div class="ui input">
+			<input type="text" name="country" placeholder="First Name"
+			<% if (session.localisation && session.localisation['country']) { %>
+										 value ="<%= session.localisation['country'] %>"
+									 <% } %> >
+		</div>
+		<div class="field">
+			<label>City</label>
+		</div>
+		<div class="ui input">
+			<input type="text" name="city" placeholder="First Name"
+			<% if (session.localisation && session.localisation['city']) { %>
+									  value ="<%= session.localisation['city'] %>"
+								  <% } %> >
+		</div>
+		<div class="field">
+			<label>Zip Code</label>
+		</div>
+		<div class="ui input">
+			<input type="text" name="zipcode" placeholder="First Name"
+			<% if (session.localisation && session.localisation['zipcode']) { %>
+										 value ="<%= session.localisation['zipcode'] %>"
+									 <% } %> >
+		</div>
+		</br>
+		</br>
+		<button class="ui button" type="submit">Submit</button>
 	</form>
 </div>
 <%- include('elements/footer'); %>

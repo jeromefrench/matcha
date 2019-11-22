@@ -18,9 +18,7 @@ router.route('/').post((req, res) => {
 	req.session.try_locali = 0;
 	req.session.localisation = localisation;
 
-
 	console.log("ON GENERE LA PAGE");
-
 
 	if (req.body.latitude && req.body.latitude != "latitude"){
 		console.log(req.body.latitude);
@@ -41,47 +39,38 @@ router.route('/').post((req, res) => {
 					console.log("city=> " + place.components.city);
 					console.log("zip code=> " + place.components.postcode);
 
-
-
 					localisation['country'] = place.components.country;
 					localisation['city' ] = place.components.city;
 					localisation['zipcode'] = place.components.postcode;
 
 					req.session.localisation = localisation;
-
-
-	res.redirect('/ip');
-
+					res.redirect('/ip');
     			}
   			} else if (data.status.code == 402) {
     			console.log('hit free-trial daily limit');
     			console.log('become a customer: https://opencagedata.com/pricing'); 
-	res.redirect('/ip');
+				res.redirect('/ip');
   			} else {
     			// other possible response codes:
     			// https://opencagedata.com/api#codes
     			console.log('error', data.status.message);
-	res.redirect('/ip');
+				res.redirect('/ip');
   			}
 		}).catch(error => {
   			console.log('error', error.message);
-	res.redirect('/ip');
+			res.redirect('/ip');
 		});
-
-
 
 
 	} else if (req.body.hello) {
 		console.log("SUBMIT LOCALISE ME");
 		//on lui envoi une demande de localisation
 		req.session.try_locali = 1;
-	res.redirect('/ip');
+		res.redirect('/ip');
 	} else if (localisation['country'] != "" &&
 		localisation['city'] != "" &&
 		localisation['zipcode'] != ""){
-
 		loc = localisation['country'] + "  " + localisation['city'] + "  " + localisation['zipcode'];
-
 		opencage.geocode({q: '' + loc}).then(data => {
 			// console.log(JSON.stringify(data));
 			if (data.status.code == 200) {
@@ -94,16 +83,11 @@ router.route('/').post((req, res) => {
 					console.log("country=> " + place.components.country);
 					console.log("city=> " + place.components.city);
 					console.log("zip code=> " + place.components.postcode);
-
 					console.log(plave.components.geometry.lat);
 					console.log(place.components.geometry.lng);
-
-
 					//save id bdd  place.components.country
 					//save id bdd  place.components.city
 					//save id bdd  place.components.postcode
-
-
 				}
 			} else if (data.status.code == 402) {
 				console.log('hit free-trial daily limit');
@@ -117,11 +101,10 @@ router.route('/').post((req, res) => {
 			console.log('error', error.message);
 		});
 		//on demande a 'API
-	res.redirect('/ip');
+		res.redirect('/ip');
 	}else{
 		//on met une erreur
-	res.redirect('/ip');
+		res.redirect('/ip');
 	}
 });
-
 module.exports = router;
