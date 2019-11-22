@@ -35,6 +35,7 @@ router.route('/').get((req, res) => {
 				//*************************************************************
 				bdd_about.count_photo(id_user, (count) => {
 					if (count > 0){ res.locals.photos_completed = true; }
+					console.log(res.locals);
 					res.render('about-you.ejs', {session: req.session});
 				})
 			})
@@ -78,7 +79,7 @@ router.route('/').post((req, res) => {
 			localisation['zipcode'] = req.body.zipcode;
 
 			req.session.try_locali = 0;
-			req.session.localisation = localisation;
+			// req.session.localisation = localisation;
 
 			console.log("ON GENERE LA PAGE");
 			if (req.body.latitude && req.body.latitude != "latitude"){
@@ -106,9 +107,10 @@ router.route('/').post((req, res) => {
 							console.log("latitude=> " + req.body.latitude);
 							console.log("longitude=> " + req.body.longitude);
 							//on enregistre dans la base de donne
-
-							req.session.localisation = localisation;
-							res.redirect('/about-you');
+							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+								// req.session.localisation = localisation;
+								res.redirect('/about-you');
+							})
 						}
 					} else if (data.status.code == 402) {
 						console.log('hit free-trial daily limit');
@@ -155,22 +157,22 @@ router.route('/').post((req, res) => {
 					} else if (data.status.code == 402) {
 						console.log('hit free-trial daily limit');
 						console.log('become a customer: https://opencagedata.com/pricing');
-//*********
-// Erreur a traiter
-//*********
+						//*********
+						// Erreur a traiter
+						//*********
 					} else {
 						// other possible response codes:
 						// https://opencagedata.com/api#codes
 						console.log('error', data.status.message);
-//*********
-// Erreur a traiter
-//*********
+						//*********
+						// Erreur a traiter
+						//*********
 					}
 				}).catch(error => {
 					console.log('error', error.message);
-//*********
-// Erreur a traiter
-//*********
+					//*********
+					// Erreur a traiter
+					//*********
 				});
 				//on demande a 'API
 				res.redirect('/about-you');

@@ -1,9 +1,6 @@
 let bdd = require('../models/bdd_functions.js');
 var conn = require('./connection_bdd.js');
 
-
-
-
 exports.get_photo = function (login, callback){
 	bdd.get_id_user(login, (id_login) => {
 		var sql = "SELECT * FROM `photos` WHERE `id_user` = ?";
@@ -24,6 +21,15 @@ exports.get_info_user = function (login, callback){
 			callback(result);
 		});
 	});
+}
+
+exports.insert_info_user_localalisation = function (id_user, country, city, zip_code, longitude, latitude, callback){
+	var sql = "UPDATE `user_info` SET `country` = ?, `city` = ?, `zip_code` = ?, `longitude` = ?, `latitude` = ? WHERE `id_user` = ?";
+	var todo = [country, city, zip_code, longitude, latitude, id_user];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		callback();
+	})
 }
 
 exports.insert_info_user = function (id_user, gender, orientation, bio, interests){
