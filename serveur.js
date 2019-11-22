@@ -16,17 +16,30 @@ var socket = require('socket.io');
 var io = socket(server);
 console.log("my socket server is running");
 io.sockets.on('connection', newConnection);
+
 function newConnection(socket){
-	console.log("new connection: " + socket.id);
-	socket.on('newmessage', f_new_message);
-	io.sockets.on('disconnect', () =>
-		{
-			console.log("new disconnect: " + socket.id);
-		});
+	socket.emit('message', 'Vous etes bien connecte !');
+	socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
+	socket.on('petit_nouveau', function(pseudo){
+		socket.pseudo = pseudo;
+	});
+	socket.on('message', function (message){
+		console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
+
+	})
 }
-function f_new_message(data){
-	console.log("le Message: " + data);
-}
+// function newConnection(socket){
+// 	console.log("new connection: " + socket.id);
+// 	socket.on('newmessage', f_new_message);
+// 	io.sockets.on('disconnect', () =>
+// 		{
+// 			console.log("new disconnect: " + socket.id);
+// 		});
+// }
+// function f_new_message(data){
+// 	console.log("le Message: " + data);
+// }
+
 
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
