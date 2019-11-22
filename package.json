@@ -7,6 +7,7 @@
     "stara": "nodemon serveur.js"
   },
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
@@ -14,6 +15,7 @@
     "express-ip": "^1.0.3",
     "express-session": "^1.17.0",
     "faker": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
     "markdown": "~0.4",
     "mysql": "^2.17.1",
     "node-emoji": "^1.10.0",
