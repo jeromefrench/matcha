@@ -20,8 +20,8 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 	var stop = false;
 	conn.connection.query(sql, todo, (error, results, fields) => {
 		if (error) throw error;
-		console.log(results);
-		console.log(results[0].login);
+		// console.log(results);
+		// console.log(results[0].login);
 		if (results[0].passwd == passwd) {
             callback(true) ;
 		}

@@ -1,7 +1,4 @@
 
-
-
-
 <% pics.forEach(function(pic) {
 	//regex pour savoir si c'est un lien ou une image sur le disk
 	var str = pic.path_photo;
@@ -16,25 +13,13 @@
 		pic_link = pic.path_photo.replace('public/', '');
 		pic_link = "/assets"+pic_link;
 	}
-
 %>
-
-<div class="ui image floated">
-	<p>la pic : </p><%= pics.profile %>
-
+<div style="display:inline-block; margin-left:20px; vertical-align:top;">
 <% if (pic.profile == 1) {%>
 	<a href="<%= pic.path_photo %>/profile"> <img class="ui medium circular image" src="<%= pic_link %>"/>  </a>
-	console.log("circular");
-
 <% }else{%>
 	<a href="<%= pic.path_photo %>/profile"><img class="ui medium rounded image" src="<%= pic_link %>"/>  </a>
-	<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
-	console.log("NO circular");
-
-
 <%}%>
-
-
 <a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
 </div>
 <% });  %>

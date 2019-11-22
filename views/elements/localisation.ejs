@@ -1,0 +1,19 @@
+
+<h4 class="ui dividing header">Localisation
+
+	<% if (locals.localisation_completed == false){ %>
+		<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
+	<% }else{ %>
+		<span style="margin-left:20px;" class="ui green tag label"> Completed</span>
+	<% } %>
+
+
+</h4>
+<%- include('hidden_input_latitude_longitude');  %>
+
+<input id="monid" type="submit" class="ui button" value="Localise Me" name="submit_button">
+
+</br>
+</br>
+<% if (session.try_locali && session.try_locali == 1) { %><%- include('script_ask_for_position', {session: session});  %> <% } %>
+<%- include('country_city_zip_input', {session: session});  %>

@@ -6,19 +6,19 @@ router.route('/:login/:num/profile').get((req, res) => {
 	my_login = req.params.login;
 	num = req.params.num;
 
-	console.log("lAAAAAAAAAAAAAAAAAAAa");
+	// console.log("lAAAAAAAAAAAAAAAAAAAa");
 
 	bdd.get_id_user(req.session.login, (id_user) => {
 	//on met toute les photos du user a 0
-		console.log("salut");
-		console.log(id_user);
+		// console.log("salut");
+		// console.log(id_user);
 		bdd_about.profileToZero(id_user, () => {
 			//puis on met la photo selectionner a 1
 			path = "/public/photo/"+my_login+"/"+num;
-			console.log("path to profile");
-			console.log(path);
+			// console.log("path to profile");
+			// console.log(path);
 			bdd_about.profileToOne(path, () => {
-				console.log("la photo sera mis en profile");
+				// console.log("la photo sera mis en profile");
 				res.redirect('back');
 			});
 		})

@@ -1,57 +1,26 @@
+
 <% include elements/header %>
-
-
-<% if (locals.infos && locals.infos.gender) {%> <%= selected="selected"%> <%}%>
-
-
-<form id="form" method="POST" action="about-you" encType="multipart/form-data" class="ui fluid form">
-    Gender : <select name="gender">
-    	<option hidden disabled selected value> -- select an option -- </option>
-        <option  <% if (locals.infos && locals.infos.gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>
-        <option <% if (locals.infos && locals.infos.gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
-        <option <% if (locals.infos && locals.infos.gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
-    </select>
-    </br>
-    Show Me : <select name="orientation">
-    	<option hidden disabled selected value> -- select an option -- </option>
-        <option <% if (locals.infos && locals.infos.orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
-        <option <% if (locals.infos && locals.infos.orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
-        <option <% if (locals.infos && locals.infos.orientation == "everyone") {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
-    </select>
-    </br>
-    Bio : <input <% if (locals.infos && locals.infos.bio != "") {%> value="<%= locals.infos.bio %>" <%}%> type="text" name="bio">
-    </br>
-
-	Interests : <select multiple  name="interests">
-    	<option  hidden disabled selected value> -- select an option -- </option>
-        <option <%- include('elements/interest', {value: "voyage"});  %>  value="voyage">Voyage</option>
-        <option <%- include('elements/interest', {value: "cuisine"});  %> value="cuisine">Cuisine</option>
-        <option <%- include('elements/interest', {value: "escalade"});  %> value="escalade">Escalade</option>
-        <option <%- include('elements/interest', {value: "equitation"});  %> value="equitation">Equitation</option>
-        <option <%- include('elements/interest', {value: "soleil"});  %> value="soleil">Soleil</option>
-        <option <%- include('elements/interest', {value: "sieste"});  %> value="sieste">Sieste</option>
-    </select>
-    <p> Hold command to select multiple</p>
-    </br>
-Photos : 
-    </br>
-	<% if (locals.pic) {%>
-		<%- include('elements/picture', {pics: locals.pic});  %>
-<%}%>
-
-	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Voyage </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Cuisine </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Escalade </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Equitation </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Soleil </label> -->
-	<!-- <label class="ui tag label"> <input type="checkbox"> Sieste </label> -->
-
-    <input id="file" type="file" name="photo">
-    <input type="submit" class="ui primary button" value="Valider">
-</form>
+<div class="ui container" style="margin-top: 30px">
+	<form id="form" method="POST" action="about-you" encType="multipart/form-data" class="ui fluid form">
+		<div class="ui two column centered grid">
+  			<div class="column">
+				<%- include('elements/preferences', {locals: locals});  %>
+			</div>
+    		<div class="column" style="padding-left: 70px">
+				<%- include('elements/localisation', {locals: locals});  %>
+			</div>
+		</div>
+		<div class="ui container" style="margin-top: 30px">
+			<%- include('elements/photo_about');  %>
+		</div>
+		</br>
+			<h4 class="ui dividing header"></h4>
+		<div class="ui middle aligned center aligned grid container" style="margin-top:10px;">
+    		<input type="submit" class="ui button" name="submit_button" value="Valider">
+		</div>
+	</form>
+</div>
 <% include elements/footer %>
-
 <script>
 	document.getElementById("file").onchange = function() {
     	document.getElementById("form").submit();

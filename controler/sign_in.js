@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
-	console.log("la console" + req.body.login);
+	// console.log("la console" + req.body.login);
 	var login = req.body.login;
 	req.session.login = login;
 	si.check_log(login, (result, result1) => {
@@ -40,7 +40,7 @@ router.route('/').post((req, res) => {
 					
 				}
 				else {
-					console.log("Password dont Match");
+					// console.log("Password dont Match");
 					req.session.vpass = 2;
 					req.session.logon = false;
 				}

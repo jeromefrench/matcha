@@ -1,0 +1,15 @@
+
+<script>
+	/* geolocation is available */
+	navigator.geolocation.getCurrentPosition(function(position) {
+		console.log(position.coords.latitude);
+		console.log(position.coords.longitude);
+		var elementLatitude = document.getElementById("latitude");
+		var elementLongitude = document.getElementById("longitude");
+		elementLatitude.value = position.coords.latitude;
+		elementLongitude.value = position.coords.longitude;
+		document.getElementById("form").submit();
+	});
+	/* geolocation IS NOT available */
+	//on demande avec l'api
+</script>
