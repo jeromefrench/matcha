@@ -35,7 +35,7 @@ router.route('/').post((req, res) => {
 						req.session.login = login;
 						req.session.vpass = 0;
 						req.session.token = jwtUtil.generateTokenForUser(userId);
-						console.log(token);
+						console.log(req.session.token);
 					});
 					
 				}
