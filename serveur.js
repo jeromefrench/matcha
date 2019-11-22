@@ -14,20 +14,23 @@ const fileUpload = require('express-fileupload');
 
 var socket = require('socket.io');
 var io = socket(server);
+
+
 console.log("my socket server is running");
-io.sockets.on('connection', newConnection);
+// io.sockets.on('connection', newConnection);
 
-function newConnection(socket){
-	socket.emit('message', 'Vous etes bien connecte !');
-	socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
-	socket.on('petit_nouveau', function(pseudo){
-		socket.pseudo = pseudo;
-	});
-	socket.on('message', function (message){
-		console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
+// function newConnection(socket){
+// 	socket.emit('message', 'Vous etes bien connecte !');
+// 	socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
+// 	socket.on('petit_nouveau', function(pseudo){
+// 		socket.pseudo = pseudo;
+// 	});
+// 	socket.on('message', function (message){
+// 		console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
 
-	})
-}
+// 	})
+// }
+
 // function newConnection(socket){
 // 	console.log("new connection: " + socket.id);
 // 	socket.on('newmessage', f_new_message);

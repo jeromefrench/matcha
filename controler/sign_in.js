@@ -1,6 +1,8 @@
 let si = require('../models/sign_in.js');
 var bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
+// var bcrypt = require('bcrypt');
+var jwtUtil = require('../utils/jwt_util.js');
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
@@ -27,10 +29,16 @@ router.route('/').post((req, res) => {
 			si.isLoginPasswdMatch(login, req.body.passwd, function(match){
 				if (match) {
 					console.log("Password Match");
-					login = req.body.login;
-					req.session.logon = true;
-					req.session.login = login;
-					req.session.vpass = 0;
+					bdd.get_id_user(login, (userId) => {
+						token = jwtUtil.generateTokenForUser(userId);
+						console.log(token);
+						login = req.body.login;
+						req.session.logon = true;
+						req.session.login = login;
+						req.session.vpass = 0;
+
+					});
+					
 				}
 				else {
 					console.log("Password dont Match");
