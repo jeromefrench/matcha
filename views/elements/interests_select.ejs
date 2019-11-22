@@ -1,0 +1,14 @@
+
+</br>
+</br>
+<div class="field"> <label>Interests</label> </div>
+<select multiple  name="interests" class="ui">
+    <option  hidden disabled selected value> -- select an option -- </option>
+    <option <%- include('interest', {value: "voyage"});  %>  value="voyage">Voyage</option>
+    <option <%- include('interest', {value: "cuisine"});  %> value="cuisine">Cuisine</option>
+    <option <%- include('interest', {value: "escalade"});  %> value="escalade">Escalade</option>
+    <option <%- include('interest', {value: "equitation"});  %> value="equitation">Equitation</option>
+    <option <%- include('interest', {value: "soleil"});  %> value="soleil">Soleil</option>
+    <option <%- include('interest', {value: "sieste"});  %> value="sieste">Sieste</option>
+</select>
+<p> Hold command to select multiple</p>

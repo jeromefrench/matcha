@@ -1,0 +1,44 @@
+
+<div class="ui container" style="margin-top: 30px">
+	<h4 class="ui dividing header">Photos
+
+		<% if (locals.photos_completed == false){ %>
+			<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
+		<% }else{ %>
+			<span style="margin-left:20px;" class="ui green tag label"> Completed</span>
+		<% } %>
+
+	</h4>
+	<div class="ui middle aligned center aligned">
+    <input type="file" class="inputfile" id="file" name="photo" />
+  	<label for="file" class="ui left floated button">
+    	<i class="ui upload icon"></i>
+    	Upload image
+  	</label>
+  	</div>
+	</br>
+	</br>
+	</br>
+	<% if (locals.pic) {%>
+		<%- include('picture', {pics: locals.pic});  %>
+	<%}%>
+
+
+	</br>
+	<!-- <input id="file" type="file" name="photo"> -->
+
+	<style>
+.grid.container {
+  	margin-top: 5em;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+	</style>
+
+</div>
