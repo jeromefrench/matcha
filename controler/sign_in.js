@@ -30,13 +30,12 @@ router.route('/').post((req, res) => {
 				if (match) {
 					console.log("Password Match");
 					bdd.get_id_user(login, (userId) => {
-						token = jwtUtil.generateTokenForUser(userId);
-						console.log(token);
 						login = req.body.login;
 						req.session.logon = true;
 						req.session.login = login;
 						req.session.vpass = 0;
-
+						req.session.token = jwtUtil.generateTokenForUser(userId);
+						console.log(req.session.token);
 					});
 					
 				}

@@ -12,4 +12,4 @@
     <a href="http://localhost:8080/forgotten-passwd">Forgot your password?</a></br>
     <input type="submit" class="ui primary button" value="Connexion">
 </form>
-<% include elements/footer %>
+<% include('elements/footer', {token: session.token}); %>
