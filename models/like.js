@@ -1,6 +1,33 @@
 var conn = require('./connection_bdd.js');
 let bdd = require('../models/bdd_functions.js');
 
+exports.add_visited_profile = function (my_login, login_i_visit, callback){
+	bdd.get_id_user(my_login, (my_id) => {
+		bdd.get_id_user(login_i_visit, (id_i_visit) => {
+			var sql = "SELECT * FROM `visited` WHERE `id_user` = ? AND `id_visited` = ? ";
+			var todo = [my_id, id_i_visit];
+			conn.connection.query(sql, todo, (error, result) => {
+				if (error) throw error;
+				console.log("Result visited");
+				console.log(result);
+				if (result[0] == undefined) {//on ajoute dans la base la visit
+					console.log(my_id);
+					console.log(id_i_visit);
+					var sql = "INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES (NULL, ?, ?)";
+					var todo = [my_id, id_i_visit];
+					conn.connection.query(sql, todo, (error, result) => {
+						if (error) throw error;
+						callback();
+					});
+				}else {
+					//pas besoin
+					callback();
+				}
+			});
+		})
+	})
+}
+
 exports.get_user = function (a, callback){
 	conn.connection.query('SELECT * FROM `user` ', function (error, results, fields) {
 		callback(results);

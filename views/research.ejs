@@ -1,58 +1,69 @@
 <% include elements/header %>
 
-
 <div class="ui container">
 
-<h1>Research</h1>
-<%- include('elements/research_panel') %>
+	<h1>Research</h1>
+	<%- include('elements/research_panel') %>
 
-<div>
-<div class="ui selection dropdown">
-  <input type="hidden" name="sortby">
-  <i class="dropdown icon"></i>
-  <div class="default text">Sort by</div>
-  <div class="menu">
-    <div class="item" data-value="0">Age</div>
-    <div class="item" data-value="1">Popularity</div>
-    <div class="item" data-value="2">Distance</div>
-    <div class="item" data-value="3">Interest</div>
-    <div class="item" data-value="4">Match Score</div>
-  </div>
-</div
-<div>
+	<div>
+		<div class="ui selection dropdown">
+			<input type="hidden" name="sortby">
+			<i class="dropdown icon"></i>
+			<div class="default text">Sort by</div>
+			<div class="menu">
+				<div class="item" data-value="0">Age</div>
+				<div class="item" data-value="1">Popularity</div>
+				<div class="item" data-value="2">Distance</div>
+				<div class="item" data-value="3">Interest</div>
+				<div class="item" data-value="4">Match Score</div>
+			</div>
+		</div>
+	</div>
 
 	<script>
-$('.ui.dropdown')
-  .dropdown()
-;
+		$('.ui.dropdown')
+			.dropdown()
+		;
 	</script>
-
-
 	<p>
-		 
 	</p>
 
 
-
-<div class="ui special cards">
-	<% if (locals.users[0]){
-		locals.users.forEach(function(user) {  %>
-		<%- include('elements/profile_card', {user: user}) %>
-	<% }); }
-else
-{
-	console.log("pas de user");
-}%>
-
-</div>
+	<div class="ui special cards centered">
+		<% if (locals.users[0]){
+			locals.users.forEach(function(user) {  %>
+			<%- include('elements/profile_card', {user: user}) %>
+		<% }); } else { console.log("pas de user"); }%>
+	</div>
 
 
+<div class="ui centered grid">
+    <div class="center aligned column">
+		<div class="ui pagination menu" >
+			<a class="active item">
+				1
+			</a>
+			<div class="disabled item">
+				...
+			</div>
+			<a class="item">
+				10
+			</a>
+			<a class="item">
+				11
+			</a>
+			<a class="item">
+				12
+			</a>
+		</div>
+		</div>
+		</div>
 
 </div>
 
 <script>
 	$('.special.cards .image').dimmer({
-  		on: 'hover'
+		on: 'hover'
 	});
 
 </script>

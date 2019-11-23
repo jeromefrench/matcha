@@ -22,7 +22,6 @@ router.route('/:login').get((req, res) => {
 				console.log("chat part 2");
 				itemsProcessed = 0;
 
-
 				console.log(messages);
 				if (messages[0] == undefined){
 					res.locals.messages = undefined;

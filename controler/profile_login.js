@@ -17,14 +17,18 @@ router.route('/:login').get((req, res) => {
 					user.does_it_like_me = result;
 					bdd_like.countLike(req.params.login, (count_like) => {
 						req.session.pop = Math.round((count_like / nbVue) * 5);
-						console.log("pop =========" + req.session.pop);
-						if (user.do_i_like && user.does_it_like_me){
-							user.match = true;
-						}
-						else {
-							user.match = false;
-						}
-						res.render('profile.ejs', {session: req.session, user: user});
+
+						//ajouter add_visited_on_profile
+						bdd_like.add_visited_profile(req.session.login, req.params.login, (callback) => {
+							console.log("pop =========" + req.session.pop);
+							if (user.do_i_like && user.does_it_like_me){
+								user.match = true;
+							}
+							else {
+								user.match = false;
+							}
+							res.render('profile.ejs', {session: req.session, user: user});
+						});
 					});
 				});
 			});

@@ -79,8 +79,6 @@ app.use(fileUpload({
 app.set('trust proxy', true)
 app.use(expressip().getIpInfoMiddleware);
 
-
-
 rootPath = __dirname;
 
 const signout = require('./controler/sign_out.js');
@@ -98,6 +96,8 @@ const delpic = require('./controler/delPic.js');
 const makeProfilePic = require('./controler/make_profile_pic.js');
 const faker = require('./faker.js');
 const ip_location = require('./controler/ip_location.js');
+const dashboard = require('./controler/dashboard.js');
+const chat = require('./controler/chat.js');
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
@@ -113,70 +113,17 @@ app.use('/change-passwd', changepass);
 app.use('/public/photo', delpic);
 app.use('/public/photo', makeProfilePic);
 app.use('/faker', faker);
-app.use('/ip', ip_location);
-
-
-
-
-
-
+app.use('/chat', chat);
+app.use('/dashboard', dashboard);
 
 
 
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
-//**************/**************************************************************
 app.get('/', function(req, res){
 	res.redirect('/sign-in');  // pour rediriger vers une url
 });
-
-//**************CHAT***********************************************************
-const chat = require('./controler/chat.js');
-
-app.use('/chat', chat);
-// app.get('/chat/:login', function(req, res){
-// 	ctrl_chat.ctrl_chatGet(req, res);
-// });
-// app.post('/chat/:login', function(req, res){
-// 	ctrl_chat.ctrl_chatPost(req, res);
-// });
-
-//*****************************************************************************
-
-app.get('/react', function(req, res){
-	var reactComponentMarkup = ReactComponent();
-	// var staticMarkup = React.renderToString(reactComponentMarkup);
-	var staticMarkup = ReactDOMServer.renderToString(reactComponentMarkup);
-	//res.send(staticMarkup);
-	res.render('template_react', { helloComponentMarkup: staticMarkup })
-});
-
-
-
-
-
-
-
-var fs = require('fs');
-
-// fs.readFile('./client.js','utf8', (err, data) => {
-// 		console.log(data);
-// });
-
-
-
-
-// app.get('/tchat', (req, res) => {
-// 	// console.log("hello");
-// 	fs.readFile('./client.js', 'utf8', (err, data) => {
-// 		// console.log(data);
-// 		res.send(data);
-// 	})
-// });
-
-
-
 
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
@@ -187,8 +134,6 @@ app.get('/test', (req, res) => {
 	// res.send("salut");
 	res.render('index', {test : 'Salut'});
 });
-
-
 
 app.post('/test', (req, res) => {
 	// console.log(req.body);
@@ -208,7 +153,6 @@ app.post('/test', (req, res) => {
 		})
 	}
 });
-
 
 
 //**************404************************************************************
