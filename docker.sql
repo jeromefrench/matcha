@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Nov 22, 2019 at 04:38 PM
+-- Generation Time: Nov 23, 2019 at 04:46 PM
 -- Server version: 5.7.28
 -- PHP Version: 7.2.23
 
@@ -35,18 +35,15 @@ CREATE TABLE IF NOT EXISTS `like_table` (
   `id_user` int(11) NOT NULL,
   `id_i_like` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `like_table`
 --
 
 INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
-(1, 3, 1),
-(2, 3, 3),
-(4, 3, 5),
-(7, 4, 3),
-(8, 3, 4);
+(11, 4, 3),
+(14, 3, 14);
 
 -- --------------------------------------------------------
 
@@ -185,6 +182,28 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `visited`
+--
+
+CREATE TABLE IF NOT EXISTS `visited` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `id_visited` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `visited`
+--
+
+INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES
+(1, 42, 43),
+(2, 3, 12),
+(3, 4, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `vue_profile`
 --
 
@@ -193,15 +212,18 @@ CREATE TABLE IF NOT EXISTS `vue_profile` (
   `id_user` int(11) NOT NULL,
   `vue` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `vue_profile`
 --
 
 INSERT INTO `vue_profile` (`id`, `id_user`, `vue`) VALUES
-(1, 3, 10),
-(2, 4, 11);
+(1, 3, 15),
+(2, 4, 36),
+(3, 11, 11),
+(4, 14, 6),
+(5, 12, 3);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
