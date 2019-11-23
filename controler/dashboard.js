@@ -48,8 +48,18 @@ router.route('/:they-like-me').get((req, res) => {
 
 
 router.route('/:they-watched-me').get((req, res) => {
+	bdd.get_user_they_watched_me(req.session.login, (all_user) => {
+		console.log(all_user);
+		if (all_user[0] != undefined){
+			res.locals.users = all_user;
+			console.log("hello");
+		}else{
+			res.locals.users = [];
+			res.locals.users[0] = undefined; 
+		}
 	res.locals.page = "they-watched-me";
     res.render('dashboard', {session:req.session});
+	});
 });
 
 
