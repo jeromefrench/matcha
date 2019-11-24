@@ -2,6 +2,7 @@ let bdd_about = require('../models/about_you.js');
 let bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
 const opencage = require('opencage-api-client');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 router.route('/').get((req, res) => {
 	//is preference completed
@@ -82,7 +83,7 @@ router.route('/').post((req, res) => {
 			// req.session.localisation = localisation;
 
 			console.log("ON GENERE LA PAGE");
-			if (req.body.latitude && req.body.latitude != "latitude"){
+			if (req.body.latitude && req.body.latitude != "latitude" && req.body.latitude != "cherche_ip"){
 				console.log(req.body.latitude);
 				console.log(req.body.longitude);
 
@@ -114,7 +115,7 @@ router.route('/').post((req, res) => {
 						}
 					} else if (data.status.code == 402) {
 						console.log('hit free-trial daily limit');
-						console.log('become a customer: https://opencagedata.com/pricing'); 
+						console.log('become a customer: https://opencagedata.com/pricing');
 						res.redirect('/about_you');
 					} else {
 						// other possible response codes:
@@ -148,11 +149,20 @@ router.route('/').post((req, res) => {
 							console.log("country=> " + place.components.country);
 							console.log("city=> " + place.components.city);
 							console.log("zip code=> " + place.components.postcode);
-							console.log(place.components.geometry.lat);
-							console.log(place.components.geometry.lng);
+							console.log(place.geometry.lat);
+							console.log(place.geometry.lng);
 							//save id bdd  place.components.country
 							//save id bdd  place.components.city
 							//save id bdd  place.components.postcode
+							localisation['country'] = place.components.country;
+							localisation['city' ] = place.components.city;
+							localisation['zipcode'] = place.components.postcode;
+							localisation['latitude'] = place.geometry.lat;
+							localisation['longitude'] = place.geometry.lng;
+							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+								// req.session.localisation = localisation;
+								res.redirect('/about-you');
+							})
 						}
 					} else if (data.status.code == 402) {
 						console.log('hit free-trial daily limit');
@@ -175,7 +185,44 @@ router.route('/').post((req, res) => {
 					//*********
 				});
 				//on demande a 'API
-				res.redirect('/about-you');
+			} else if(req.body.latitude && req.body.latitude == "cherche_ip") {
+				console.log("on cherche avec l'ip");
+				console.log("ip ==>")
+				console.log(req.ipInfo);
+ 				var ip = req.clientIp;
+ 				console.log(ip);
+ip = "62.210.34.185";
+
+				var endpoint = 'http://ip-api.com/json/'+ip+'?fields=status,message,country,city,zip,lat,lon,query';
+
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', endpoint, true);
+				xhr.send();
+
+				xhr.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var response = JSON.parse(this.responseText);
+						if(response.status !== 'success') {
+							console.log('query failed: ' + response.message);
+							return
+						}
+						else {
+							console.log(response);
+							localisation = {};
+							localisation['country'] = response.country;
+							localisation['city' ] = response.city;
+							localisation['zipcode'] = response.zip;
+							localisation['latitude'] = response.lat;
+							localisation['longitude'] = response.lon;
+
+							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+								// req.session.localisation = localisation;
+								res.redirect('/about-you');
+							})
+						}
+						// Redirect
+					}
+				};
 			}else{
 				//on met une erreur
 				res.redirect('/about-you');
@@ -183,6 +230,18 @@ router.route('/').post((req, res) => {
 		})
 	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function addPicture(id_user, req, rootPath){

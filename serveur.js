@@ -79,6 +79,14 @@ app.use(fileUpload({
 app.set('trust proxy', true)
 app.use(expressip().getIpInfoMiddleware);
 
+
+
+const requestIp = require('request-ip');
+app.use(requestIp.mw())
+
+
+
+
 rootPath = __dirname;
 
 const signout = require('./controler/sign_out.js');
@@ -130,6 +138,7 @@ app.get('/test', (req, res) => {
 	if (req.session.test){
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
+
 	}
 	// res.send("salut");
 	res.render('index', {test : 'Salut'});
