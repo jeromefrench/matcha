@@ -60,6 +60,28 @@ router.route('/').post((req, res) => {
 	gender = req.body.gender;
 	orientation = req.body.orientation;
 	bio = req.body.bio;
+	birthday = req.body.birthday;
+	console.log(req.body.birthday);
+	console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+	var birthday = birthday.split("/");
+
+	console.log(birthday);
+
+	console.log(birthday[0]);
+	console.log(birthday[1]);
+	console.log(birthday[2]);
+
+
+	//Y M D
+	birthday = birthday[2]+ "-"+ birthday[0]+"-"+birthday[1];
+
+	//var jsonDate = "2011-05-26T07:56:00.123Z";
+// birthday = new Date(birthday[2], birthday[1], birthday[0], 0, 0, 0, 0).toISOString().slice(0, 10);
+console.log(birthday);
+
+
+
 	interests = req.body.interests;
 	bdd.get_id_user(req.session.login,  (id_user) => {
 		id_user = id_user;
@@ -67,10 +89,10 @@ router.route('/').post((req, res) => {
 		console.log(id_user);
 		bdd_about.is_info_user_exist(req.session.login, (userExist) => {
 			if (userExist){
-				bdd_about.update_info_user(id_user, gender, orientation, bio, interests);
+				bdd_about.update_info_user(id_user, gender, orientation, bio, interests, birthday);
 				addPicture(id_user, req, rootPath);
 			} else {
-				bdd_about.insert_info_user(id_user, gender, orientation, bio, interests)
+				bdd_about.insert_info_user(id_user, gender, orientation, bio, interests, birthday)
 				addPicture(id_user, req, rootPath);
 			}
 			//*****************************************************************

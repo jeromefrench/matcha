@@ -8,5 +8,29 @@
 </h4>
 <%- include('gender_select');  %>
 <%- include('show_me_select');  %>
+
+
+<div style="display:inline-block;">
+	<div class="field"> <label>Birthday date</label> </div>
+	<div class="ui input">
+		<input type="text" id="datepicker" name="birthday"
+
+<%if (locals.infos && locals.infos.birthday != "") { %>  value="<%= locals.infos.birthday %>"<%}%>
+
+									 >
+	</div>
+</div>
+
+
+<script>
+  	$( function() {
+    	$( "#datepicker" ).datepicker({
+      		changeMonth: true,
+      		changeYear: true
+    	});
+  	} );
+</script>
+
+
 <%- include('biographie_input');  %>
 <%- include('interests_select');  %>

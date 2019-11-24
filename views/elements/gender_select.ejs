@@ -1,4 +1,5 @@
 
+<div style="display:inline-block;">
 <div class="field"> <label>Gender</label> </div>
 <div class="ui input">
     <select name="gender" class="ui dropdown">
@@ -7,4 +8,5 @@
         <option <% if (locals.infos && locals.infos.gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
         <option <% if (locals.infos && locals.infos.gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
     </select>
+</div>
 </div>

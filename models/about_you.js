@@ -32,8 +32,8 @@ exports.insert_info_user_localalisation = function (id_user, country, city, zip_
 	})
 }
 
-exports.insert_info_user = function (id_user, gender, orientation, bio, interests){
-	var sql = "INSERT INTO `user_info` (`id_user`, `gender`, `orientation`, `bio`, `interests`) VALUES (?, ?, ?, ?, ?);";
+exports.insert_info_user = function (id_user, gender, orientation, bio, interests, birthday){
+	var sql = "INSERT INTO `user_info` (`id_user`, `gender`, `orientation`, `bio`, `interests`, `birthday`) VALUES (?, ?, ?, ?, ?, ?);";
 	inter = "";
 	itemsProcessed = 0;
 	if (interests !=undefined && interests != null && Array.isArray(interests)){
@@ -45,7 +45,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 			}
 			itemsProcessed++;
 			if(itemsProcessed === interests.length) {
-				var todo = [id_user, gender, orientation, bio, inter];
+				var todo = [id_user, gender, orientation, bio, inter, birthday];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
 					isCompleted(id_user, gender, orientation, bio, interests);
@@ -78,8 +78,8 @@ function isCompleted(id_user, gender, orientation, bio, interests){
 	})
 }
 
-exports.update_info_user = function (id_user, gender, orientation, bio, interests){
-	var sql = "UPDATE `user_info` SET `gender` = ?, `orientation` = ?, `bio` = ?, `interests` = ?  WHERE `id_user` = ?";
+exports.update_info_user = function (id_user, gender, orientation, bio, interests, birthday){
+	var sql = "UPDATE `user_info` SET `gender` = ?, `orientation` = ?, `bio` = ?, `interests` = ?, `birthday` = ?  WHERE `id_user` = ?";
 	inter = "";
 	itemsProcessed = 0;
 	if (interests !=undefined && interests != null && Array.isArray(interests)){
@@ -91,7 +91,7 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 			}
 			itemsProcessed++;
 			if(itemsProcessed === interests.length) {
-				var todo = [gender, orientation, bio, inter, id_user];
+				var todo = [gender, orientation, bio, inter, birthday,  id_user];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
 					isCompleted(id_user, gender, orientation, bio, interests);
@@ -101,8 +101,11 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 	}
 	else {
 		inter = interests;
-		var todo = [gender, orientation, bio, inter, id_user];
+		var todo = [gender, orientation, bio, inter, birthday, id_user];
+		console.log(birthday);
+		console.log(sql);
 		conn.connection.query(sql, todo, (error, result) => {
+			console.log(error);
 			if (error) throw error;
 			isCompleted(id_user, gender, orientation, bio, interests);
 		});

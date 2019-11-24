@@ -1,6 +1,5 @@
 
-</br>
-</br>
+<div style="display:inline-block;">
 <div class="field"> <label>Show Me</label> </div>
 <div class="ui input">
     <select name="orientation" class="ui dropdown">
@@ -9,4 +8,5 @@
         <option <% if (locals.infos && locals.infos.orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
         <option <% if (locals.infos && locals.infos.orientation == "everyone") {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
     </select>
+</div>
 </div>
