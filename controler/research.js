@@ -8,6 +8,18 @@ router.route('/').get((req, res) => {
 	itemsProcessed = 0;
 
 
+	if (req.session.search){
+		console.log("on fait une recherche avec");
+		console.log(req.session.search);
+
+
+
+		//faire la  recherche avec ces critere
+		req.session.search = undefined;
+	}
+
+
+
 	bdd.get_user(req.session.login, (all_user) => {
 		// console.log("ici");
 		// console.log(all_user);
@@ -44,5 +56,31 @@ router.route('/').get((req, res) => {
 		}
 	});
 });
+
+
+
+router.route('/').post((req, res) => {
+	//console.log(req.body);
+
+
+	age_debut = "";  //regular expression pour bebe chat
+	age_find = "";  //regular expression
+	distance = "";  //regular expression
+	interet = "";  //regular expression
+	popularite = "";  //regular expression
+
+
+	req.session.search = new Object();
+	req.session.search.age_debut = "18";
+	req.session.search.age_find = "25";  //regular expression
+	req.session.search.distance = "200";  //regular expression
+	req.session.search.interet = "2";  //regular expression
+	req.session.search.popularite = "2";  //regular expression
+	res.redirect('/research');
+
+});
+
+
+
 
 module.exports = router;

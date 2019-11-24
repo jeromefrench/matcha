@@ -28,8 +28,9 @@ router.route('/').post((req, res) => {
 		else if (result > 0){
 			si.isLoginPasswdMatch(login, req.body.passwd, function(match){
 				if (match) {
-					console.log("Password Match");
+					//	console.log("Password Match");
 					bdd.get_id_user(login, (userId) => {
+						si.save_connection_log(userId);
 						login = req.body.login;
 						req.session.logon = true;
 						req.session.login = login;
@@ -37,7 +38,6 @@ router.route('/').post((req, res) => {
 						req.session.token = jwtUtil.generateTokenForUser(userId);
 						console.log(req.session.token);
 					});
-					
 				}
 				else {
 					// console.log("Password dont Match");

@@ -1,39 +1,49 @@
 
 
 <div id="research" class="ui raised  segment">
-	<div id="age">
-		<p>
-  	<label for="amount">Age range:<span id="add-space"><span></label>
-  	<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-		</p>
-		<div id="slider-range"></div>
-	</div>
+	<form method="POST" action="/research" class="ui form">
+		<div id="age">
+			<p>
+  				<label for="amount">Age range:<span id="add-space"><span></label>
+  				<input name="age" type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="slider-range"></div>
+		</div>
 
 
-	<div id="distance">
-		<p>
-  			<label for="amount-distance">Distance maximum:</label>
-  			<input type="text" id="amount-distance" readonly style="border:0; color:#f6931f; font-weight:bold;">
-		</p>
-		<div id="slider-range-min"></div>
-	</div>
+		<div id="distance">
+			<p>
+  				<label for="amount-distance">Distance maximum:</label>
+  				<input name="distance" type="text" id="amount-distance" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="slider-range-min"></div>
+		</div>
 
-	<div id="inter">
-		<p>
-  			<label for="amount-inter">Interet en commun:</label>
-  			<input type="text" id="amount-inter" readonly style="border:0; color:#f6931f; font-weight:bold;">
-		</p>
-		<div id="slider-inter"></div>
-	</div>
+		<div id="inter">
+			<p>
+  				<label for="amount-inter">Interet en commun:</label>
+  				<input name="inter" type="text" id="amount-inter" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="slider-inter"></div>
+		</div>
 
-	<div id="popularite">
-		<p>
-  			<label for="amount-popularite">Popularite:</label>
-  			<input type="text" id="amount-popularite" readonly style="border:0; color:#f6931f; font-weight:bold;">
-		</p>
-		<div id="slider-popularite"></div>
-	</div>
+		<div id="popularite">
+			<p>
+  				<label for="amount-popularite">Popularite:</label>
+  				<input name="popularite" type="text" id="amount-popularite" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="slider-popularite"></div>
+		</div>
+			</br>
+			</br>
+			</br>
+		<div class="ui centered grid">
+    		<input type="submit" class="ui primary button" value="Research">
+    	</div>
+			</br>
+	</form>
 </div>
+
 
 
 
@@ -41,7 +51,7 @@
 
 #research{
 	//border:solid 1px blue;
-	margin-bottom:20px;
+margin-bottom:20px;
 }
 
 

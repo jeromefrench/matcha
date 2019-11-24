@@ -30,3 +30,28 @@ exports.isLoginPasswdMatch = function (login, passwd, callback){
 		}
 	});
 }
+
+exports.save_connection_log = function (id_user){
+	var  sql = 'SELECT * FROM `connection_log` WHERE `id_user` = ? ';
+	var todo = [id_user];
+	var stop = false;
+	conn.connection.query(sql, todo, (error, results, fields) => {
+		if (error) throw error;
+		if (!results[0]) {
+			var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
+			date = new Date();
+			var todo = [id_user, date];
+			conn.connection.query(sql, todo, (error, results, fields) => {
+				if (error) throw error;
+			})
+		}
+		else {
+			var sql = 'UPDATE `connection_log` SET `last_visit` = ? WHERE `connection_log`.`id` = ?';
+			date = new Date();
+			var todo = [date, id_user];
+			conn.connection.query(sql, todo, (error, results, fields) => {
+				if (error) throw error;
+			})
+		}
+	});
+}
