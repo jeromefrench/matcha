@@ -16,6 +16,37 @@ router.route('/').get((req, res) => {
 	bdd_about.get_info_user(req.session.login, (result) => {
 		if (result != undefined) {
 			res.locals.infos = result[0];
+			console.log(res.locals.infos.birthday);
+			console.log(res.locals.infos);
+res.locals.infos.birthday = res.locals.infos.birth;
+			console.log(res.locals.infos.birthday);
+
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			console.log(res.locals.infos.birthday);
+
+
+	res.locals.infos.birthday  = res.locals.infos.birthday.split("/");
+
+	console.log(res.locals.infos.birthday);
+
+	console.log(res.locals.infos.birthday[0]);
+	console.log(res.locals.infos.birthday[1]);
+	console.log(res.locals.infos.birthday[2]);
+
+
+	//Y M D
+	res.locals.infos.birthday  = res.locals.infos.birthday[1]+ "/"+ res.locals.infos.birthday[2]+"/"+res.locals.infos.birthday[0];
+
+
+
+
+
+			console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+
+
+
 		}
 		if (res.locals.infos != undefined && res.locals.infos.interests != null){
 			res.locals.infos.interArray = res.locals.infos.interests.split(",");
@@ -37,6 +68,7 @@ router.route('/').get((req, res) => {
 				bdd_about.count_photo(id_user, (count) => {
 					if (count > 0){ res.locals.photos_completed = true; }
 					console.log(res.locals);
+					console.log(res.locals.infos);
 					res.render('about-you.ejs', {session: req.session});
 				})
 			})
