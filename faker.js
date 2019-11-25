@@ -8,7 +8,6 @@ const router = require('express').Router();
 var faker = require('faker/locale/fr');
 var Fakerator = require('fakerator');
 var fakerator = Fakerator("fr-FR");
-const opencage = require('opencage-api-client');
 
 router.route('/').get((req, res) => {
 	var user = fakerator.entity.user();
@@ -34,42 +33,16 @@ router.route('/').get((req, res) => {
 			var birthdate = faker.date.between('1920-01-01', '2001-01-01');
 			var last_log = faker.date.between('2017-01-01', faker.date.recent());
 			var city = user.address.city;
-	
+			
+			var info_city = cities.filter(town => { return town.name.match('^' + city + '$')});
+			var country = info_city[0].country;
+			var zipcode = info_city[0].muniSub;
+			var latitude = info_city[0].loc.coordinates[0];
+			var longitude = info_city[0].loc.coordinates[1];
+			
 			bdd_pic.insert_info_user(id_user, gender, orientation, bio, interests, birthdate);
-	
-			loc = city + " France";
-			opencage.geocode({q: '' + loc}).then(data => {
-				if (data.status.code == 200) {
-					if (data.results.length > 0) {
-						var place = data.results[0];
-						console.log(place);
-						var country = place.components.country;
-						var zipcode = place.components.postcode;
-						var latitude = place.geometry.lat;
-						var longitude = place.geometry.lng;
-						bdd_pic.insert_info_user_localalisation(login, country, city, zipcode, longitude, latitude, () => {
-						});
-					}
-				} else if (data.status.code == 402) {
-					console.log('hit free-trial daily limit');
-					console.log('become a customer: https://opencagedata.com/pricing');
-						//*********
-						// Erreur a traiter
-						//*********
-					} else {
-						// other possible response codes:
-						// https://opencagedata.com/api#codes
-						console.log('error', data.status.message);
-						//*********
-						// Erreur a traiter
-						//*********
-					}
-			}).catch(error => {
-				console.log('error', error.message);
-				//*********
-				// Erreur a traiter
-				//*********
-			});
+			bdd_pic.insert_info_user_localalisation(login, country, city, zipcode, longitude, latitude, () => {});
+			bdd2.insert_log(id_user);
 		});
 		res.send("<p>Your on faker page");
 	});

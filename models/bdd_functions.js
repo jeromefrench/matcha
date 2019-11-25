@@ -44,3 +44,12 @@ exports.recover_user = function (login, callback){
 		callback(results);
 	});
 }
+
+exports.insert_log = function (id_user){
+	var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
+	date = new Date();
+	var todo = [id_user, date];
+	conn.connection.query(sql, todo, (error, results, fields) => {
+		if (error) throw error;
+	});
+}
