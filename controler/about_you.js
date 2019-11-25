@@ -18,26 +18,30 @@ router.route('/').get((req, res) => {
 			res.locals.infos = result[0];
 			console.log(res.locals.infos.birthday);
 			console.log(res.locals.infos);
-res.locals.infos.birthday = res.locals.infos.birth;
+			res.locals.infos.birthday = res.locals.infos.birth;
 			console.log(res.locals.infos.birthday);
 
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			console.log(res.locals.infos.birthday);
+			if (res.locals.infos.birthday != null)
+			{
+				res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+				res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+				res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+				console.log(res.locals.infos.birthday);
 
 
-	res.locals.infos.birthday  = res.locals.infos.birthday.split("/");
+				res.locals.infos.birthday  = res.locals.infos.birthday.split("/");
 
-	console.log(res.locals.infos.birthday);
+				console.log(res.locals.infos.birthday);
 
-	console.log(res.locals.infos.birthday[0]);
-	console.log(res.locals.infos.birthday[1]);
-	console.log(res.locals.infos.birthday[2]);
+				console.log(res.locals.infos.birthday[0]);
+				console.log(res.locals.infos.birthday[1]);
+				console.log(res.locals.infos.birthday[2]);
 
 
-	//Y M D
-	res.locals.infos.birthday  = res.locals.infos.birthday[1]+ "/"+ res.locals.infos.birthday[2]+"/"+res.locals.infos.birthday[0];
+				//Y M D
+				res.locals.infos.birthday  = res.locals.infos.birthday[1]+ "/"+ res.locals.infos.birthday[2]+"/"+res.locals.infos.birthday[0];
+
+			}
 
 
 
@@ -109,8 +113,8 @@ router.route('/').post((req, res) => {
 	birthday = birthday[2]+ "-"+ birthday[0]+"-"+birthday[1];
 
 	//var jsonDate = "2011-05-26T07:56:00.123Z";
-// birthday = new Date(birthday[2], birthday[1], birthday[0], 0, 0, 0, 0).toISOString().slice(0, 10);
-console.log(birthday);
+	// birthday = new Date(birthday[2], birthday[1], birthday[0], 0, 0, 0, 0).toISOString().slice(0, 10);
+	console.log(birthday);
 
 
 
@@ -221,17 +225,17 @@ console.log(birthday);
 					} else if (data.status.code == 402) {
 						console.log('hit free-trial daily limit');
 						console.log('become a customer: https://opencagedata.com/pricing');
-						//*********
-						// Erreur a traiter
-						//*********
-					} else {
-						// other possible response codes:
-						// https://opencagedata.com/api#codes
-						console.log('error', data.status.message);
-						//*********
-						// Erreur a traiter
-						//*********
-					}
+							//*********
+							// Erreur a traiter
+							//*********
+						} else {
+							// other possible response codes:
+							// https://opencagedata.com/api#codes
+							console.log('error', data.status.message);
+							//*********
+							// Erreur a traiter
+							//*********
+						}
 				}).catch(error => {
 					console.log('error', error.message);
 					//*********
@@ -243,9 +247,9 @@ console.log(birthday);
 				console.log("on cherche avec l'ip");
 				console.log("ip ==>")
 				console.log(req.ipInfo);
- 				var ip = req.clientIp;
- 				console.log(ip);
-ip = "62.210.34.185";
+				var ip = req.clientIp;
+				console.log(ip);
+				ip = "62.210.34.185";
 
 				var endpoint = 'http://ip-api.com/json/'+ip+'?fields=status,message,country,city,zip,lat,lon,query';
 
@@ -298,46 +302,46 @@ ip = "62.210.34.185";
 
 
 
-function addPicture(id_user, req, rootPath){
-	//on regarde combien de photo il a
-	//si inferieur a 5 on add la photo
-	// console.log("on try la photo");
-	// console.log(req.files);
-	if (req.files != undefined && req.files.photo && req.files.photo.size != 0){
-		if (req.files.photo.mimetype != "image/jpeg"){
-			//utiliser mon middle ware flash
-			// console.log("le format est pas bon")
-		}
-		else{
-			bdd_about.count_photo(id_user, (number) => {
-				// console.log("number");
-				// console.log(number);
-				if (number < 5){
-					// console.log("on add la photo");
-					// console.log(req.files.photo);
-					// console.log(req.files.photo.mimetype);
-					name = rootPath+"/public/photo/"+req.session.login+"/"+number;
-					// console.log("le name");
-					// console.log(name);
-					req.files.photo.mv(name);
-					// console.log(req.files.photo);
-					//on add le nom de la photo dans la base
-					profile = 0;
-					if (number == 0){
-						profile = 1;
-						// console.log("ici");
+	function addPicture(id_user, req, rootPath){
+		//on regarde combien de photo il a
+		//si inferieur a 5 on add la photo
+		// console.log("on try la photo");
+		// console.log(req.files);
+		if (req.files != undefined && req.files.photo && req.files.photo.size != 0){
+			if (req.files.photo.mimetype != "image/jpeg"){
+				//utiliser mon middle ware flash
+				// console.log("le format est pas bon")
+			}
+			else{
+				bdd_about.count_photo(id_user, (number) => {
+					// console.log("number");
+					// console.log(number);
+					if (number < 5){
+						// console.log("on add la photo");
+						// console.log(req.files.photo);
+						// console.log(req.files.photo.mimetype);
+						name = rootPath+"/public/photo/"+req.session.login+"/"+number;
+						// console.log("le name");
+						// console.log(name);
+						req.files.photo.mv(name);
+						// console.log(req.files.photo);
+						//on add le nom de la photo dans la base
+						profile = 0;
+						if (number == 0){
+							profile = 1;
+							// console.log("ici");
+						}
+						bdd_about.savePic(id_user, "/public/photo/"+req.session.login+"/"+number, profile)
+						number++;
 					}
-					bdd_about.savePic(id_user, "/public/photo/"+req.session.login+"/"+number, profile)
-					number++;
-				}
-				else {
-					// console.log("le nombre de photo est superieur a 5");
-				}
-			});
+					else {
+						// console.log("le nombre de photo est superieur a 5");
+					}
+				});
+			}
+		}
+		else {
+			// console.log("size 0");
 		}
 	}
-	else {
-		// console.log("size 0");
-	}
-}
-module.exports = router;
+	module.exports = router;
