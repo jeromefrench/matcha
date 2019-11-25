@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Nov 25, 2019 at 11:54 AM
--- Server version: 5.7.28
--- PHP Version: 7.2.23
+-- Hôte : mysql:3306
+-- Généré le :  lun. 25 nov. 2019 à 18:35
+-- Version du serveur :  5.7.28
+-- Version de PHP :  7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `docker`
+-- Base de données :  `docker`
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
@@ -27,7 +27,20 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `connection_log`
+-- Structure de la table `block`
+--
+
+CREATE TABLE IF NOT EXISTS `block` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `id_block` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `connection_log`
 --
 
 CREATE TABLE IF NOT EXISTS `connection_log` (
@@ -35,19 +48,22 @@ CREATE TABLE IF NOT EXISTS `connection_log` (
   `id_user` int(11) NOT NULL,
   `last_visit` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `connection_log`
+-- Déchargement des données de la table `connection_log`
 --
 
 INSERT INTO `connection_log` (`id`, `id_user`, `last_visit`) VALUES
-(1, 3, '2019-11-25');
+(1, 3, '2019-11-25'),
+(2, 15, '2019-11-25'),
+(3, 76, '2019-11-25'),
+(4, 77, '2019-11-25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `like_table`
+-- Structure de la table `like_table`
 --
 
 CREATE TABLE IF NOT EXISTS `like_table` (
@@ -55,20 +71,22 @@ CREATE TABLE IF NOT EXISTS `like_table` (
   `id_user` int(11) NOT NULL,
   `id_i_like` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `like_table`
+-- Déchargement des données de la table `like_table`
 --
 
 INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
 (11, 4, 3),
-(15, 3, 14);
+(15, 3, 14),
+(18, 15, 15),
+(20, 15, 77);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Structure de la table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -78,20 +96,22 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `message_content` text NOT NULL,
   `data_stamp` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `messages`
+-- Déchargement des données de la table `messages`
 --
 
 INSERT INTO `messages` (`id`, `id_author`, `id_recever`, `message_content`, `data_stamp`) VALUES
 (1, 3, 4, 'on chat', '2019-11-22'),
-(2, 4, 3, 'avec bebe', '2019-11-22');
+(2, 4, 3, 'avec bebe', '2019-11-22'),
+(3, 15, 15, 'uiloh', '2019-11-25'),
+(4, 15, 15, 'iugy', '2019-11-25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `photo`
+-- Structure de la table `photo`
 --
 
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -100,26 +120,43 @@ CREATE TABLE IF NOT EXISTS `photo` (
   `path_photo` text NOT NULL,
   `profile` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `photo`
+-- Déchargement des données de la table `photo`
 --
 
 INSERT INTO `photo` (`id`, `id_user`, `path_photo`, `profile`) VALUES
 (13, '10', '/public/photo/bbchat/0', 1),
 (14, '11', 'https://s3.amazonaws.com/uifaces/faces/twitter/dannol/128.jpg', 1),
 (15, '12', 'https://s3.amazonaws.com/uifaces/faces/twitter/rickyyean/128.jpg', 1),
-(16, '13', '/public/photo/bbchat/0', 1),
 (17, '14', 'https://s3.amazonaws.com/uifaces/faces/twitter/matkins/128.jpg', 1),
 (18, '4', '/public/photo/blabli/0', 1),
-(20, '3', '/public/photo/jean/0', 1),
-(23, '3', '/public/photo/jean/1', 0);
+(20, '3', '/public/photo/jean/1', 1),
+(23, '3', '/public/photo/jean/1', 0),
+(24, '15', '/public/photo/bbchat/0', 1),
+(59, '74', 'https://s3.amazonaws.com/uifaces/faces/twitter/damenleeturks/128.jpg', 1),
+(60, '75', 'https://s3.amazonaws.com/uifaces/faces/twitter/notbadart/128.jpg', 1),
+(61, '76', 'https://s3.amazonaws.com/uifaces/faces/twitter/itskawsar/128.jpg', 1),
+(62, '77', 'https://s3.amazonaws.com/uifaces/faces/twitter/kushsolitary/128.jpg', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Structure de la table `report_fake`
+--
+
+CREATE TABLE IF NOT EXISTS `report_fake` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `id_faker` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -131,10 +168,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `mail` text NOT NULL,
   `num` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Déchargement des données de la table `user`
 --
 
 INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VALUES
@@ -144,12 +181,16 @@ INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VA
 (11, 'Daniella_Hermann', 'aR2ZpdxqCUiGrMb', 'Glover', 'Edwin', 'Stan.Bins@yahoo.com', NULL),
 (12, 'Emma.Gulgowski', 'nLQ2_gKN_VhEVmu', 'Hudson', 'Grayson', 'Lessie39@yahoo.com', NULL),
 (14, 'Milton30', '6NEKqsA6zaOiDRO', 'Ziemann', 'Brandy', 'Yolanda_Kihn69@gmail.com', NULL),
-(15, 'bbchat', '&Bbchat28&', 'Lejeune', 'Laëtitia', 'laetitia-lejeune@live.fr', NULL);
+(15, 'bbchat', '&Bbchat28&', 'Lejeune', 'Laëtitia', 'laetitia-lejeune@live.fr', NULL),
+(74, 'matto.le-gall', 'gecasovili', 'Le gall', 'Mattéo', 'matto28@hotmail.fr', NULL),
+(75, 'nathanroussel62', 'baragacewi', 'Roussel', 'Nathan', 'nathan.roussel09@yahoo.fr', NULL),
+(76, 'alexis_poirier', 'qexavehaha', 'Poirier', 'Alexis', 'alexis.poirier86@hotmail.fr', NULL),
+(77, 'lou_remy53', 'ciwugoqiso', 'Remy', 'Lou', 'lou.remy@gmail.com', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_info`
+-- Structure de la table `user_info`
 --
 
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -167,10 +208,10 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `latitude` float DEFAULT NULL,
   `completed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_info`
+-- Déchargement des données de la table `user_info`
 --
 
 INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `birthday`, `interests`, `country`, `city`, `zip_code`, `longitude`, `latitude`, `completed`) VALUES
@@ -180,12 +221,17 @@ INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `birth
 (8, 12, 'other', 'men', 'Sed doloribus voluptate velit maiores earum.', NULL, 'sieste', '', '', '0', 0, 0, 1),
 (9, 13, 'male', 'women', '', NULL, NULL, '', '', '0', 0, 0, 0),
 (10, 14, 'female', 'men', 'Labore neque eum voluptatibus ab laudantium.', NULL, 'escalade', '', '', '0', 0, 0, 1),
-(11, 3, 'other', 'everyone', 'bio biologique', '2021-11-12', 'soleil', 'France', 'Paris', '75017', 2.29416, 48.879, 1);
+(11, 3, 'other', 'everyone', 'bio biologique', '2021-11-12', 'soleil', 'France', 'Paris', '75017', 2.29416, 48.879, 1),
+(13, 15, 'female', 'everyone', 'oikjuhg', '1992-05-28', 'voyage,cuisine,escalade', 'France', 'Paris', '75017', 2.31789, 48.884, 1),
+(46, 74, 'male', 'men', 'Doloribus dolorum et maxime voluptatem quibusdam.', '1965-08-04', 'soleil', 'RE', 'Le Tampon', '97422', -21.2831, 55.518, 1),
+(47, 75, 'female', 'everyone', 'Sit est aspernatur eum.', '1966-01-18', 'sieste', 'FR', 'Tours', '37261', 47.3948, 0.70398, 1),
+(48, 76, 'female', 'men', 'Ipsa in vitae impedit et vero possimus unde.', '1991-08-10', 'escalade', 'FR', 'Nanterre', '92050', 48.892, 2.20675, 1),
+(49, 77, 'male', 'men', 'Laborum vel fugit accusantium consequatur et non et.', '1927-04-02', 'soleil', 'FR', 'Nantes', '44109', 47.2173, -1.55336, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_sub`
+-- Structure de la table `user_sub`
 --
 
 CREATE TABLE IF NOT EXISTS `user_sub` (
@@ -202,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `visited`
+-- Structure de la table `visited`
 --
 
 CREATE TABLE IF NOT EXISTS `visited` (
@@ -210,10 +256,10 @@ CREATE TABLE IF NOT EXISTS `visited` (
   `id_user` int(11) NOT NULL,
   `id_visited` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `visited`
+-- Déchargement des données de la table `visited`
 --
 
 INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES
@@ -221,12 +267,16 @@ INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES
 (2, 3, 12),
 (3, 4, 3),
 (4, 3, 14),
-(5, 3, 11);
+(5, 3, 11),
+(6, 15, 15),
+(7, 15, 12),
+(8, 15, 3),
+(9, 15, 77);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vue_profile`
+-- Structure de la table `vue_profile`
 --
 
 CREATE TABLE IF NOT EXISTS `vue_profile` (
@@ -234,18 +284,21 @@ CREATE TABLE IF NOT EXISTS `vue_profile` (
   `id_user` int(11) NOT NULL,
   `vue` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `vue_profile`
+-- Déchargement des données de la table `vue_profile`
 --
 
 INSERT INTO `vue_profile` (`id`, `id_user`, `vue`) VALUES
-(1, 3, 15),
+(1, 3, 24),
 (2, 4, 36),
-(3, 11, 12),
+(3, 11, 15),
 (4, 14, 10),
-(5, 12, 3);
+(5, 12, 6),
+(6, 15, 40),
+(7, 74, 2),
+(8, 77, 4);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
