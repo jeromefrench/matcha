@@ -103,9 +103,9 @@ const changepass = require('./controler/change-passwd.js');
 const delpic = require('./controler/delPic.js');
 const makeProfilePic = require('./controler/make_profile_pic.js');
 const faker = require('./faker.js');
-const ip_location = require('./controler/ip_location.js');
 const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
+const fake = require('./controler/fake.js');
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
@@ -123,6 +123,7 @@ app.use('/public/photo', makeProfilePic);
 app.use('/faker', faker);
 app.use('/chat', chat);
 app.use('/dashboard', dashboard);
+app.use('/fake', fake);
 
 
 
