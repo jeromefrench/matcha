@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Generation Time: Nov 23, 2019 at 04:46 PM
+-- Generation Time: Nov 25, 2019 at 11:54 AM
 -- Server version: 5.7.28
 -- PHP Version: 7.2.23
 
@@ -27,6 +27,26 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `connection_log`
+--
+
+CREATE TABLE IF NOT EXISTS `connection_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `last_visit` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `connection_log`
+--
+
+INSERT INTO `connection_log` (`id`, `id_user`, `last_visit`) VALUES
+(1, 3, '2019-11-25');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `like_table`
 --
 
@@ -35,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `like_table` (
   `id_user` int(11) NOT NULL,
   `id_i_like` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `like_table`
@@ -43,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `like_table` (
 
 INSERT INTO `like_table` (`id`, `id_user`, `id_i_like`) VALUES
 (11, 4, 3),
-(14, 3, 14);
+(15, 3, 14);
 
 -- --------------------------------------------------------
 
@@ -138,8 +158,8 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `gender` enum('male','female','other','') DEFAULT NULL,
   `orientation` enum('men','women','everyone','') DEFAULT NULL,
   `bio` tinytext,
+  `birthday` date DEFAULT NULL,
   `interests` set('voyage','cuisine','escalade','equitation','sieste','soleil') DEFAULT NULL,
-  `age` int(11) DEFAULT NULL,
   `country` text,
   `city` text,
   `zip_code` decimal(10,0) DEFAULT NULL,
@@ -153,14 +173,14 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 -- Dumping data for table `user_info`
 --
 
-INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `interests`, `age`, `country`, `city`, `zip_code`, `longitude`, `latitude`, `completed`) VALUES
-(5, 4, 'male', 'women', 'my bio', 'equitation', NULL, '', '', '0', 0, 0, 1),
-(6, 10, 'female', 'men', '789451632', 'voyage,cuisine,escalade', NULL, '', '', '0', 0, 0, 1),
-(7, 11, 'female', 'men', 'Voluptate velit aut aut blanditiis voluptatum.', 'voyage', NULL, '', '', '0', 0, 0, 1),
-(8, 12, 'other', 'men', 'Sed doloribus voluptate velit maiores earum.', 'sieste', NULL, '', '', '0', 0, 0, 1),
+INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `birthday`, `interests`, `country`, `city`, `zip_code`, `longitude`, `latitude`, `completed`) VALUES
+(5, 4, 'male', 'women', 'my bio', NULL, 'equitation', '', '', '0', 0, 0, 1),
+(6, 10, 'female', 'men', '789451632', NULL, 'voyage,cuisine,escalade', '', '', '0', 0, 0, 1),
+(7, 11, 'female', 'men', 'Voluptate velit aut aut blanditiis voluptatum.', NULL, 'voyage', '', '', '0', 0, 0, 1),
+(8, 12, 'other', 'men', 'Sed doloribus voluptate velit maiores earum.', NULL, 'sieste', '', '', '0', 0, 0, 1),
 (9, 13, 'male', 'women', '', NULL, NULL, '', '', '0', 0, 0, 0),
-(10, 14, 'female', 'men', 'Labore neque eum voluptatibus ab laudantium.', 'escalade', NULL, '', '', '0', 0, 0, 1),
-(11, 3, 'male', 'women', 'bio biologique', 'cuisine', NULL, 'France', 'Paris', '75017', 2.31342, 48.8874, 1);
+(10, 14, 'female', 'men', 'Labore neque eum voluptatibus ab laudantium.', NULL, 'escalade', '', '', '0', 0, 0, 1),
+(11, 3, 'other', 'everyone', 'bio biologique', '2021-11-12', 'soleil', 'France', 'Paris', '75017', 2.29416, 48.879, 1);
 
 -- --------------------------------------------------------
 
@@ -190,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `visited` (
   `id_user` int(11) NOT NULL,
   `id_visited` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `visited`
@@ -199,7 +219,9 @@ CREATE TABLE IF NOT EXISTS `visited` (
 INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES
 (1, 42, 43),
 (2, 3, 12),
-(3, 4, 3);
+(3, 4, 3),
+(4, 3, 14),
+(5, 3, 11);
 
 -- --------------------------------------------------------
 
@@ -221,8 +243,8 @@ CREATE TABLE IF NOT EXISTS `vue_profile` (
 INSERT INTO `vue_profile` (`id`, `id_user`, `vue`) VALUES
 (1, 3, 15),
 (2, 4, 36),
-(3, 11, 11),
-(4, 14, 6),
+(3, 11, 12),
+(4, 14, 10),
 (5, 12, 3);
 COMMIT;
 
