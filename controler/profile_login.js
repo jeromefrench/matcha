@@ -1,6 +1,7 @@
 let bdd = require('../models/bdd_functions.js');
 let bdd_re = require('../models/research.js');
 let bdd_like = require('../models/like.js');
+var fk = require('../models/fake.js');
 const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {
@@ -32,7 +33,9 @@ router.route('/:login').get((req, res) => {
 								var date1 = new Date(user.birthday);
 								user.age = Math.floor((date.getTime() - date1.getTime()) / (1000*60*60*24*365));
 							}
-							res.render('profile.ejs', {session: req.session, user: user});
+							fk.IsReport(req.session.login, req.params.login, (result) => {
+								res.render('profile.ejs', {session: req.session, user: user, report: result});
+							});
 						});
 					});
 				});
