@@ -14,10 +14,11 @@ router.route('/').get((req, res) => {
 	//*************************************************************************
 	res.locals.title = "About You";
 	bdd_about.get_info_user(req.session.login, (result) => {
-		if (result != undefined) {
-			res.locals.infos = result[0];
-			console.log(res.locals.infos.birthday);
-			console.log(res.locals.infos);
+		console.log(req.session.login);
+		if (result[0] != undefined) {
+			// res.locals.infos = result[0];
+			console.log("info =========");
+			console.log(result);
 			res.locals.infos.birthday = res.locals.infos.birth;
 			console.log(res.locals.infos.birthday);
 

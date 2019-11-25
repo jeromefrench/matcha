@@ -14,7 +14,7 @@ exports.get_photo = function (login, callback){
 
 exports.get_info_user = function (login, callback){
 	bdd.get_id_user(login, (id_login) => {
-		var sql = "SELECT *, DATE_FORMAT(`birthday`, '%Y\\%m\\%d') as birth  FROM `user_info` WHERE `id_user` = ?";
+		var sql = "SELECT *, DATE_FORMAT(`birthday`, '%Y\\%m\\%d') as birth FROM `user_info` WHERE `id_user` = ?";
 		var todo = [id_login];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
