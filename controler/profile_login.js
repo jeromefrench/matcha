@@ -1,6 +1,7 @@
 let bdd = require('../models/bdd_functions.js');
 let bdd_re = require('../models/research.js');
 let bdd_like = require('../models/like.js');
+var bl = require('../models/block.js');
 var fk = require('../models/fake.js');
 const router = require('express').Router();
 
@@ -34,7 +35,10 @@ router.route('/:login').get((req, res) => {
 								user.age = Math.floor((date.getTime() - date1.getTime()) / (1000*60*60*24*365));
 							}
 							fk.IsReport(req.session.login, req.params.login, (result) => {
-								res.render('profile.ejs', {session: req.session, user: user, report: result});
+								bl.IsBlocked(req.session.login, req.params.login, (block) => {
+									user.block = block;
+									res.render('profile.ejs', {session: req.session, user: user, report: result});									
+								});
 							});
 						});
 					});

@@ -1,0 +1,11 @@
+<% if (block == false) { %>
+    <a href="/block/<%= login %>">
+        <div class="ui red button medium">
+            Block this user
+        </div>
+    </a>
+    <% }else{ %>
+        <div class="ui grey button medium">
+            Already blocked
+        </div>
+    <% } %>

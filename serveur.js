@@ -106,6 +106,7 @@ const faker = require('./faker.js');
 const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
+const block = require('./controler/block.js');
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
@@ -124,6 +125,7 @@ app.use('/faker', faker);
 app.use('/chat', chat);
 app.use('/dashboard', dashboard);
 app.use('/fake', fake);
+app.use('/block', block);
 
 
 
