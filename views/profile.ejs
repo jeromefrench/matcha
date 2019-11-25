@@ -34,7 +34,7 @@
 				<p>
 					<strong>Firsname:</strong> <%= user.fname %>   </br>
 					<strong>Lastname: </strong><%= user.lname %>   </br>
-					<strong>Location: </strong>missing   </br>
+					<strong>Location: </strong><%= user.city %>, <%= user.country %></br>
 					<strong>Popularity score: </strong><%- include('elements/popularite.ejs', {pop: session.pop}); %></br>
 					<strong>Age: </strong><%= user.age %></br>
 				</p>
