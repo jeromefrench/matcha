@@ -16,7 +16,7 @@ router.route('/').get((req, res) => {
 	bdd_about.get_info_user(req.session.login, (result) => {
 		console.log(req.session.login);
 		if (result[0] != undefined) {
-			// res.locals.infos = result[0];
+			res.locals.infos = result[0];
 			console.log("info =========");
 			console.log(result);
 			res.locals.infos.birthday = res.locals.infos.birth;
@@ -129,7 +129,7 @@ router.route('/').post((req, res) => {
 				bdd_about.update_info_user(id_user, gender, orientation, bio, interests, birthday);
 				addPicture(id_user, req, rootPath);
 			} else {
-				bdd_about.insert_info_user(id_user, gender, orientation, bio, interests, birthday)
+				bdd_about.insert_info_user(id_user, gender, orientation, bio, interests, birthday);
 				addPicture(id_user, req, rootPath);
 			}
 			//*****************************************************************
@@ -167,7 +167,7 @@ router.route('/').post((req, res) => {
 							console.log("latitude=> " + req.body.latitude);
 							console.log("longitude=> " + req.body.longitude);
 							//on enregistre dans la base de donne
-							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+							bdd_about.insert_info_user_localalisation(req.session.login, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
 								// req.session.localisation = localisation;
 								res.redirect('/about-you');
 							})
@@ -218,7 +218,7 @@ router.route('/').post((req, res) => {
 							localisation['zipcode'] = place.components.postcode;
 							localisation['latitude'] = place.geometry.lat;
 							localisation['longitude'] = place.geometry.lng;
-							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+							bdd_about.insert_info_user_localalisation(req.session.login, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
 								// req.session.localisation = localisation;
 								res.redirect('/about-you');
 							})
@@ -274,7 +274,7 @@ router.route('/').post((req, res) => {
 							localisation['latitude'] = response.lat;
 							localisation['longitude'] = response.lon;
 
-							bdd_about.insert_info_user_localalisation(id_user, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
+							bdd_about.insert_info_user_localalisation(req.session.login, localisation['country'], localisation['city'], localisation['zipcode'], localisation['longitude'], localisation['latitude'], () => {
 								// req.session.localisation = localisation;
 								res.redirect('/about-you');
 							})

@@ -27,6 +27,11 @@ router.route('/:login').get((req, res) => {
 							else {
 								user.match = false;
 							}
+							if (user.birthday){
+								var date = new Date();
+								var date1 = new Date(user.birthday);
+								user.age = Math.floor((date.getTime() - date1.getTime()) / (1000*60*60*24*365));
+							}
 							res.render('profile.ejs', {session: req.session, user: user});
 						});
 					});

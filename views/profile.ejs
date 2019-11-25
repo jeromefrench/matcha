@@ -36,7 +36,7 @@
 					<strong>Lastname: </strong><%= user.lname %>   </br>
 					<strong>Location: </strong>missing   </br>
 					<strong>Popularity score: </strong><%- include('elements/popularite.ejs', {pop: session.pop}); %></br>
-					<strong>Age: </strong>missing </br>
+					<strong>Age: </strong><%= user.age %></br>
 				</p>
 			</div>
 			<div class="ui raised segment">

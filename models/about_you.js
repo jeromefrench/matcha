@@ -23,13 +23,44 @@ exports.get_info_user = function (login, callback){
 	});
 }
 
-exports.insert_info_user_localalisation = function (id_user, country, city, zip_code, longitude, latitude, callback){
-	var sql = "UPDATE `user_info` SET `country` = ?, `city` = ?, `zip_code` = ?, `longitude` = ?, `latitude` = ? WHERE `id_user` = ?";
-	var todo = [country, city, zip_code, longitude, latitude, id_user];
-	conn.connection.query(sql, todo, (error, result) => {
-		if (error) throw error;
-		callback();
-	})
+function get_info_user(login, callback){
+	bdd.get_id_user(login, (id_login) => {
+		var sql = "SELECT *, DATE_FORMAT(`birthday`, '%Y\\%m\\%d') as birth FROM `user_info` WHERE `id_user` = ?";
+		var todo = [id_login];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback(result);
+		});
+	});
+}
+
+exports.insert_info_user_localalisation = function (login, country, city, zip_code, longitude, latitude, callback){
+	get_info_user(login, (user) => {
+		bdd.get_id_user(login, (id_user) => {
+			if (user[0] == undefined){
+				var sql = "INSERT INTO `user_info` (`id_user`, `country`, `city`, `zip_code`, `longitude`, `latitude`) VALUES (?, ?, ?, ?, ?, ?)";
+				var todo = [id_user, country, city, zip_code, longitude, latitude];
+				conn.connection.query(sql, todo, (error, result) => {
+					if (error) throw error;
+					callback();
+				});
+			}
+			else{
+				var sql = "UPDATE `user_info` SET `country` = ?, `city` = ?, `zip_code` = ?, `longitude` = ?, `latitude` = ? WHERE `id_user` = ?";
+				var todo = [country, city, zip_code, longitude, latitude, id_user];
+				conn.connection.query(sql, todo, (error, result) => {
+					if (error) throw error;
+					callback();
+				});
+			}
+		});
+	});
+	// var sql = "UPDATE `user_info` SET `country` = ?, `city` = ?, `zip_code` = ?, `longitude` = ?, `latitude` = ? WHERE `id_user` = ?";
+	// var todo = [country, city, zip_code, longitude, latitude, id_user];
+	// conn.connection.query(sql, todo, (error, result) => {
+	// 	if (error) throw error;
+	// 	callback();
+	// })
 }
 
 exports.insert_info_user = function (id_user, gender, orientation, bio, interests, birthday){
@@ -55,7 +86,10 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 	}
 	else {
 		inter = interests;
-		var todo = [id_user, gender, orientation, bio, inter];
+		if (birthday == 'undefined--undefined') {birthday = null;}
+		console.log("JFIWGVARJGZROBFGJXDHGRF hello bb");
+		console.log(birthday);
+		var todo = [id_user, gender, orientation, bio, inter, birthday];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
 			isCompleted(id_user, gender, orientation, bio, interests);
@@ -82,6 +116,7 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 	var sql = "UPDATE `user_info` SET `gender` = ?, `orientation` = ?, `bio` = ?, `interests` = ?, `birthday` = ?  WHERE `id_user` = ?";
 	inter = "";
 	itemsProcessed = 0;
+	if (birthday == 'undefined--undefined'){birthday = null;}
 	if (interests !=undefined && interests != null && Array.isArray(interests)){
 		interests.forEach(function(interest) {
 			if (inter == ""){
