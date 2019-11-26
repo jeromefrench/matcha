@@ -1,5 +1,6 @@
 let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
+var bdd1 = require('../models/bdd_functions.js');
 const router = require('express').Router();
 
 
@@ -10,11 +11,11 @@ router.route('/').get((req, res) => {
 	req.session.id = 15;
 
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin){
-		console.log("on fait une recherche avec");
-		console.log(req.session.search);
-		bdd.search(req.session.search, (result) => {
-			res.locals.users = result;
-			res.render('research.ejs', {session: req.session});
+		bdd1.recover_user(req.session.login, (user) => {
+			bdd.search(user[0], req.session.search, (result) => {
+				res.locals.users = result;
+				res.render('research.ejs', {session: req.session});
+			});	
 		});
 	}
 	else {
@@ -23,6 +24,8 @@ router.route('/').get((req, res) => {
     			res.render('research.ejs', {session: req.session});
 			}else{
 				res.locals.users = all_user;
+				console.log("hello");
+				console.log(res.locals.users);
 				res.render('research.ejs', {session: req.session});
     		}
 		});

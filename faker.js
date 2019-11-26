@@ -31,14 +31,13 @@ router.route('/').get((req, res) => {
 			var bio = faker.lorem.sentence();
 			var interests = faker.random.arrayElement(["voyage","cuisine","escalade","equitation","soleil","sieste"]);
 			var birthdate = faker.date.between('1920-01-01', '2001-01-01');
-			var last_log = faker.date.between('2017-01-01', faker.date.recent());
 			var city = user.address.city;
 			
 			var info_city = cities.filter(town => { return town.name.match('^' + city + '$')});
 			var country = info_city[0].country;
 			var zipcode = info_city[0].muniSub;
-			var latitude = info_city[0].loc.coordinates[0];
-			var longitude = info_city[0].loc.coordinates[1];
+			var latitude = info_city[0].loc.coordinates[1];
+			var longitude = info_city[0].loc.coordinates[0];
 			
 			bdd_pic.insert_info_user(id_user, gender, orientation, bio, interests, birthdate);
 			bdd_pic.insert_info_user_localalisation(login, country, city, zipcode, longitude, latitude, () => {});

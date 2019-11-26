@@ -1,6 +1,4 @@
 var conn = require('./connection_bdd.js');
-var mailer = require("nodemailer");
-var emoji = require('node-emoji');
 
 exports.IsLoginNumMatch = function (login, num, cat, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
@@ -36,11 +34,10 @@ exports.insert_message = function (content, date){
 }
 
 exports.recover_user = function (login, callback){
-	var sql = "SELECT * FROM `user` WHERE `login` LIKE ?";
+	var sql = "SELECT * FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, results) {
 		if (err) throw err;
-		console.log(results[0].login);
 		callback(results);
 	});
 }
