@@ -24,8 +24,8 @@ router.route('/').get((req, res) => {
     			res.render('research.ejs', {session: req.session});
 			}else{
 				res.locals.users = all_user;
-				console.log("hello");
-				console.log(res.locals.users);
+				// console.log("hello");
+				// console.log(res.locals.users);
 				res.render('research.ejs', {session: req.session});
     		}
 		});
@@ -56,10 +56,6 @@ router.route('/').post((req, res) => {
 	req.session.search.interet = interet;  //regular expression
 	req.session.search.popularite = popularite;  //regular expression
 	res.redirect('/research');
-
-	bdd.search(req.session.search, (result) => {
-		console.log(result);
-	});
 });
 
 
