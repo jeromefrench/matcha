@@ -77,9 +77,15 @@ margin-bottom:20px;
   	$( function() {
     	$( "#age #slider-range" ).slider({
       		range: true,
-      		min: 0,
+      		min: 18,
       		max: 99,
-      		values: [ 75, 99 ],
+      		values: [ 
+				  <% if (session.search && session.search.age_debut) { %>
+					<%= session.search.age_debut %>
+					<% }else{ %> 
+						18
+						<% } %>
+						, 42 ],
       		slide: function( event, ui ) {
         		$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
       		}

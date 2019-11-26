@@ -6,7 +6,8 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	itemsProcessed = 0;
-
+	req.session.login = "bbchat";
+	req.session.id = 15;
 
 	if (req.session.search){
 		console.log("on fait une recherche avec");
@@ -60,22 +61,26 @@ router.route('/').get((req, res) => {
 
 
 router.route('/').post((req, res) => {
-	//console.log(req.body);
+	console.log(req.body);
 
+	var tab = req.body.age.match(/[0-9]{2}/g);  //regular expression pour bebe chat
+	age_debut = tab[0];
+	age_fin = tab[1];  //regular expression
+	tab = req.body.distance.match(/^[0-9]*/g);
+	distance = tab[0];  //regular expression
+	tab = req.body.inter.match(/^[0-9]*/g);
+	interet = tab[0];  //regular expression
+	tab = req.body.popularite.match(/^[0-5]/g);
+	popularite = tab[0];  //regular expression
 
-	age_debut = "";  //regular expression pour bebe chat
-	age_find = "";  //regular expression
-	distance = "";  //regular expression
-	interet = "";  //regular expression
-	popularite = "";  //regular expression
-
+// console.log(popularite);
 
 	req.session.search = new Object();
-	req.session.search.age_debut = "18";
-	req.session.search.age_find = "25";  //regular expression
-	req.session.search.distance = "200";  //regular expression
-	req.session.search.interet = "2";  //regular expression
-	req.session.search.popularite = "2";  //regular expression
+	req.session.search.age_debut = age_debut;
+	req.session.search.age_find = age_fin;  //regular expression
+	req.session.search.distance = distance;  //regular expression
+	req.session.search.interet = interet;  //regular expression
+	req.session.search.popularite = popularite;  //regular expression
 	res.redirect('/research');
 
 });
