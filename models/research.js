@@ -1,14 +1,6 @@
 var conn = require('./connection_bdd.js');
 let bdd = require('../models/bdd_functions.js');
-
-// conn.connection.connect(function(err) {
-// 	if (err) {
-// 	  	console.error('error connecting: ' + err.stack);
-// 	  	return;
-// 	}
-// 	console.log('connected as id ' + conn.connection.threadId);
-// });
-
+var moment = require('moment');
 
 exports.get_user = function (login, callback){
 	// SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1
@@ -40,4 +32,19 @@ exports.get_user_profile = function (login, callback){
 			callback(result);
 		});
 	})
+}
+
+exports.search = function (search, callback){
+	var date_debut = moment().subtract(search.age_debut, 'years').calendar();
+	var date = new Date(date_debut);
+	date_debut = moment(date).format('YYYY-MM-DD');
+	var date_fin = moment().subtract(search.age_fin, 'years').calendar();
+	date = new Date(date_fin);
+	date_fin = moment(date).format('YYYY-MM-DD');
+	var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` WHERE `birthday` BETWEEN ? AND ?";
+	var todo = [date_fin, date_debut];
+	conn.connection.query(sql, todo, (err, result) => {
+		if (err) throw err;
+		callback(result);
+	});
 }

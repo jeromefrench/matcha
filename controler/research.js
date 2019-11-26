@@ -9,53 +9,24 @@ router.route('/').get((req, res) => {
 	req.session.login = "bbchat";
 	req.session.id = 15;
 
-	if (req.session.search){
+	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin){
 		console.log("on fait une recherche avec");
 		console.log(req.session.search);
-
-
-
-		//faire la  recherche avec ces critere
+		bdd.search(req.session.search, (result) => {
+			res.locals.users = result;
+			res.render('research.ejs', {session: req.session});
+		});
 	}
-
-
-
-	bdd.get_user(req.session.login, (all_user) => {
-		// console.log("ici");
-		// console.log(all_user);
-		if (all_user[0] == undefined){
-    		res.render('research.ejs', {session: req.session});
-		}else{
-			all_user.forEach(function (user){
-				// console.log("ici");
-				bdd_like.doILike(req.session.login, user.login, function (result){
-					// console.log("ici");
-					user.do_i_like = result;
-					bdd_like.doesItLikeMe(req.session.login, user.login, function (result){
-						// console.log("ici");
-						user.does_it_like_me = result;
-						if (user.do_i_like && user.does_it_like_me){
-							user.match = true;
-						}
-						else {
-							user.match = false;
-						}
-						itemsProcessed++;
-						// console.log(all_user.length);
-						// console.log(itemsProcessed);
-						if(itemsProcessed === all_user.length) {
-							res.locals.users = all_user;
-						// console.log("iciaaa");
-							// console.log(res.locals.users);
-							res.render('research.ejs', {session: req.session});
-							// req.session.search = undefined;
-    					}
-					});
-				})
-			});
-
-		}
-	});
+	else {
+		bdd.get_user(req.session.login, (all_user) => {
+			if (all_user[0] == undefined){
+    			res.render('research.ejs', {session: req.session});
+			}else{
+				res.locals.users = all_user;
+				res.render('research.ejs', {session: req.session});
+    		}
+		});
+	}
 });
 
 
@@ -83,6 +54,9 @@ router.route('/').post((req, res) => {
 	req.session.search.popularite = popularite;  //regular expression
 	res.redirect('/research');
 
+	bdd.search(req.session.search, (result) => {
+		console.log(result);
+	});
 });
 
 
