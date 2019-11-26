@@ -74,17 +74,25 @@ margin-bottom:20px;
 </style>
 
 <script>
+	var age_fin = <% if (session.search && session.search.age_fin) { %>
+					<%= session.search.age_fin %>
+					<% }else{ %> 
+					<%= 42 %>
+					<% } %>
+
 	var age_debut = <% if (session.search && session.search.age_debut) { %>
 					<%= session.search.age_debut %>
 					<% }else{ %> 
 					<%= 18 %>
 					<% } %>
+
+
   	$( function() {
     	$( "#age #slider-range" ).slider({
       		range: true,
       		min: 18,
       		max: 99,
-      		values: [ age_debut, 42 ],
+      		values: [ age_debut, age_fin ],
       		slide: function( event, ui ) {
         		$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
       		}
@@ -96,10 +104,15 @@ margin-bottom:20px;
 
 
 <script>
+	var distance = 	<% if (session.search && session.search.distance) { %>
+					<%= session.search.distance %>
+					<% }else{ %> 
+					<%= 42 %>
+					<% } %>
   	$( function() {
     	$( "#slider-range-min" ).slider({
       		range: "min",
-      		value: 37,
+      		value: distance,
       		min: 1,
       		max: 700,
       		slide: function( event, ui ) {
@@ -112,9 +125,14 @@ margin-bottom:20px;
 
 
 <script>
+	var interet = <% if (session.search && session.search.interet) { %>
+				<%= session.search.interet %>
+				<% }else{ %> 
+				<%= 2 %>
+				<% } %>
   	$( function() {
     	$( "#slider-inter" ).slider({
-      		value:2,
+      		value:interet,
       		min: 0,
       		max: 5,
       		step: 1,
@@ -128,9 +146,14 @@ margin-bottom:20px;
 
 
 <script>
+	var pop = <% if (session.search && session.search.popularite) { %>
+				<%= session.search.popularite %>
+				<% }else{ %> 
+				<%= 3 %>
+				<% } %>
   	$( function() {
     	$( "#slider-popularite" ).slider({
-      		value:2,
+      		value:pop,
       		min: 0,
       		max: 5,
       		step: 1,

@@ -16,7 +16,6 @@ router.route('/').get((req, res) => {
 
 
 		//faire la  recherche avec ces critere
-		// req.session.search = undefined;
 	}
 
 
@@ -48,7 +47,8 @@ router.route('/').get((req, res) => {
 							res.locals.users = all_user;
 						// console.log("iciaaa");
 							// console.log(res.locals.users);
-    						res.render('research.ejs', {session: req.session});
+							res.render('research.ejs', {session: req.session});
+							// req.session.search = undefined;
     					}
 					});
 				})
@@ -77,7 +77,7 @@ router.route('/').post((req, res) => {
 
 	req.session.search = new Object();
 	req.session.search.age_debut = age_debut;
-	req.session.search.age_find = age_fin;  //regular expression
+	req.session.search.age_fin = age_fin;  //regular expression
 	req.session.search.distance = distance;  //regular expression
 	req.session.search.interet = interet;  //regular expression
 	req.session.search.popularite = popularite;  //regular expression
