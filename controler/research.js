@@ -16,7 +16,7 @@ router.route('/').get((req, res) => {
 
 
 		//faire la  recherche avec ces critere
-		req.session.search = undefined;
+		// req.session.search = undefined;
 	}
 
 

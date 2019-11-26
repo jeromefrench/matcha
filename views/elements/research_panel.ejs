@@ -74,18 +74,17 @@ margin-bottom:20px;
 </style>
 
 <script>
+	var age_debut = <% if (session.search && session.search.age_debut) { %>
+					<%= session.search.age_debut %>
+					<% }else{ %> 
+					<%= 18 %>
+					<% } %>
   	$( function() {
     	$( "#age #slider-range" ).slider({
       		range: true,
       		min: 18,
       		max: 99,
-      		values: [ 
-				  <% if (session.search && session.search.age_debut) { %>
-					<%= session.search.age_debut %>
-					<% }else{ %> 
-						18
-						<% } %>
-						, 42 ],
+      		values: [ age_debut, 42 ],
       		slide: function( event, ui ) {
         		$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
       		}
