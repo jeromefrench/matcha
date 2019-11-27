@@ -1,7 +1,7 @@
 
+	<form method="POST" action="/research" class="ui form">
 
 <div id="research" class="ui raised  segment">
-	<form method="POST" action="/research" class="ui form">
 		<div id="age">
 			<p>
   				<label for="amount">Age range:<span id="add-space"><span></label>
@@ -41,10 +41,27 @@
     		<input type="submit" class="ui primary button" value="Research">
     	</div>
 			</br>
-	</form>
 </div>
 
+<div>
+		<div class="ui selection dropdown">
+			<input type="hidden" name="sortby">
+			<i class="dropdown icon"></i>
+			<div class="default text">Sort by</div>
+			<div class="menu">
+				<select name="sortby" class="ui dropdown">
+					<option hidden disabled selected value> -- select an option -- </option>
+					<option data-value="0"<% if (locals.infos && locals.infos.tri == "Age") {%> <%= selected="selected"%> <%}%> value="Age">Age</option>
+					<option data-value="1"<% if (locals.infos && locals.infos.tri == "Popularity") {%> <%= selected="selected"%> <%}%> value="Popularity">Popularity</option>
+					<option data-value="2"<% if (locals.infos && locals.infos.tri == "Distance") {%> <%= selected="selected"%> <%}%> value="Distance">Distance</option>
+					<option data-value="3"<% if (locals.infos && locals.infos.tri == "Interest") {%> <%= selected="selected"%> <%}%> value="Interest">Interest</option>
+					<option data-value="4"<% if (locals.infos && locals.infos.tri == "Match Score") {%> <%= selected="selected"%> <%}%> value="Match Score">Match Score</option>
+				</select>
+			</div>
+		</div>
+	</div>
 
+</form>
 
 
 <style>

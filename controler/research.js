@@ -7,8 +7,8 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	itemsProcessed = 0;
-	// req.session.login = "bbchat";
-	// req.session.id = 15;
+	req.session.login = "bbchat";
+	req.session.id = 15;
 
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
