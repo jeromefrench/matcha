@@ -5,20 +5,36 @@
 
 <!-- //jai commente cette lib car ca me fait planter -->
 <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+
+
+
+
+
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
 <script>
 
-var presence = document.querySelector('#presence');
+//var presence = document.querySelector('#presence');
 
-if (presence){
-	var socket = io.connect('http://localhost:8080');
-	socket.on('connect', () => {
-		console.log('Je suis connectée');
-		socket.emit('identify', {
-			token: presence.dataset.token
-		})
-	});
-}
+//if (presence){
+	//var socket = io.connect('http://localhost:8080');
+	//socket.on('connect', () => {
+		//console.log('Je suis connectée');
+		//socket.emit('identify', {
+			//token: presence.dataset.token
+		//})
+	//});
+//}
+
+
+
+
+
+
+
+
+
 	// socket.on('message', function (message) {
 	// 	alert('Le serveur a un message pour vous : ' + message);
 	// })

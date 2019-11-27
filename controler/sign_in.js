@@ -4,6 +4,9 @@ const router = require('express').Router();
 // var bcrypt = require('bcrypt');
 var jwtUtil = require('../utils/jwt_util.js');
 
+
+
+
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
 	res.render('sign-in.ejs', { session: req.session});
@@ -38,6 +41,16 @@ router.route('/').post((req, res) => {
 						req.session.token = jwtUtil.generateTokenForUser(userId);
 						console.log(req.session.token);
 					});
+
+
+
+					// grab the id from the request
+  					const socketId = req.body.message.socketId
+					const senderSocket = io.sockets.connected[socketId]
+					if (senderSocket){
+  						socket.join(login);
+					}
+
 				}
 				else {
 					// console.log("Password dont Match");
