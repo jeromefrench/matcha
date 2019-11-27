@@ -167,3 +167,42 @@ exports.countLike = function (login, callback){
 		});
 	});
 }
+
+exports.addLikeVue = function(id_user, countLike, nbVue, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `popularite` WHERE `id_user` = ?";
+	var todo = [id_user];
+	var pop = Math.round((countLike / nbVue) * 5);
+	conn.connection.query(sql, todo, (err, result) => {
+		if (err) throw err;
+		if (result[0].count == 0){
+			sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
+			todo = [id_user, countLike, nbVue, pop];
+			conn.connection.query(sql, todo, (err) => {
+				if (err) throw err;
+				console.log("pop inserted");
+				sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
+				todo = [id_user];
+				conn.connection.query(sql, todo, (err, result) => {
+					if (err) throw err;
+					console.log(result[0]);
+					callback(result[0].pop);
+				});
+			});
+		}
+		else{
+			sql = "UPDATE `popularite` SET `nb_like` = ? AND `nb_vue` = ? AND `pop` = ? WHERE `id_user` = ?";
+			todo = [countLike, nbVue, pop, id_user];
+			conn.connection.query(sql, todo, (err) => {
+				if (err) throw err;
+				console.log('pop updated');
+				sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
+				todo = [id_user];
+				conn.connection.query(sql, todo, (err, result) => {
+					if (err) throw err;
+					console.log(result[0]);
+					callback(result[0].pop);
+				});
+			});
+		}
+	});
+}

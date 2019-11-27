@@ -42,6 +42,7 @@ router.route('/').get((req, res) => {
 			bdd_pic.insert_info_user(id_user, gender, orientation, bio, interests, birthdate);
 			bdd_pic.insert_info_user_localalisation(login, country, city, zipcode, longitude, latitude, () => {});
 			bdd2.insert_log(id_user);
+			bdd2.add_fakeVueLike(id_user);
 		});
 		res.send("<p>Your on faker page");
 	});

@@ -50,3 +50,26 @@ exports.insert_log = function (id_user){
 		if (error) throw error;
 	});
 }
+
+function getRandomInt(max){
+	return Math.floor(Math.random() * Math.floor(max));
+}
+
+exports.add_fakeVueLike = function (id_user){
+	var vue = getRandomInt(1000);
+	if (vue == 0){vue = 1;}
+	var like = getRandomInt(vue);
+	var pop = (like / vue) * 5;
+	var sql = "INSERT INTO `vue_profile` (`id_user`, `vue`) VALUES (?, ?)";
+	var todo = [id_user, vue];
+	conn.connection.query(sql, todo, (err) => {
+		if (err) throw err;
+		console.log("fake vue inserted");
+		sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
+		todo = [id_user, like, vue, pop];
+		conn.connection.query(sql, todo, (err) => {
+			if (err) throw err;
+			console.log("fake pop inserted");
+		});
+	});
+}
