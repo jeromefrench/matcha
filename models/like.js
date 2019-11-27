@@ -184,7 +184,6 @@ exports.addLikeVue = function(id_user, countLike, nbVue, callback){
 				todo = [id_user];
 				conn.connection.query(sql, todo, (err, result) => {
 					if (err) throw err;
-					console.log(result[0]);
 					callback(result[0].pop);
 				});
 			});
@@ -199,7 +198,6 @@ exports.addLikeVue = function(id_user, countLike, nbVue, callback){
 				todo = [id_user];
 				conn.connection.query(sql, todo, (err, result) => {
 					if (err) throw err;
-					console.log(result[0]);
 					callback(result[0].pop);
 				});
 			});

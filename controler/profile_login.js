@@ -18,7 +18,6 @@ router.route('/:login').get((req, res) => {
 				bdd_like.doesItLikeMe(req.session.login, user.login, function (result){
 					user.does_it_like_me = result;
 					bdd_like.countLike(req.params.login, (count_like) => {
-						// req.session.pop = Math.round((count_like / nbVue) * 5);
 
 						//ajouter add_visited_on_profile
 						bdd_like.add_visited_profile(req.session.login, req.params.login, (callback) => {

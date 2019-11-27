@@ -10,10 +10,11 @@ router.route('/').get((req, res) => {
 	req.session.login = "bbchat";
 	req.session.id = 15;
 
-	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin){
+	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
 			bdd.search(user[0], req.session.search, (result) => {
 				res.locals.users = result;
+			
 				res.render('research.ejs', {session: req.session});
 			});	
 		});
@@ -24,7 +25,7 @@ router.route('/').get((req, res) => {
     			res.render('research.ejs', {session: req.session});
 			}else{
 				res.locals.users = all_user;
-				// console.log("hello");
+				console.log("hello");
 				// console.log(res.locals.users);
 				res.render('research.ejs', {session: req.session});
     		}
