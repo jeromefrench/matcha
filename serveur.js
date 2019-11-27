@@ -12,26 +12,33 @@ var server = app.listen(8080);
 var connection = [];
 const fileUpload = require('express-fileupload');
 
-var socket = require('socket.io');
-var io = socket(server);
-var jwt = require('jsonwebtoken');
+var io = require('socket.io')(server);
 
 
-console.log("my socket server is running");
-io.sockets.on('connection', newConnection);
+// var socket = require('socket.io');
+// var io = socket(server);
+// var jwt = require('jsonwebtoken');
 
-function newConnection(socket){
-	console.log("un utilisateur s'est connecté");
-	socket.on('identify', ({token}) => {
-		try {
-			var decoded = jwt.verify(token, JWT_SIGN_SECRET, {
-				algorithms: ['HS256']
-			})
-			console.log(decoded);
-		} catch (e) {
-			console.error(e.message);
-		}
-	});
+
+// console.log("my socket server is running");
+// io.sockets.on('connection', newConnection);
+
+// function newConnection(socket){
+// 	console.log("un utilisateur s'est connecté");
+// 	socket.on('identify', ({token}) => {
+// 		try {
+// 			var decoded = jwt.verify(token, JWT_SIGN_SECRET, {
+// 				algorithms: ['HS256']
+// 			})
+// 			console.log(decoded);
+// 		} catch (e) {
+// 			console.error(e.message);
+// 		}
+// 	});
+
+
+
+
 	// socket.emit('message', 'Vous etes bien connecte !');
 	// socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
 	// socket.on('petit_nouveau', function(pseudo){
@@ -41,7 +48,10 @@ function newConnection(socket){
 	// 	console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
 
 	// })
-}
+
+
+
+// }
 
 // function newConnection(socket){
 // 	console.log("new connection: " + socket.id);
@@ -59,6 +69,17 @@ function newConnection(socket){
 //moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
 //MIDDLE WARES*****************************************************************
+
+
+app.use(function(req,res,next){
+req.io = io;
+next();
+})
+
+io.on('connection', socket => {
+	socket.emit('id', socket.id);  // send echa clien their socket id
+})
+
 app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
@@ -70,9 +91,9 @@ app.use(session({
 }));
 app.use(require('./middlewares/flash'));
 app.use(fileUpload({
-		useTempFiles : true,
-		tempFileDir : __dirname+'/public/tmp',
-		createParentPath : true
+	useTempFiles : true,
+	tempFileDir : __dirname+'/public/tmp',
+	createParentPath : true
 }));
 
 //pour avoir les ip
