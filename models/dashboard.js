@@ -24,10 +24,10 @@ exports.get_user_they_like_me = function (login, callback){
 	})
 }
 
-//probleme
 exports.get_user_my_match = function (login, callback){
+	var i = 0;
 	bdd.get_id_user(login, (id_user) => {
-		var sql = " SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`like_table` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_i_like` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1 AND `docker`.`like_table`.`id_user` = ? OR `docker`.`like_table`.`id_i_like` = ?";
+		var sql = "SELECT * FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
 		var todo = [id_user, id_user];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
