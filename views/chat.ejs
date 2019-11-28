@@ -3,16 +3,11 @@
 <div class="ui comments">
 	<h3 class="ui dividing header">Chat - <%= locals.my_login  %> with <%= locals.the_login_i_chat %></h3>
 
-
 	<% if (locals.messages){ %>
-
 	<% locals.messages.forEach(function(message) {  %>
 		<%- include('elements/chat_message', {message: message});  %>
 	<% });  %>
-
 <% } %>
-
-
 
 
 <% include elements/chat_send_form %>
@@ -22,12 +17,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script>
+
+	var $id = <%= locals.the_login_i_chat; %>
+
+	var $chat = $('#chat');
+	var $message_area = $('#message_area');
+
+	$chat.submit(function(e){
+		e.preventDefault();
+		socket.broadcast.to($id).emit('new_message', $message_area.value());
+	});
+
+
 	var socket = io.connect('http://localhost:8080');
 	socket.on('connect', () => {
 		console.log('Je suis connectée');
-
-
+		//on emet les messages a la room = login
+		socket.on('new_message', (message) => {
+			console.log(message);
 		})
+
+	})
 </script>
 
 <% include elements/footer %>

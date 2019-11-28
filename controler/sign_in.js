@@ -2,13 +2,14 @@ let si = require('../models/sign_in.js');
 var bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
 // var bcrypt = require('bcrypt');
-var jwtUtil = require('../utils/jwt_util.js');
+// var jwtUtil = require('../utils/jwt_util.js');
 
-
-
+const jwt = require('jsonwebtoken');
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
+	res.locals.jwtToken = req.session.jwtToken;
+	req.session.jwtToken = undefined;
 	res.render('sign-in.ejs', { session: req.session});
 });
 
@@ -38,26 +39,29 @@ router.route('/').post((req, res) => {
 						req.session.logon = true;
 						req.session.login = login;
 						req.session.vpass = 0;
-						req.session.token = jwtUtil.generateTokenForUser(userId);
+						// req.session.token = jwtUtil.generateTokenForUser(userId);
 						console.log(req.session.token);
+
+
+					const user = {
+    					id: userId, 
+    					username: login,
+    					email: 'brad@gmail.com'
+  					}
+					let jwtToken = jwt.sign(user, 'secretkey');
+					req.session.jwtToken = jwtToken;
+					res.redirect('/sign-in');
+
+
 					});
-
-
-
-					// grab the id from the request
-  					const socketId = req.body.message.socketId
-					const senderSocket = io.sockets.connected[socketId]
-					if (senderSocket){
-  						socket.join(login);
-					}
 
 				}
 				else {
 					// console.log("Password dont Match");
 					req.session.vpass = 2;
 					req.session.logon = false;
+					res.redirect('/sign-in');
 				}
-				res.redirect('/sign-in');
 			});
 		}
 	})

@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 //************************************
 
 const expressip = require('express-ip');
@@ -13,6 +14,7 @@ var connection = [];
 const fileUpload = require('express-fileupload');
 
 var io = require('socket.io')(server);
+var cookieParser = require('cookie-parser');
 
 
 // var socket = require('socket.io');
@@ -72,12 +74,8 @@ app.set('view engine', 'ejs'); //set le template engine pour express
 
 
 app.use(function(req,res,next){
-req.io = io;
-next();
-})
-
-io.on('connection', socket => {
-	socket.emit('id', socket.id);  // send echa clien their socket id
+	req.io = io;
+	next();
 })
 
 app.use('/assets', express.static('public'));
@@ -104,6 +102,51 @@ app.use(expressip().getIpInfoMiddleware);
 
 const requestIp = require('request-ip');
 app.use(requestIp.mw())
+
+app.use(cookieParser());
+
+// app.use(function (req, res, next) {
+//   	console.log('Time:', Date.now())
+//   	next()
+// })
+
+ io.on('connection', socket => {
+	console.log("on a une connection");
+
+
+	 socket.on('identify', (data) => {
+	 	 // console.log(data.token)
+		 if (data.token){
+		 	 jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
+		 	 	 if (err){
+		 	 	 	 console.log("token pas valid");
+		 	 	 }else{
+		 	 	 	 console.log("token valid");
+		 	 	 	 console.log(decoded);
+		 	 	 }
+		 	 });
+		 }
+	 })
+
+
+	 // 	client.on('register', handleRegister);
+	 // 	client.on('join', handleJoin);
+	 // 	client.on('message', handleMessage);
+	 // 	// res.cookie('cookie_id_socket' , socket.id)
+	 // 	// socket.emit('id', req.session.socket_id);  // send echa clien their socket id
+ })
+
+
+function handleRegister(socket){
+	console.log(socket.id);
+}
+
+function handleJoin(){
+}
+
+
+function handleMessage(){
+}
 
 
 

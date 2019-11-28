@@ -1,4 +1,38 @@
 <% include elements/header %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+<script>
+	<% if(locals.jwtToken) { %>
+				console.log('<%= locals.jwtToken %>');
+	<% } else { %>
+				console.log("pas de locals");
+	<% } %>
+    	localStorage.setItem('Thetoken', "<%= locals.jwtToken %>"); // <- setup token into localStorage, (but i think it's not good place for that, and would be better get token with another authorization request)
+    //localStorage.setItem('Mytoken', '<%= JSON.stringify({"salut":"salut toi"}) %>'); // <- setup token into localStorage, (but i think it's not good place for that, and would be better get token with another authorization request)
+	var test = localStorage.getItem('Thetoken');
+	console.log("le super token");
+	console.log(test);
+
+
+	var socket = io.connect('http://localhost:8080');
+
+	socket.on('connect', () => {
+		console.log("je suis connecter");
+		socket.emit('identify', {
+			token: test
+		});
+	});
+	console.log(test);
+
+
+
+
+</script>
+
+
+
+
 <h1>Sign In</h1>
 <form method="POST" action="/sign-in" class="ui form">
     <div class="inline field">
@@ -6,8 +40,8 @@
         <%- include('elements/signup_login.ejs', {logexist: session.logexist, empty: 0}); %>
     </div>
     <div class="inline field">
-    <input type="password" name="passwd" placeholder="Password" required>
-    <%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: session.vpass}); %>
+    	<input type="password" name="passwd" placeholder="Password" required>
+    	<%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: session.vpass}); %>
     </div>
     <a href="http://localhost:8080/forgotten-passwd">Forgot your password?</a></br>
     <input type="submit" class="ui primary button" value="Connexion">
