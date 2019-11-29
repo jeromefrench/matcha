@@ -1,7 +1,7 @@
 let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bdd1 = require('../models/bdd_functions.js');
-var arraySort = require('array-sort');
+var sortBy = require('array-sort-by');
 const router = require('express').Router();
 
 
@@ -14,19 +14,21 @@ router.route('/').get((req, res) => {
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
 			bdd.search(user[0], req.session.search, (result) => {
+				console.log(result);
 				if (req.session.sortby == 'sortage'){
-					res.locals.users = arraySort(result, 'birthday');
+					res.locals.users = sortBy(result, item => 'desc:' + item.birthday);
 				}
 				else if (req.session.sortby == 'sortdist'){
-					res.locals.users = arraySort(result, 'distance');
+					res.locals.users = sortBy(result, item => item.distance);
 				}
 				else if (req.session.sortby == 'sortinter'){
-					res.locals.users = arraySort(result, 'nb_com', {reverse: true});
+					res.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
 				}
 				else if (req.session.sortby == 'sortpop'){
-					res.locals.users = arraySort(result, 'pop', {reverse: true});
+					res.locals.users = sortBy(result, item => 'desc:' + item.pop);
 				}
 				else if (req.session.sortby == 'sortmatch'){
+					res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
 				}
 				else{
 					res.locals.users = result;

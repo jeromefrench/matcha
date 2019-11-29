@@ -80,6 +80,8 @@ exports.search = function (user, search, callback){
 	dateur(search.age_debut, search.age_fin, (debut, fin) => {
 		var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `birthday` BETWEEN ? AND ?";
 		var todo = [fin, debut];
+		var birthday = moment(user.birthday);
+		user.age = -(birthday.diff(moment(), 'years'));
 		if (user.interests.indexOf(',') == -1){
 			array_inter[0] = user.interests;
 		}
@@ -91,6 +93,10 @@ exports.search = function (user, search, callback){
 			var dist_user = {lat: user.latitude, lon: user.longitude};
 			result.forEach((profile) => {
 				i++;
+				birthday = moment(profile.birthday);
+				profile.age = -(birthday.diff(moment(), 'years'));
+				profile.ecart = profile.age - user.age;
+				if (profile.ecart < 0){profile.ecart = -profile.ecart;}
 				profile.popRequired = search.popularite;
 				profile.array_inter = array_inter;
 				profile.nb_inter = search.interet;
@@ -104,7 +110,6 @@ exports.search = function (user, search, callback){
 						var filter_result = result.filter(distance_function);
 						var filter_res = filter_result.filter(inter_function);
 						filter_result = filter_res.filter(pop_function);
-						console.log(filter_result);
 						callback(filter_result);
 					}
 				});
