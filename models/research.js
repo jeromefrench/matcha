@@ -104,6 +104,7 @@ exports.search = function (user, search, callback){
 						var filter_result = result.filter(distance_function);
 						var filter_res = filter_result.filter(inter_function);
 						filter_result = filter_res.filter(pop_function);
+						console.log(filter_result);
 						callback(filter_result);
 					}
 				});

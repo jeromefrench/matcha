@@ -14,7 +14,6 @@ var connection = [];
 const fileUpload = require('express-fileupload');
 
 var io = require('socket.io')(server);
-var cookieParser = require('cookie-parser');
 
 
 // var socket = require('socket.io');
@@ -102,8 +101,6 @@ app.use(expressip().getIpInfoMiddleware);
 
 const requestIp = require('request-ip');
 app.use(requestIp.mw())
-
-app.use(cookieParser());
 
 // app.use(function (req, res, next) {
 //   	console.log('Time:', Date.now())

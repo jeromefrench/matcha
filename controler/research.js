@@ -1,6 +1,7 @@
 let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bdd1 = require('../models/bdd_functions.js');
+var arraySort = require('array-sort');
 const router = require('express').Router();
 
 
@@ -13,9 +14,24 @@ router.route('/').get((req, res) => {
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
 			bdd.search(user[0], req.session.search, (result) => {
-				res.locals.users = result;
-			
-				res.render('research.ejs', {session: req.session});
+				if (req.session.sortby == 'sortage'){
+					res.locals.users = arraySort(result, 'birthday');
+				}
+				else if (req.session.sortby == 'sortdist'){
+					res.locals.users = arraySort(result, 'distance');
+				}
+				else if (req.session.sortby == 'sortinter'){
+					res.locals.users = arraySort(result, 'nb_com', {reverse: true});
+				}
+				else if (req.session.sortby == 'sortpop'){
+					res.locals.users = arraySort(result, 'pop', {reverse: true});
+				}
+				else if (req.session.sortby == 'sortmatch'){
+				}
+				else{
+					res.locals.users = result;
+				}
+					res.render('research.ejs', {session: req.session});
 			});	
 		});
 	}
@@ -32,8 +48,6 @@ router.route('/').get((req, res) => {
 		});
 	}
 });
-
-
 
 router.route('/').post((req, res) => {
 	console.log(req.body);
@@ -56,6 +70,9 @@ router.route('/').post((req, res) => {
 	req.session.search.distance = distance;  //regular expression
 	req.session.search.interet = interet;  //regular expression
 	req.session.search.popularite = popularite;  //regular expression
+	if (req.body.sortby != undefined){
+		req.session.sortby = req.body.sortby;
+	}
 	res.redirect('/research');
 });
 

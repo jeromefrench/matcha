@@ -1,7 +1,7 @@
 
-	<form method="POST" action="/research" class="ui form">
+<form method="POST" action="/research" class="ui form">
+	<div id="research" class="ui raised  segment">
 
-<div id="research" class="ui raised  segment">
 		<div id="age">
 			<p>
   				<label for="amount">Age range:<span id="add-space"><span></label>
@@ -9,8 +9,6 @@
 			</p>
 			<div id="slider-range"></div>
 		</div>
-
-
 		<div id="distance">
 			<p>
   				<label for="amount-distance">Distance maximum:</label>
@@ -18,7 +16,6 @@
 			</p>
 			<div id="slider-range-min"></div>
 		</div>
-
 		<div id="inter">
 			<p>
   				<label for="amount-inter">Interet en commun:</label>
@@ -26,7 +23,6 @@
 			</p>
 			<div id="slider-inter"></div>
 		</div>
-
 		<div id="popularite">
 			<p>
   				<label for="amount-popularite">Popularite:</label>
@@ -34,35 +30,33 @@
 			</p>
 			<div id="slider-popularite"></div>
 		</div>
+		
 			</br>
 			</br>
 			</br>
-		<div class="ui centered grid">
+		<div style="text-align: center;">
+			Sort by :
+			<div style="display:inline-block;">
+				<div class="ui input">
+					<select name="sortby" class="ui dropdown">
+						<option hidden disabled selected value> -- select an option -- </option>
+						<option <% if (session && session.sortby == 'sortage') {%> <%= selected="selected"%> <%}%>value="sortage">Age</option>
+						<option <% if (session && session.sortby == 'sortdist') {%> <%= selected="selected"%> <%}%>value="sortdist">Distance</option>
+						<option <% if (session && session.sortby == 'sortinter') {%> <%= selected="selected"%> <%}%>value="sortinter">Interest</option>
+						<option <% if (session && session.sortby == 'sortpop') {%> <%= selected="selected"%> <%}%>value="sortpop">Popularity</option>
+						<option <% if (session && session.sortby == 'sortmatch') {%> <%= selected="selected"%> <%}%>value="sortmatch">Match Score</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		</br>
+		</br>
+<div class="ui centered grid">
     		<input type="submit" class="ui primary button" value="Research">
     	</div>
 			</br>
-</div>
-
-<div>
-		<div class="ui selection dropdown">
-			<input type="hidden" name="sortby">
-			<i class="dropdown icon"></i>
-			<div class="default text">Sort by</div>
-			<div class="menu">
-				<select name="sortby" class="ui dropdown">
-					<option hidden disabled selected value> -- select an option -- </option>
-					<option data-value="0"<% if (locals.infos && locals.infos.tri == "Age") {%> <%= selected="selected"%> <%}%> value="Age">Age</option>
-					<option data-value="1"<% if (locals.infos && locals.infos.tri == "Popularity") {%> <%= selected="selected"%> <%}%> value="Popularity">Popularity</option>
-					<option data-value="2"<% if (locals.infos && locals.infos.tri == "Distance") {%> <%= selected="selected"%> <%}%> value="Distance">Distance</option>
-					<option data-value="3"<% if (locals.infos && locals.infos.tri == "Interest") {%> <%= selected="selected"%> <%}%> value="Interest">Interest</option>
-					<option data-value="4"<% if (locals.infos && locals.infos.tri == "Match Score") {%> <%= selected="selected"%> <%}%> value="Match Score">Match Score</option>
-				</select>
-			</div>
-		</div>
 	</div>
-
 </form>
-
 
 <style>
 
