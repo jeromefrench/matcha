@@ -7,6 +7,11 @@ const router = require('express').Router();
 
 
 router.route('/').get((req, res) => {
+	const page = parseInt(req.query.page);
+	const limit = parseInt(req.query.limit);
+
+	const startIndex = (page - 1) * limit;
+	const endIndex = page * limit;
 	itemsProcessed = 0;
 	req.session.login = "bbchat";
 	req.session.id = 15;
@@ -19,20 +24,27 @@ router.route('/').get((req, res) => {
 					res.locals.users = sortBy(result, item => 'desc:' + item.birthday);
 				}
 				else if (req.session.sortby == 'sortdist'){
-					res.locals.users = sortBy(result, item => item.distance);
+					var tmp = sortBy(result, item => item.distance);
+					res.locals.users = tmp.slice(startIndex, endIndex);
 				}
 				else if (req.session.sortby == 'sortinter'){
-					res.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
+					tmp = sortBy(result, item => 'desc:' + item.nb_com);
+					res.locals.users = tmp.slice(startIndex, endIndex);
 				}
 				else if (req.session.sortby == 'sortpop'){
-					res.locals.users = sortBy(result, item => 'desc:' + item.pop);
+					tmp = sortBy(result, item => 'desc:' + item.pop);
+					res.locals.users = tmp.slice(startIndex, endIndex);
 				}
 				else if (req.session.sortby == 'sortmatch'){
-					res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
+					tmp = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
+					res.locals.users = tmp.slice(startIndex, endIndex);
 				}
 				else{
-					res.locals.users = result;
+					res.locals.users = result.slice(startIndex, endIndex);
 				}
+					req.session.page = page;
+					req.session.totalpage = res.locals.users.length / limit;
+					console.log(res.locals.users);
 					res.render('research.ejs', {session: req.session});
 			});	
 		});
@@ -42,7 +54,9 @@ router.route('/').get((req, res) => {
 			if (all_user[0] == undefined){
     			res.render('research.ejs', {session: req.session});
 			}else{
-				res.locals.users = all_user;
+				req.session.page = page;
+				req.session.totalpage = res.locals.users.length / limit;
+				res.locals.users = all_user.slice(startIndex, endIndex);
 				console.log("hello");
 				// console.log(res.locals.users);
 				res.render('research.ejs', {session: req.session});
