@@ -39,7 +39,7 @@ router.route('/').get((req, res) => {
 					res.locals.users = result;
 				}
 					req.session.page = page;
-					req.session.totalpage = Math.round((Object.keys(res.locals.users).length) / limit);
+					req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
 					if (endIndex < Object.keys(res.locals.users).length){
 						req.session.nextpage = page + 1;
 					}
@@ -64,7 +64,7 @@ router.route('/').get((req, res) => {
 			}else{
 				res.locals.users = all_user;
 				req.session.page = page;
-				req.session.totalpage = Math.round((Object.keys(res.locals.users).length) / limit);
+				req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
 				console.log("hello");
 
 				if (endIndex < Object.keys(res.locals.users).length){
