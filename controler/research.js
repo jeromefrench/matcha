@@ -8,10 +8,11 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	const page = parseInt(req.query.page);
-	const limit = parseInt(req.query.limit);
+	const limit = 9;
 
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
+
 	itemsProcessed = 0;
 	req.session.login = "bbchat";
 	req.session.id = 15;
@@ -19,32 +20,39 @@ router.route('/').get((req, res) => {
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
 			bdd.search(user[0], req.session.search, (result) => {
-				console.log(result);
 				if (req.session.sortby == 'sortage'){
 					res.locals.users = sortBy(result, item => 'desc:' + item.birthday);
 				}
 				else if (req.session.sortby == 'sortdist'){
-					var tmp = sortBy(result, item => item.distance);
-					res.locals.users = tmp.slice(startIndex, endIndex);
+					res.locals.users = sortBy(result, item => item.distance);
 				}
 				else if (req.session.sortby == 'sortinter'){
-					tmp = sortBy(result, item => 'desc:' + item.nb_com);
-					res.locals.users = tmp.slice(startIndex, endIndex);
+					res.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
 				}
 				else if (req.session.sortby == 'sortpop'){
-					tmp = sortBy(result, item => 'desc:' + item.pop);
-					res.locals.users = tmp.slice(startIndex, endIndex);
+					res.locals.users = sortBy(result, item => 'desc:' + item.pop);
 				}
 				else if (req.session.sortby == 'sortmatch'){
-					tmp = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
-					res.locals.users = tmp.slice(startIndex, endIndex);
+					res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
 				}
 				else{
-					res.locals.users = result.slice(startIndex, endIndex);
+					res.locals.users = result;
 				}
 					req.session.page = page;
-					req.session.totalpage = res.locals.users.length / limit;
-					console.log(res.locals.users);
+					req.session.totalpage = Math.round((Object.keys(res.locals.users).length) / limit);
+					if (endIndex < Object.keys(res.locals.users).length){
+						req.session.nextpage = page + 1;
+					}
+					else{
+						req.session.nextpage = undefined;
+					}
+					if (startIndex > 0){
+						req.session.previous = page - 1;
+					}
+					else{
+						req.session.previous = undefined;
+					}
+					res.locals.users = res.locals.users.slice(startIndex, endIndex);
 					res.render('research.ejs', {session: req.session});
 			});	
 		});
@@ -54,11 +62,24 @@ router.route('/').get((req, res) => {
 			if (all_user[0] == undefined){
     			res.render('research.ejs', {session: req.session});
 			}else{
+				res.locals.users = all_user;
 				req.session.page = page;
-				req.session.totalpage = res.locals.users.length / limit;
-				res.locals.users = all_user.slice(startIndex, endIndex);
+				req.session.totalpage = Math.round((Object.keys(res.locals.users).length) / limit);
 				console.log("hello");
-				// console.log(res.locals.users);
+
+				if (endIndex < Object.keys(res.locals.users).length){
+					req.session.nextpage = page + 1;
+				}
+				else{
+					req.session.nextpage = undefined;
+				}
+				if (startIndex > 0){
+					req.session.previous = page - 1;
+				}
+				else{
+					req.session.previous = undefined;
+				}
+				res.locals.users = all_user.slice(startIndex, endIndex);
 				res.render('research.ejs', {session: req.session});
     		}
 		});
@@ -89,7 +110,7 @@ router.route('/').post((req, res) => {
 	if (req.body.sortby != undefined){
 		req.session.sortby = req.body.sortby;
 	}
-	res.redirect('/research');
+	res.redirect('/research/?page=1');
 });
 
 
