@@ -40,15 +40,15 @@ var io = require('socket.io')(server);
 
 
 
-	// socket.emit('message', 'Vous etes bien connecte !');
-	// socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
-	// socket.on('petit_nouveau', function(pseudo){
-	// 	socket.pseudo = pseudo;
-	// });
-	// socket.on('message', function (message){
-	// 	console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
+// socket.emit('message', 'Vous etes bien connecte !');
+// socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
+// socket.on('petit_nouveau', function(pseudo){
+// 	socket.pseudo = pseudo;
+// });
+// socket.on('message', function (message){
+// 	console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
 
-	// })
+// })
 
 
 
@@ -107,31 +107,37 @@ app.use(requestIp.mw())
 //   	next()
 // })
 
- io.on('connection', socket => {
+
+
+
+
+
+
+io.on('connection', socket => {
 	console.log("on a une connection");
 
 
-	 socket.on('identify', (data) => {
-	 	 // console.log(data.token)
-		 if (data.token){
-		 	 jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
-		 	 	 if (err){
-		 	 	 	 console.log("token pas valid");
-		 	 	 }else{
-		 	 	 	 console.log("token valid");
-		 	 	 	 console.log(decoded);
-		 	 	 }
-		 	 });
-		 }
-	 })
+	socket.on('identify', (data) => {
+		// console.log(data.token)
+		if (data.token){
+			jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
+				if (err){
+					console.log("token pas valid");
+				}else{
+					console.log("token valid");
+					console.log(decoded);
+				}
+			});
+		}
+	})
 
 
-	 // 	client.on('register', handleRegister);
-	 // 	client.on('join', handleJoin);
-	 // 	client.on('message', handleMessage);
-	 // 	// res.cookie('cookie_id_socket' , socket.id)
-	 // 	// socket.emit('id', req.session.socket_id);  // send echa clien their socket id
- })
+	// 	client.on('register', handleRegister);
+	// 	client.on('join', handleJoin);
+	// 	client.on('message', handleMessage);
+	// 	// res.cookie('cookie_id_socket' , socket.id)
+	// 	// socket.emit('id', req.session.socket_id);  // send echa clien their socket id
+})
 
 
 function handleRegister(socket){
@@ -149,6 +155,13 @@ function handleMessage(){
 
 
 rootPath = __dirname;
+
+
+
+
+
+
+
 
 const signout = require('./controler/sign_out.js');
 const signup = require('./controler/sign_up.js');
@@ -169,6 +182,24 @@ const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
 
+
+app.use(function (req, res, next) {
+	console.log('Time:', Date.now())
+	console.log("LOg On");
+	console.log(req.session.logon);
+	console.log(req.url);
+	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
+		res.redirect('/sign-in');  // pour rediriger vers une url
+	}else {
+		next();
+	}
+})
+
+
+
+
+
+
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
 app.use('/sign-in', signin);
@@ -187,6 +218,7 @@ app.use('/chat', chat);
 app.use('/dashboard', dashboard);
 app.use('/fake', fake);
 app.use('/block', block);
+
 
 
 
@@ -230,6 +262,6 @@ app.post('/test', (req, res) => {
 
 //**************404************************************************************
 app.use(function(req, res, next){
-    res.setHeader('Content-Type', 'text/plain');
-    res.status(404).send('Page introuvable');
+	res.setHeader('Content-Type', 'text/plain');
+	res.status(404).send('Page introuvable');
 });
