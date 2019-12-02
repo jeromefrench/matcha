@@ -41,20 +41,15 @@ router.route('/').post((req, res) => {
 						req.session.vpass = 0;
 						// req.session.token = jwtUtil.generateTokenForUser(userId);
 						console.log(req.session.token);
-
-
-					const user = {
-    					id: userId, 
-    					username: login,
-    					email: 'brad@gmail.com'
-  					}
-					let jwtToken = jwt.sign(user, 'secretkey');
-					req.session.jwtToken = jwtToken;
-					res.redirect('/sign-in');
-
-
+						const user = {
+							id: userId, 
+							username: login,
+							email: 'brad@gmail.com'
+						}
+						let jwtToken = jwt.sign(user, 'secretkey');
+						req.session.jwtToken = jwtToken;
+						res.redirect('/about-you');
 					});
-
 				}
 				else {
 					// console.log("Password dont Match");
