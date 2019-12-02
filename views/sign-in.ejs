@@ -24,26 +24,48 @@
 		});
 	});
 	console.log(test);
-
-
-
-
 </script>
 
 
 
 
-<h1>Sign In</h1>
-<form method="POST" action="/sign-in" class="ui form">
-    <div class="inline field">
-        <input type="text" name="login" placeholder="Login" <%- include('elements/values_signup.ejs', {val: session.login}); %>required>
-        <%- include('elements/signup_login.ejs', {logexist: session.logexist, empty: 0}); %>
-    </div>
-    <div class="inline field">
-    	<input type="password" name="passwd" placeholder="Password" required>
-    	<%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: session.vpass}); %>
-    </div>
-    <a href="http://localhost:8080/forgotten-passwd">Forgot your password?</a></br>
-    <input type="submit" class="ui primary button" value="Connexion">
-</form>
+<div class="ui container" style="margin-top: 30px">
+	<div class="ui middle aligned center aligned grid">
+		<form method="POST" action="/sign-in" class="ui large form">
+    		<h2 class="ui teal image header">
+      			<!-- <img src="assets/images/logo.png" class="image"> -->
+      			<div class="content">
+        			Sign-in to your account
+      			</div>
+    		</h2>
+			<div class="ui stacked segment">
+    			<div class="inline field">
+          			<div class="ui left icon input">
+            			<i class="user icon"></i>
+        				<input type="text" name="login" placeholder="Login" <%- include('elements/values_signup.ejs', {val: session.login}); %>required>
+        				<%- include('elements/signup_login.ejs', {logexist: session.logexist, empty: 0}); %>
+    				</div>
+    			</div>
+    			<div class="inline field">
+          			<div class="ui left icon input">
+            			<i class="lock icon"></i>
+    					<input type="password" name="passwd" placeholder="Password" required>
+    					<%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: session.vpass}); %>
+    				</div>
+    			</div>
+    			<div class="ui fluid">
+    				<input type="submit" class="ui fluid primary button" value="Connexion">
+    			</div>
+			</div>
+    		<div class="ui message">
+      			New to us? <a href="/sign-up">Sign Up</a>
+    		</div>
+    		<div class="ui message">
+      			Forgot your password?  <a href="/forgotten-passwd">Retriew</a></br>
+    		</div>
+		</form>
+	</div>
+</div>
+
+
 <% include('elements/footer', {token: session.token}); %>
