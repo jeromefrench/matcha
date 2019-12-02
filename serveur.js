@@ -1,82 +1,21 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
-//************************************
-
-const expressip = require('express-ip');
-
-const JWT_SIGN_SECRET = '0gtrdg546hretsdyj86jtr5djhyd876j4tsjy8d6jry';
-
-const app = express();
-let bodyParser = require("body-parser");
-let session = require("express-session");  //pour avoir les variables de session
-var server = app.listen(8080);
-var connection = [];
 const fileUpload = require('express-fileupload');
-
+let session = require("express-session");
+let bodyParser = require("body-parser");
+const app = express();
+var server = app.listen(8080);
 var io = require('socket.io')(server);
+//************************************
+socketFile = require('./socket.js')(io);
 
-
-// var socket = require('socket.io');
-// var io = socket(server);
-// var jwt = require('jsonwebtoken');
-
-
-// console.log("my socket server is running");
-// io.sockets.on('connection', newConnection);
-
-// function newConnection(socket){
-// 	console.log("un utilisateur s'est connecté");
-// 	socket.on('identify', ({token}) => {
-// 		try {
-// 			var decoded = jwt.verify(token, JWT_SIGN_SECRET, {
-// 				algorithms: ['HS256']
-// 			})
-// 			console.log(decoded);
-// 		} catch (e) {
-// 			console.error(e.message);
-// 		}
-// 	});
-
-
-
-
-// socket.emit('message', 'Vous etes bien connecte !');
-// socket.broadcast.emit('message', 'Un autre client vient de se connecter !');
-// socket.on('petit_nouveau', function(pseudo){
-// 	socket.pseudo = pseudo;
-// });
-// socket.on('message', function (message){
-// 	console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
-
-// })
-
-
-
-// }
-
-// function newConnection(socket){
-// 	console.log("new connection: " + socket.id);
-// 	socket.on('newmessage', f_new_message);
-// 	io.sockets.on('disconnect', () =>
-// 		{
-// 			console.log("new disconnect: " + socket.id);
-// 		});
-// }
-// function f_new_message(data){
-// 	console.log("le Message: " + data);
-// }
-
-
-//moteur de template
 app.set('view engine', 'ejs'); //set le template engine pour express
+app.set('trust proxy', true) //ip
 //MIDDLE WARES*****************************************************************
-
 
 app.use(function(req,res,next){
 	req.io = io;
 	next();
 })
-
 app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
@@ -92,76 +31,15 @@ app.use(fileUpload({
 	tempFileDir : __dirname+'/public/tmp',
 	createParentPath : true
 }));
-
-//pour avoir les ip
-app.set('trust proxy', true)
-app.use(expressip().getIpInfoMiddleware);
-
-
-
+//app.use(expressip().getIpInfoMiddleware);
 const requestIp = require('request-ip');
 app.use(requestIp.mw())
-
-// app.use(function (req, res, next) {
-//   	console.log('Time:', Date.now())
-//   	next()
-// })
-
-
-
-
-
-
-
-io.on('connection', socket => {
-	console.log("on a une connection");
-
-
-	socket.on('identify', (data) => {
-		// console.log(data.token)
-		if (data.token){
-			jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
-				if (err){
-					console.log("token pas valid");
-				}else{
-					console.log("token valid");
-					console.log(decoded);
-				}
-			});
-		}
-	})
-
-
-	// 	client.on('register', handleRegister);
-	// 	client.on('join', handleJoin);
-	// 	client.on('message', handleMessage);
-	// 	// res.cookie('cookie_id_socket' , socket.id)
-	// 	// socket.emit('id', req.session.socket_id);  // send echa clien their socket id
-})
-
-
-function handleRegister(socket){
-	console.log(socket.id);
-}
-
-function handleJoin(){
-}
-
-
-function handleMessage(){
-}
-
-
-
+ app.use(function (req, res, next) {
+   	console.log('Time:', Date.now())
+   	next()
+ })
 
 rootPath = __dirname;
-
-
-
-
-
-
-
 
 const signout = require('./controler/sign_out.js');
 const signup = require('./controler/sign_up.js');
@@ -182,23 +60,17 @@ const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
 
+app.get('/', function(req, res){
+	res.redirect('/sign-in');
+});
 
 app.use(function (req, res, next) {
-	console.log('Time:', Date.now())
-	console.log("LOg On");
-	console.log(req.session.logon);
-	console.log(req.url);
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
-		res.redirect('/sign-in');  // pour rediriger vers une url
+		res.redirect('/sign-in');
 	}else {
 		next();
 	}
 })
-
-
-
-
-
 
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
@@ -219,15 +91,9 @@ app.use('/dashboard', dashboard);
 app.use('/fake', fake);
 app.use('/block', block);
 
-
-
-
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
-app.get('/', function(req, res){
-	res.redirect('/sign-in');  // pour rediriger vers une url
-});
 
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
@@ -258,7 +124,6 @@ app.post('/test', (req, res) => {
 		})
 	}
 });
-
 
 //**************404************************************************************
 app.use(function(req, res, next){
