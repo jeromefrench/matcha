@@ -43,11 +43,11 @@ router.route('/').post((req, res) => {
 						console.log(req.session.token);
 						const user = {
 							id: userId, 
-							username: login,
-							email: 'brad@gmail.com'
+							username: req.session.login,
+							// email: 'brad@gmail.com'
 						}
 						let jwtToken = jwt.sign(user, 'secretkey');
-						req.session.jwtToken = jwtToken;
+						req.session.token = jwtToken;
 						res.redirect('/about-you');
 					});
 				}
@@ -61,5 +61,4 @@ router.route('/').post((req, res) => {
 		}
 	})
 });
-
 module.exports = router;

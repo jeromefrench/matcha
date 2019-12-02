@@ -38,9 +38,18 @@ const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
-app.get('/', function(req, res){
-	res.redirect('/sign-in');
-});
+
+
+app.use(function (req, res, next) {
+	if (req.session && req.session.token){
+		res.locals.token = req.session.token;
+	}
+	if (req.session && req.session.login && req.session.logon == true){
+		res.locals.log_in = req.session.login;
+	}
+	next();
+})
+
 app.use(function (req, res, next) {
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
 		res.redirect('/sign-in');
@@ -48,6 +57,9 @@ app.use(function (req, res, next) {
 		next();
 	}
 })
+app.get('/', function(req, res){
+	res.redirect('/sign-in');
+});
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
 app.use('/sign-in', signin);

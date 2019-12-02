@@ -1,14 +1,10 @@
-
 const jwt = require('jsonwebtoken');
-
 
 exports = module.exports = function(io){
 
 	io.on('connection', socket => {
 		console.log("on a une connection");
-
 		socket.on('identify', (data) => {
-			// console.log(data.token)
 			if (data.token){
 				jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
 					if (err){
@@ -16,31 +12,23 @@ exports = module.exports = function(io){
 					}else{
 						console.log("token valid");
 						console.log(decoded);
+						socket.emit('result_connect', {result: true})
 					}
 				});
 			}
+			else{
+				console.log("pas de token");
+			}
 		})
-
-
-		// 	client.on('register', handleRegister);
 		// 	client.on('join', handleJoin);
 		// 	client.on('message', handleMessage);
-		// 	// res.cookie('cookie_id_socket' , socket.id)
-		// 	// socket.emit('id', req.session.socket_id);  // send echa clien their socket id
 	})
-
-
-	function handleRegister(socket){
-		console.log(socket.id);
-	}
 
 	function handleJoin(){
 	}
 
-
 	function handleMessage(){
 	}
-
 
 }
 

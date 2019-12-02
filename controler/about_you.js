@@ -7,7 +7,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 function processPreferences(result, res){
 	if (result[0] != undefined) {
 		res.locals.infos = result[0];
-		console.log(res.locals.infos);
+		// console.log(res.locals.infos);
 		res.locals.infos.birthday = res.locals.infos.birth;
 		if (res.locals.infos.birthday != null)
 		{
@@ -42,6 +42,8 @@ router.route('/').get((req, res) => {
 				}
 				bdd_about.count_photo(id_user, (count) => {
 					if (count > 0){ res.locals.photos_completed = true; }
+					console.log("affichage token");
+					console.log(res.locals.jwtToken);
 					res.render('about-you.ejs', {session: req.session});
 				})
 			})

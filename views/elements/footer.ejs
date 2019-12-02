@@ -1,12 +1,22 @@
+
+
+<div class="notifications"> </div>
+<p>FOOTER</p>
+
+
+
+<link rel="stylesheet" href="/assets/style.css" type="text/css" >
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script>
-	<% if(locals.jwtToken) { %>
-				console.log('<%= locals.jwtToken %>');
+	<% if(locals.token) { %>
+				console.log("ici 1");
+		console.log('<%= locals.token %>');
 	<% } else { %>
-				console.log("pas de locals");
+				console.log("ici 2");
+		console.log("pas de locals");
 	<% } %>
-    	localStorage.setItem('Thetoken', "<%= locals.jwtToken %>");
+		localStorage.setItem('Thetoken', "<%= session.token %>");
 	var test = localStorage.getItem('Thetoken');
 	console.log("le super token");
 	console.log(test);
@@ -16,29 +26,56 @@
 		socket.emit('identify', {
 			token: test
 		});
+		socket.on('result_connect', (data) => {
+			if (data.result == true){
+				console.log("Log sucess");
+				notification({title: 'Notification', content: 'Your log on sucessfully', icon: '&#128077;'})
+			}
+		})
+
 	});
+	console.log("ici 3");
 	console.log(test);
+
 </script>
 
 
+<script>
 
+	function notification (options){
+		var html =  ' <div class="notification"> \
+						<div class="left"> \
+						<div class="icon"> \
+						'+ options.icon +' \
+						</div> \
+						</div> \
+						<div class="right"> \
+						<h2>'+ options.title + '</h2> \
+						<p>' + options.content +'</p> \
+						</div> \
+						</div>';
 
+		var $notifs = $('.notifications');
+		$notifs.append(html).slideDown(300);
+		setTimeout( function() {
+			$('.notification').slideUp(300, function(){
+				$('.notification').remove();
+			})
+		}, 3000);
+		$('.notification').click(function(event){
+			$('.notification').slideUp(300, function(){
+				$('.notification').remove();
+			})
+		})
+	}
 
+	//<!-- $('.aller').click(function(event){ -->
+	//<!-- 	event.preventDefault(); -->
+	//<!-- 	notification({title: 'Mon titre', content: 'Mon contenu', icon: '&#128077;'}) -->
+	//<!-- 	//$('body').notif({title: 'Mon titre', content: 'Mon contenu', icon: '&#128077;'}); -->
+	//<!-- }) -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</script>
 
 
 <!-- <p><input type="button" value="Embêter le serveur" id="poke" /></p> -->
@@ -52,17 +89,17 @@
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
 <script>
-//var presence = document.querySelector('#presence');
+	//var presence = document.querySelector('#presence');
 
-//if (presence){
+	//if (presence){
 	//var socket = io.connect('http://localhost:8080');
 	//socket.on('connect', () => {
-		//console.log('Je suis connectée');
-		//socket.emit('identify', {
-			//token: presence.dataset.token
-		//})
+	//console.log('Je suis connectée');
+	//socket.emit('identify', {
+	//token: presence.dataset.token
+	//})
 	//});
-//}
+	//}
 	// socket.on('message', function (message) {
 	// 	alert('Le serveur a un message pour vous : ' + message);
 	// })
@@ -73,13 +110,13 @@
 	// $('#poke').click(function () {
 	// 	socket.emit('message', 'Salut serveur, ça va ?');
 	// })
-// button = document.getElementById("message");
-// button.addEventListener("click", myfunction)
+	// button = document.getElementById("message");
+	// button.addEventListener("click", myfunction)
 
-// function myfunction(){
-// 		data = "hello a tous";
-// 		socket.emit('newmessage', data);
-// 	}
+	// function myfunction(){
+	// 		data = "hello a tous";
+	// 		socket.emit('newmessage', data);
+	// 	}
 </script>
 
 

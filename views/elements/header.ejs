@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>
-<% if (locals.title) {%>
-<%= locals.title %>
-<% }else{%>
-<%= "Matcha"%>
-<%}%>
-</title>
+	<head>
+		<title>
+			<% if (locals.title) {%>
+				<%= locals.title %>
+			<% }else{%>
+				<%= "Matcha"%>
+			<%}%>
+		</title>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="/assets/semantic/dist/semantic.min.css">
-<script src="/assets/semantic/dist/semantic.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<link rel="stylesheet" href="/assets/semantic/dist/semantic.min.css">
+		<script src="/assets/semantic/dist/semantic.min.js"></script>
 
-</head>
-<body>
-<div class="ui inverted segment">
-<div class="ui inverted secondary menu">
-<a href="/" class="item"><%- include('logo_test.ejs'); %></a>
-<a href="/about-you" class="item">About you</a>
-<a href="/my-account" class="item">My account</a>
-<a href="/research/?page=1" class="item">Research</a>
-<a href="/dashboard" class="item">Dashboard</a>
-<div class="right menu">
-<div class="ui teal buttons">
-<div class="ui simple dropdown icon button">
-<% if (session.logon) {%>
-<i class="sign out alternate icon"></i>
-<% }else{ %>
-<i class="sign in alternate icon"></i>
-<% } %>
-<div class="menu">
-<% if (!session.logon) { %>
-<% if (locals.title == "Sign Up") {} else{ %>
-<div class="item"><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
-<% } %>
-<% if (locals.title == "Sign In") {} else{ %>
-<div class="item"><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
-<% } %>
-<% }else{ %>
-<div class="item"><a href="/sign-out" style="color:black"><b>Sign out</b></a></div>
-<% } %>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div style="margin-left: 5vmin" >
+	</head>
+	<body>
+		<div class="ui inverted segment">
+			<div class="ui inverted secondary menu">
+				<a href="/" class="item"><%- include('logo_test.ejs'); %></a>
+				<a href="/about-you" class="item">About you</a>
+				<!-- <a href="/my-account" class="item">My account</a> -->
+				<a href="/research/?page=1" class="item">Research</a>
+				<a href="/dashboard" class="item">Dashboard</a>
+				<div class="right menu">
+					<% if (locals.log_in) {%>
+					<a href="/my-account" class="item"><%= locals.log_in %></a>
+					<%}%>
+					<div class="ui teal buttons">
+						<div class="ui simple dropdown icon button">
+							<% if (session.logon) {%>
+								<i style="height:30px;" class="sign out alternate icon"></i>
+							<% }else{ %>
+								<i class="sign in alternate icon"></i>
+							<% } %>
+							<div class="menu">
+								<% if (!session.logon) { %>
+									<% if (locals.title == "Sign Up") {} else{ %>
+										<div class="item"><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
+									<% } %>
+									<% if (locals.title == "Sign In") {} else{ %>
+										<div class="item"><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
+									<% } %>
+								<% }else{ %>
+									<div class="item"><a href="/sign-out" style="color:black"><b>Sign out</b></a></div>
+								<% } %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="margin-left: 5vmin" >
