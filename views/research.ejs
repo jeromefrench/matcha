@@ -21,16 +21,17 @@
 		<% }); } else { console.log("pas de user"); }%>
 	</div>
 
-
-<div class="ui centered grid">
+<div class="ui centered grid" style="margin-top:20px;">
     <div class="center aligned column">
+		<div class="ui pagination menu">
 		<% if (session.previous) {%>
-		<a href="/research/?page=<%= session.previous %>">Previous</a>
+		<a class="item" href="/research/?page=<%= session.previous %>">Previous</a>
 		<% } %>
-		<%= session.page %> / <% if (session.totalpage == 0) {%> 1 <% }else{ %><%= session.totalpage %><% } %>
+		<i class="item"><%= session.page %> / <% if (session.totalpage == 0) {%> 1 <% }else{ %><%= session.totalpage %><% } %></i>
 		<% if (session.nextpage) {%>
-		<a href="/research/?page=<%= session.nextpage %>">Next</a>
+		<a class="item" href="/research/?page=<%= session.nextpage %>">Next</a>
 		<% } %>
+		</div>
 	</div>
 </div>
 
