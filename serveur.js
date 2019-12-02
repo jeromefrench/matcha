@@ -38,7 +38,7 @@ const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
-
+users = [];
 
 app.use(function (req, res, next) {
 	if (req.session && req.session.token){
