@@ -1,6 +1,48 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+<script>
+	<% if(locals.jwtToken) { %>
+				console.log('<%= locals.jwtToken %>');
+	<% } else { %>
+				console.log("pas de locals");
+	<% } %>
+    	localStorage.setItem('Thetoken', "<%= locals.jwtToken %>");
+	var test = localStorage.getItem('Thetoken');
+	console.log("le super token");
+	console.log(test);
+	var socket = io.connect('http://localhost:8080');
+	socket.on('connect', () => {
+		console.log("je suis connecter");
+		socket.emit('identify', {
+			token: test
+		});
+	});
+	console.log(test);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- <p><input type="button" value="Embêter le serveur" id="poke" /></p> -->
-<ul id="presence" data-websocket="{{ getenv('WEBSOCKET') }}" data-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE1NzQ0Mzg5OTAsImV4cCI6MTU3NDQ0MjU5MH0.Ee2M_qoLVLLbrPV3zfgl3SXpzoewB5fKsezDDTAyCa0"></ul>
+<!-- <ul id="presence" data-websocket="{{ getenv('WEBSOCKET') }}" data-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE1NzQ0Mzg5OTAsImV4cCI6MTU3NDQ0MjU5MH0.Ee2M_qoLVLLbrPV3zfgl3SXpzoewB5fKsezDDTAyCa0"></ul> -->
 
 
 <!-- //jai commente cette lib car ca me fait planter -->
@@ -8,13 +50,8 @@
 
 
 
-
-
-
-
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
 <script>
-
 //var presence = document.querySelector('#presence');
 
 //if (presence){
@@ -26,15 +63,6 @@
 		//})
 	//});
 //}
-
-
-
-
-
-
-
-
-
 	// socket.on('message', function (message) {
 	// 	alert('Le serveur a un message pour vous : ' + message);
 	// })
