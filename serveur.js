@@ -5,42 +5,21 @@ let bodyParser = require("body-parser");
 const app = express();
 var server = app.listen(8080);
 var io = require('socket.io')(server);
-//************************************
+const requestIp = require('request-ip');
 socketFile = require('./socket.js')(io);
-
+//************************************
 app.set('view engine', 'ejs'); //set le template engine pour express
 app.set('trust proxy', true) //ip
 //MIDDLE WARES*****************************************************************
-
-app.use(function(req,res,next){
-	req.io = io;
-	next();
-})
+app.use(function(req,res,next){ req.io = io; next(); })
 app.use('/assets', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
-app.use(session({
-	secret: 'sdjfkl',
-	resave: false,
-	saveUninitialized: true,
-	cookie: { secure: false }
-}));
+app.use(session({ secret: 'sdjfkl', resave: false, saveUninitialized: true, cookie: { secure: false } }));
 app.use(require('./middlewares/flash'));
-app.use(fileUpload({
-	useTempFiles : true,
-	tempFileDir : __dirname+'/public/tmp',
-	createParentPath : true
-}));
-//app.use(expressip().getIpInfoMiddleware);
-const requestIp = require('request-ip');
+app.use(fileUpload({ useTempFiles : true, tempFileDir : __dirname+'/public/tmp', createParentPath : true }));
 app.use(requestIp.mw())
- app.use(function (req, res, next) {
-   	console.log('Time:', Date.now())
-   	next()
- })
-
 rootPath = __dirname;
-
 const signout = require('./controler/sign_out.js');
 const signup = require('./controler/sign_up.js');
 const signin = require('./controler/sign_in.js');
@@ -59,11 +38,9 @@ const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
-
 app.get('/', function(req, res){
 	res.redirect('/sign-in');
 });
-
 app.use(function (req, res, next) {
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
 		res.redirect('/sign-in');
@@ -71,7 +48,6 @@ app.use(function (req, res, next) {
 		next();
 	}
 })
-
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
 app.use('/sign-in', signin);
@@ -90,22 +66,24 @@ app.use('/chat', chat);
 app.use('/dashboard', dashboard);
 app.use('/fake', fake);
 app.use('/block', block);
+//**************404************************************************************
+app.use(function(req, res, next){
+	res.setHeader('Content-Type', 'text/plain');
+	res.status(404).send('Page introuvable');
+});
 
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
-
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
 	if (req.session.test){
 		res.locals.error = req.session.test;
 		req.session.test = undefined;
-
 	}
 	// res.send("salut");
 	res.render('index', {test : 'Salut'});
 });
-
 app.post('/test', (req, res) => {
 	// console.log(req.body);
 	if (req.body.message == undefined || req.body.message == ""){
@@ -125,8 +103,3 @@ app.post('/test', (req, res) => {
 	}
 });
 
-//**************404************************************************************
-app.use(function(req, res, next){
-	res.setHeader('Content-Type', 'text/plain');
-	res.status(404).send('Page introuvable');
-});
