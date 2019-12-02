@@ -10,7 +10,7 @@ exports.get_user = function (login, callback){
 		// var sql = "SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user`";
 
 	bdd.get_id_user(login, (id_user) => {
-		var sql = "	SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1";
+		var sql = "	SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1 AND `docker`.`user`.`id` != ?";
 		var todo = [id_user];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
@@ -110,6 +110,7 @@ exports.search = function (user, search, callback){
 						var filter_result = result.filter(distance_function);
 						var filter_res = filter_result.filter(inter_function);
 						filter_result = filter_res.filter(pop_function);
+						filter_result = filter_res.filter(u => u.id == user.id);
 						callback(filter_result);
 					}
 				});
