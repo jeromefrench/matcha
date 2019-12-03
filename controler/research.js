@@ -1,6 +1,7 @@
 let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bdd1 = require('../models/bdd_functions.js');
+var about = require('../models/about_you.js');
 var sortBy = require('array-sort-by');
 const router = require('express').Router();
 
@@ -56,31 +57,40 @@ router.route('/').get((req, res) => {
 		});
 	}
 	else {
-		bdd.get_user(req.session.login, (all_user) => {
-			if (all_user[0] == undefined){
-    			res.render('research.ejs', {session: req.session});
-			}else{
-				res.locals.users = all_user;
-				req.session.page = page;
-				req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
-				console.log("hello");
-
-				if (endIndex < Object.keys(res.locals.users).length){
-					req.session.nextpage = page + 1;
+		about.get_info_user(req.session.login, (info_user) => {
+			bdd.get_user(req.session.login, (all_user) => {
+				if (all_user[0] == undefined){
+					res.render('research.ejs', {session: req.session});
+				}else{
+					if (info_user[0].orientation == 'women'){
+						all_user = all_user.filter(u => u.gender == 'female');
+					}
+					else if (info_user[0].orientation == 'men'){
+						all_user = all_user.filter(u => u.gender == 'male');
+					}
+					res.locals.users = all_user;
+					req.session.page = page;
+					req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
+					console.log("hello");
+	
+					if (endIndex < Object.keys(res.locals.users).length){
+						req.session.nextpage = page + 1;
+					}
+					else{
+						req.session.nextpage = undefined;
+					}
+					if (startIndex > 0){
+						req.session.previous = page - 1;
+					}
+					else{
+						req.session.previous = undefined;
+					}
+					res.locals.users = all_user.slice(startIndex, endIndex);
+					res.render('research.ejs', {session: req.session});
 				}
-				else{
-					req.session.nextpage = undefined;
-				}
-				if (startIndex > 0){
-					req.session.previous = page - 1;
-				}
-				else{
-					req.session.previous = undefined;
-				}
-				res.locals.users = all_user.slice(startIndex, endIndex);
-				res.render('research.ejs', {session: req.session});
-    		}
+			});
 		});
+		
 	}
 });
 

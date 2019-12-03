@@ -110,7 +110,14 @@ exports.search = function (user, search, callback){
 						var filter_result = result.filter(distance_function);
 						var filter_res = filter_result.filter(inter_function);
 						filter_result = filter_res.filter(pop_function);
-						filter_result = filter_res.filter(u => u.id == user.id);
+						// filter_result = filter_result.filter(u => u.id == user.id);
+						// if (user.orientation == 'women'){
+						// 	filter_result = filter_result.filter(u => u.gender == 'female');
+						// }
+						// else if (user.orientation == 'men'){console.log("ORIENATION = " + user.orientation);
+						// 	filter_result = filter_result.filter(u => u.gender == 'male');
+						// }
+						console.log(filter_result);
 						callback(filter_result);
 					}
 				});
