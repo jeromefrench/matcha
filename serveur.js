@@ -59,13 +59,8 @@ app.use(function (req, res, next) {
 	}
 	next();
 })
-
-
-
 app.use('/confirm', confirm);
-
-
-
+app.use('/forgotten-passwd', sendpass);
 app.use(function (req, res, next) {
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
 		res.redirect('/sign-in');
@@ -84,7 +79,6 @@ app.use('/about-you', aboutyou);
 app.use('/profile/', profile);
 app.use('/like-this-user', like);
 app.use('/research', research);
-app.use('/forgotten-passwd', sendpass);
 app.use('/change-passwd', changepass);
 app.use('/public/photo', delpic);
 app.use('/public/photo', makeProfilePic);
