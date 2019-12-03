@@ -44,6 +44,13 @@ app.use(function (req, res, next) {
 	if (req.session && req.session.token){
 		res.locals.token = req.session.token;
 	}
+	if (req.session && req.session.first_log == true){
+		req.session.first_log = false;
+		res.locals.first_log = true;
+	}
+	else{
+		res.locals.first_log = false;
+	}
 	if (req.session && req.session.login && req.session.logon == true){
 		res.locals.log_in = req.session.login;
 	}

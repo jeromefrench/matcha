@@ -27,6 +27,15 @@ function processPreferences(result, res){
 }
 
 router.route('/').get((req, res) => {
+
+
+
+
+
+
+
+
+
 	res.locals.preferences_completed = false;
 	res.locals.localisation_completed = false;
 	res.locals.photos_completed = false;

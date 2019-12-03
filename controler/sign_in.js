@@ -9,6 +9,12 @@ const jwt = require('jsonwebtoken');
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
 	res.locals.jwtToken = req.session.jwtToken;
+
+
+	
+
+
+
 	req.session.jwtToken = undefined;
 	res.render('sign-in.ejs', { session: req.session});
 });
@@ -39,7 +45,6 @@ router.route('/').post((req, res) => {
 						req.session.logon = true;
 						req.session.login = login;
 						req.session.vpass = 0;
-						// req.session.token = jwtUtil.generateTokenForUser(userId);
 						console.log(req.session.token);
 						const user = {
 							id: userId, 
@@ -48,6 +53,7 @@ router.route('/').post((req, res) => {
 						}
 						let jwtToken = jwt.sign(user, 'secretkey');
 						req.session.token = jwtToken;
+						req.session.first_log = true;
 						res.redirect('/about-you');
 					});
 				}
