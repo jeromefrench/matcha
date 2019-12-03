@@ -30,6 +30,8 @@ exports = module.exports = function(io){
 							console.log("count = " + user.count);
 							user.count++;
 						}
+						console.log("tableau user");
+						console.log(users);
 						socket.on('disconnect', () => {
 							if (currentUser){
 								user = users.find(u => u.id == currentUser.id);
