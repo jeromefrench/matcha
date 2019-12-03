@@ -1,4 +1,5 @@
 var conn = require('./connection_bdd.js');
+const bcrypt = require('bcrypt');
 
 exports.check_log = function (login, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
@@ -13,21 +14,33 @@ exports.check_log = function (login, callback){
 		});
 	});
 }
-
-exports.isLoginPasswdMatch = function (login, passwd, callback){
+ 
+exports.isLoginPasswdMatch = async function isMatch (login, passwd, callback){
 	var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
 	var todo = [login];
 	var stop = false;
 	conn.connection.query(sql, todo, (error, results, fields) => {
 		if (error) throw error;
-		// console.log(results);
-		// console.log(results[0].login);
-		if (results[0].passwd == passwd) {
-            callback(true) ;
-		}
-		else {
-            callback(false) ;
-		}
+		bcrypt.compare(passwd, results[0].passwd , function(err, res) {
+    		// res == true
+    		if(res) {
+            	callback(true) ;
+        		//login
+    		}
+    		else{
+            	callback(false) ;
+
+    		}
+		});
+    	//...
+		// 		// console.log(results);
+		// 		// console.log(results[0].login);
+		// 		if (results[0].passwd == passwd) {
+		//             callback(true) ;
+		// 		}
+		// 		else {
+		//             callback(false) ;
+		// 		}
 	});
 }
 

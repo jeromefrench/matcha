@@ -1,6 +1,8 @@
 let su = require('../models/sign_up.js');
 var bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 router.route('/').get((req, res) => {
     res.locals.title = "Sign Up";
@@ -65,9 +67,15 @@ router.route('/').post((req, res) => {
                 req.session.login = undefined;
             }
             if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0){
-                su.insert_user(login, passwd, fname, lname, email);
-                req.session.upOk = 1;
-                res.redirect('/sign-up');
+				bcrypt.genSalt(saltRounds, function(err, salt) {
+    				bcrypt.hash(passwd, salt, function(err, hash) {
+        				// Store hash in your password DB.
+                		//su.insert_user(login, passwd, fname, lname, email);
+                		su.insert_user(login, hash, fname, lname, email);
+                		req.session.upOk = 1;
+                		res.redirect('/sign-up');
+    				});
+				})
             }
             else{
                 res.redirect('/sign-up');
