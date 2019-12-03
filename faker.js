@@ -16,6 +16,14 @@ router.route('/').get((req, res) => {
 	res.send("<p>Your on faker page</p>");
 });
 
+router.route('/500').get((req, res) => {
+	i = 0;
+	while (i < 500){
+		fakeUser();
+		i++;
+	}
+	res.send("<p>Your on faker page</p>");
+});
 
 
 function fakeUser()
@@ -43,18 +51,32 @@ function fakeUser()
 					birthdate = faker.date.between('1920-01-01', '2001-01-01');
 					city = user.address.city;
 
-					info_city = cities.filter(town => { return town.name.match('^' + city + '$')});
+					info_city = [];
+					while (info_city[0] == undefined){
+						info_city = cities.filter(town => { return town.name.match('^' + city + '$')});
+						if (info_city[0] == undefined){
+							user = fakerator.entity.user();
+							city = user.address.city;
+						}
+					}
+					// console.log(city);
+					// console.log(info_city);
 					country = info_city[0].country;
 					zipcode = info_city[0].muniSub;
 					latitude = info_city[0].loc.coordinates[1];
 					longitude = info_city[0].loc.coordinates[0];
 
+					try{
 					bdd_pic.insert_info_user(id_user, gender, orientation, bio, interests, birthdate);
 					bdd_pic.insert_info_user_localalisation(login, country, city, zipcode, longitude, latitude, () => {});
 					bdd2.insert_log(id_user);
 					bdd2.add_fakeVueLike(id_user);
 					bdd_pic.savePic(id_user, image, profile);
 					bdd_pic.isCompleted(id_user);
+					}
+					catch{
+						console.log("petit probleme");
+					}
 				});
 			});
     	});

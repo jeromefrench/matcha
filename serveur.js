@@ -80,7 +80,9 @@ app.use(function (req, res, next) {
 	console.log(req.url);
 	if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" ){
 		bdd1.get_completed(req.session.login,  (result) => {
-			if (result == 1){
+			console.log("RESULT");
+			console.log(result);
+			if (result && result['completed'] == 1){
 				next();
 			}else{
 				req.session.complete_message = true;
@@ -121,13 +123,6 @@ app.use(function(req, res, next){
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
-
-
-
-
-
-
-
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
 	if (req.session.test){
