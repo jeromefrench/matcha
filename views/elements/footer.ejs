@@ -36,6 +36,9 @@
 		<% if( locals.first_log ) { %>
 					notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
 			<% } %>
+		<% if( locals.complete_message) { %>
+					notification({title: 'Notification', content: 'Area restricted to user with a profile completed', icon: '&#128077;'})
+			<% } %>
 
 		<% if(locals.token) { %>
 					localStorage.setItem('Thetoken', "<%= session.token %>");
@@ -50,7 +53,6 @@
 						notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
 					}
 				})
-
 			});
 		<% } else { %>
 					console.log("pas de locals");

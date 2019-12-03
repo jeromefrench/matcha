@@ -97,7 +97,7 @@ router.route('/').post((req, res) => {
 	tab = req.body.popularite.match(/^[0-5]/g);
 	popularite = tab[0];  //regular expression
 
-// console.log(popularite);
+	// console.log(popularite);
 
 	req.session.search = new Object();
 	req.session.search.age_debut = age_debut;
@@ -110,6 +110,7 @@ router.route('/').post((req, res) => {
 	}
 	res.redirect('/research/?page=1');
 });
+
 
 
 

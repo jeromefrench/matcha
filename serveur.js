@@ -1,3 +1,4 @@
+var bdd1 = require('./models/bdd_functions.js');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 let session = require("express-session");
@@ -57,10 +58,15 @@ app.use(function (req, res, next) {
 	if (req.session && req.session.login && req.session.logon == true){
 		res.locals.log_in = req.session.login;
 	}
+	if (req.session.complete_message == true){
+		req.session.complete_message = false;
+		res.locals.complete_message = true;
+	}
 	next();
 })
 app.use('/confirm', confirm);
 app.use('/forgotten-passwd', sendpass);
+app.use('/faker', faker);
 app.use(function (req, res, next) {
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
 		res.redirect('/sign-in');
@@ -68,6 +74,27 @@ app.use(function (req, res, next) {
 		next();
 	}
 })
+
+app.use(function (req, res, next) {
+	console.log("URL");
+	console.log(req.url);
+	if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" ){
+		bdd1.get_completed(req.session.login,  (result) => {
+			console.log("RESULT");
+			console.log(result);
+			if (result && result['completed'] == 1){
+				next();
+			}else{
+				req.session.complete_message = true;
+				res.redirect('/about-you');
+			}
+		});
+	}
+	else {
+		next();
+	}
+});
+
 app.get('/', function(req, res){
 	res.redirect('/sign-in');
 });
@@ -82,7 +109,6 @@ app.use('/research', research);
 app.use('/change-passwd', changepass);
 app.use('/public/photo', delpic);
 app.use('/public/photo', makeProfilePic);
-app.use('/faker', faker);
 app.use('/chat', chat);
 app.use('/dashboard', dashboard);
 app.use('/fake', fake);
@@ -115,8 +141,7 @@ app.post('/test', (req, res) => {
 		// res.render('index', {error: "Vous n'avez pas entrez de message",
 		// 					test: "salut"});
 	}
-	else
-	{
+	else {
 		var Message = require('./models/Message');
 		Message.create(req.body.message, function (){
 			req.flash('success', "Merci petit chat!");
@@ -124,4 +149,3 @@ app.post('/test', (req, res) => {
 		})
 	}
 });
-

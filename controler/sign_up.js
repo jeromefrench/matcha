@@ -2,7 +2,7 @@ let su = require('../models/sign_up.js');
 var bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = 2;
 
 router.route('/').get((req, res) => {
     res.locals.title = "Sign Up";

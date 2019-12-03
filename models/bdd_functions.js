@@ -24,6 +24,26 @@ exports.get_id_user = function (login, callback){
 	});
 }
 
+function get_id_user (login, callback){
+	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		callback(result[0].id);
+	});
+}
+
+exports.get_completed = function (login, callback){
+	get_id_user(login, (id_user) => {
+		var sql = "SELECT `completed` FROM `user_info` WHERE `id_user` = ?";
+		var todo = [id_user];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback(result[0]);
+		});
+	})
+}
+
 exports.insert_message = function (content, date){
 	var sql = "INSERT INTO messages (content, createat) VALUES (?, ?)";
 	var todo = [content, date];
@@ -35,6 +55,15 @@ exports.insert_message = function (content, date){
 
 exports.recover_user = function (login, callback){
 	var sql = "SELECT * FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, function (err, results) {
+		if (err) throw err;
+		callback(results);
+	});
+}
+
+exports.recover_user_ = function (login, callback){
+	var sql = "SELECT * FROM `user`  WHERE `login` LIKE ?";
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, results) {
 		if (err) throw err;

@@ -3,7 +3,9 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	res.locals.title = "My Account";
-	bdd.recover_user(req.session.login, (info) => {
+	console.log("le login");
+	console.log(req.session.login);
+	bdd.recover_user_(req.session.login, (info) => {
 		console.log(info);
 		res.locals.login = info[0].login;
 		res.locals.fname = info[0].fname;

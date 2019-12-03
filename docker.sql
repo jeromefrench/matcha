@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : mysql:3306
--- Généré le :  mer. 27 nov. 2019 à 12:45
--- Version du serveur :  5.7.28
--- Version de PHP :  7.2.23
+-- Host: mysql:3306
+-- Generation Time: Dec 03, 2019 at 06:35 PM
+-- Server version: 5.7.28
+-- PHP Version: 7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `docker`
+-- Database: `docker`
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
@@ -27,7 +27,7 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `block`
+-- Table structure for table `block`
 --
 
 CREATE TABLE IF NOT EXISTS `block` (
@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS `block` (
   `id_user` int(11) NOT NULL,
   `id_block` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `connection_log`
+-- Table structure for table `connection_log`
 --
 
 CREATE TABLE IF NOT EXISTS `connection_log` (
@@ -48,24 +48,12 @@ CREATE TABLE IF NOT EXISTS `connection_log` (
   `id_user` int(11) NOT NULL,
   `last_visit` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `connection_log`
---
-
-INSERT INTO `connection_log` (`id`, `id_user`, `last_visit`) VALUES
-(1, 3, '2019-11-25'),
-(2, 15, '2019-11-25'),
-(11, 85, '2019-11-27'),
-(12, 86, '2019-11-27'),
-(13, 87, '2019-11-27'),
-(14, 88, '2019-11-27');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `like_table`
+-- Table structure for table `like_table`
 --
 
 CREATE TABLE IF NOT EXISTS `like_table` (
@@ -78,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `like_table` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -90,18 +78,24 @@ CREATE TABLE IF NOT EXISTS `messages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Déchargement des données de la table `messages`
+-- Table structure for table `notifications`
 --
 
-INSERT INTO `messages` (`id`, `id_author`, `id_recever`, `message_content`, `data_stamp`) VALUES
-(3, 15, 15, 'uiloh', '2019-11-25'),
-(4, 15, 15, 'iugy', '2019-11-25');
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) DEFAULT NULL,
+  `messages` int(11) DEFAULT NULL,
+  `lu` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `photo`
+-- Table structure for table `photo`
 --
 
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -110,24 +104,12 @@ CREATE TABLE IF NOT EXISTS `photo` (
   `path_photo` text NOT NULL,
   `profile` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `photo`
---
-
-INSERT INTO `photo` (`id`, `id_user`, `path_photo`, `profile`) VALUES
-(20, '3', '/public/photo/jean/1', 1),
-(24, '15', '/public/photo/bbchat/0', 1),
-(70, '85', 'https://s3.amazonaws.com/uifaces/faces/twitter/sircalebgrove/128.jpg', 1),
-(71, '86', 'https://s3.amazonaws.com/uifaces/faces/twitter/wiljanslofstra/128.jpg', 1),
-(72, '87', 'https://s3.amazonaws.com/uifaces/faces/twitter/vm_f/128.jpg', 1),
-(73, '88', 'https://s3.amazonaws.com/uifaces/faces/twitter/yesmeck/128.jpg', 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `popularite`
+-- Table structure for table `popularite`
 --
 
 CREATE TABLE IF NOT EXISTS `popularite` (
@@ -137,25 +119,12 @@ CREATE TABLE IF NOT EXISTS `popularite` (
   `nb_vue` int(11) NOT NULL DEFAULT '0',
   `pop` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `popularite`
---
-
-INSERT INTO `popularite` (`id`, `id_user`, `nb_like`, `nb_vue`, `pop`) VALUES
-(7, 85, 0, 418, 2),
-(8, 86, 0, 942, 0),
-(9, 87, 0, 774, 5),
-(11, 2, 0, 45, 0),
-(12, 3, 0, 25, 0),
-(13, 88, 0, 964, 5),
-(14, 15, 0, 51, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `report_fake`
+-- Table structure for table `report_fake`
 --
 
 CREATE TABLE IF NOT EXISTS `report_fake` (
@@ -168,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `report_fake` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -180,24 +149,12 @@ CREATE TABLE IF NOT EXISTS `user` (
   `mail` text NOT NULL,
   `num` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `user`
---
-
-INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VALUES
-(3, 'jean', 'jean-passwd', 'jeanname', 'dupond', 'jean@dupond', 0),
-(15, 'bbchat', '&Bbchat28&', 'Lejeune', 'Laëtitia', 'laetitia-lejeune@live.fr', NULL),
-(85, 'elisa_bourgeois', 'gahotahuwe', 'Bourgeois', 'Elisa', 'elisa.bourgeois29@yahoo.fr', NULL),
-(86, 'enzo_dumont', 'zurulabudi', 'Dumont', 'Enzo', 'enzo.dumont@yahoo.fr', NULL),
-(87, 'julie10', 'gokalabuho', 'Gauthier', 'Julie', 'julie.gauthier@gmail.com', NULL),
-(88, 'nomie.marchal', 'sugutubume', 'Marchal', 'Noémie', 'nomiemarchal77@hotmail.fr', NULL);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user_info`
+-- Table structure for table `user_info`
 --
 
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -210,29 +167,17 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `interests` set('voyage','cuisine','escalade','equitation','sieste','soleil') DEFAULT NULL,
   `country` text,
   `city` text,
-  `zip_code` decimal(10,0) DEFAULT NULL,
+  `zip_code` text,
   `longitude` float DEFAULT NULL,
   `latitude` float DEFAULT NULL,
   `completed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `user_info`
---
-
-INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `birthday`, `interests`, `country`, `city`, `zip_code`, `longitude`, `latitude`, `completed`) VALUES
-(11, 3, 'other', 'everyone', 'bio biologique', '2021-11-12', 'soleil', 'France', 'Paris', '75017', 2.29416, 48.879, 1),
-(13, 15, 'female', 'everyone', 'oikjuhg', '1992-05-28', 'voyage,cuisine,escalade', 'France', 'Paris', '75017', 2.31789, 48.884, 1),
-(56, 85, 'female', 'everyone', 'Inventore incidunt aperiam neque nobis non doloribus quia.', '1927-07-07', 'cuisine', 'FR', 'Courbevoie', '92026', 2.25666, 48.8967, 1),
-(57, 86, 'other', 'everyone', 'Est ullam dolore hic.', '1956-10-13', 'voyage', 'FR', 'Mérignac', '33281', -0.63381, 44.8325, 1),
-(58, 87, 'other', 'women', 'Autem facilis blanditiis error adipisci repellat.', '1979-05-17', 'escalade', 'FR', 'Amiens', '80021', 2.3, 49.9, 1),
-(59, 88, 'female', 'men', 'Itaque voluptate ea.', '1994-02-02', 'escalade', 'FR', 'Saint-Denis', '93066', 2.36667, 48.9333, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user_sub`
+-- Table structure for table `user_sub`
 --
 
 CREATE TABLE IF NOT EXISTS `user_sub` (
@@ -244,12 +189,12 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
   `mail` text NOT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `visited`
+-- Table structure for table `visited`
 --
 
 CREATE TABLE IF NOT EXISTS `visited` (
@@ -257,24 +202,12 @@ CREATE TABLE IF NOT EXISTS `visited` (
   `id_user` int(11) NOT NULL,
   `id_visited` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `visited`
---
-
-INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES
-(6, 15, 15),
-(8, 15, 3),
-(12, 15, 87),
-(13, 15, 85),
-(14, 15, 88),
-(15, 15, 86);
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `vue_profile`
+-- Table structure for table `vue_profile`
 --
 
 CREATE TABLE IF NOT EXISTS `vue_profile` (
@@ -282,19 +215,7 @@ CREATE TABLE IF NOT EXISTS `vue_profile` (
   `id_user` int(11) NOT NULL,
   `vue` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `vue_profile`
---
-
-INSERT INTO `vue_profile` (`id`, `id_user`, `vue`) VALUES
-(1, 3, 25),
-(6, 15, 51),
-(12, 85, 419),
-(13, 86, 943),
-(14, 87, 777),
-(15, 88, 967);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
