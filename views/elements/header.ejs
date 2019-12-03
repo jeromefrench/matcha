@@ -30,7 +30,8 @@
 				<a href="/dashboard" class="item">Dashboard</a>
 				<div class="right menu">
 					<% if (locals.log_in) {%>
-						<a href="/my-account" class="item"><%= locals.log_in %></a>
+						<a href="/notifications" class="item"><% if (locals.new_notif || 1) { %> 🔔 <% } %>Notifications</a>
+						<a href="/my-account" class="item">My profile <%= locals.log_in %></a>
 					<%}%>
 					<div class="ui teal buttons" style="height:40px; margin-top:auto; margin-bottom:auto;">
 						<div class="ui simple dropdown icon button">
