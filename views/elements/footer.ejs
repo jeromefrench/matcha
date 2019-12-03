@@ -1,5 +1,3 @@
-
-
 <div class="notifications"> </div>
 <p>FOOTER</p>
 
@@ -35,43 +33,28 @@
 		})
 	}
 
-	<% if( locals.first_log ) { %>
-		notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
-	<% } %>
+		<% if( locals.first_log ) { %>
+					notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
+			<% } %>
 
+		<% if(locals.token) { %>
+					localStorage.setItem('Thetoken', "<%= session.token %>");
+			var test = localStorage.getItem('Thetoken');
+			var socket = io.connect('http://localhost:8080');
+			socket.on('connect', () => {
+				socket.emit('identify', {
+					token: test
+				});
+				socket.on('result_connect', (data) => {
+					if (data.result == true){
+						notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
+					}
+				})
 
-
-	<% if(locals.token) { %>
-		localStorage.setItem('Thetoken', "<%= session.token %>");
-	var test = localStorage.getItem('Thetoken');
-	console.log("le super token");
-	console.log(test);
-	var socket = io.connect('http://localhost:8080');
-	socket.on('connect', () => {
-		console.log("je suis connecter");
-		socket.emit('identify', {
-			token: test
-		});
-		socket.on('result_connect', (data) => {
-			if (data.result == true){
-				console.log("Log success");
-				notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
-			}
-		})
-
-	});
-	<% } else { %>
-				console.log("ici 2");
-		console.log("pas de locals");
-	<% } %>
-
-	console.log("ici 3");
-	console.log(test);
-
+			});
+		<% } else { %>
+					console.log("pas de locals");
+		<% } %>
 </script>
-
-
-
-
 </body>
 </html>

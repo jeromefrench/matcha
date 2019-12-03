@@ -4,7 +4,9 @@ let session = require("express-session");
 let bodyParser = require("body-parser");
 const app = express();
 var server = app.listen(8080);
-var io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  pingTimeout: 60000,
+});
 const requestIp = require('request-ip');
 socketFile = require('./socket.js')(io);
 //************************************
