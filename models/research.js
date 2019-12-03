@@ -90,7 +90,6 @@ exports.search = function (user, search, callback){
 			else{
 				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
 			}
-		// var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `birthday` BETWEEN ? AND ?";
 		}
 		else if (user.orientation == 'men'){
 			if (user.gender == 'male'){
@@ -102,7 +101,6 @@ exports.search = function (user, search, callback){
 			else{
 				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
 			}
-			// var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `birthday` BETWEEN ? AND ?";
 		}
 		else {
 			if (user.gender == 'male'){
@@ -114,7 +112,6 @@ exports.search = function (user, search, callback){
 			else{
 				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
 			}
-			// var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `birthday` BETWEEN ? AND ?";
 		}
 		var todo = [user.id_user, fin, debut];
 		var birthday = moment(user.birthday);

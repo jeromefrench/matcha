@@ -54,7 +54,7 @@ exports.insert_message = function (content, date){
 }
 
 exports.recover_user = function (login, callback){
-	var sql = "SELECT * FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
+	var sql = "SELECT *, `user`.`id` AS 'id_user' FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
 	var todo = [login];
 	conn.connection.query(sql, todo, function (err, results) {
 		if (err) throw err;

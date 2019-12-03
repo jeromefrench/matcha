@@ -1,6 +1,8 @@
 let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bdd1 = require('../models/bdd_functions.js');
+var bl = require('../models/block.js');
+
 var sortBy = require('array-sort-by');
 const router = require('express').Router();
 
@@ -36,22 +38,28 @@ router.route('/').get((req, res) => {
 				else{
 					res.locals.users = result;
 				}
-					req.session.page = page;
-					req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
-					if (endIndex < Object.keys(res.locals.users).length){
-						req.session.nextpage = page + 1;
-					}
-					else{
-						req.session.nextpage = undefined;
-					}
-					if (startIndex > 0){
-						req.session.previous = page - 1;
-					}
-					else{
-						req.session.previous = undefined;
-					}
-					res.locals.users = res.locals.users.slice(startIndex, endIndex);
-					res.render('research.ejs', {session: req.session});
+				
+				req.session.page = page;
+				req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
+				if (endIndex < Object.keys(res.locals.users).length){
+					req.session.nextpage = page + 1;
+				}
+				else{
+					req.session.nextpage = undefined;
+				}
+				if (startIndex > 0){
+					req.session.previous = page - 1;
+				}
+				else{
+					req.session.previous = undefined;
+				}
+				res.locals.users.forEach((profile) => {
+					console.log("user id &&&&&&&***************************************" + user[0].id_user);
+					console.log("profile id &&&&&&&***************************************" + profile.id_user);
+					bl.IdBlocked(res.locals.users, user[0].id_user, profile.id_user);
+				});
+				res.locals.users = res.locals.users.slice(startIndex, endIndex);
+				res.render('research.ejs', {session: req.session});
 			});	
 		});
 	}
