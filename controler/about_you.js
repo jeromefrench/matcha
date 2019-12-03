@@ -22,12 +22,9 @@ router.route('/').get((req, res) => {
 				bdd_about.count_photo(id_user, (count) => {
 					if (count > 0){ res.locals.photos_completed = true; }
 
-					// if (res.locals.preferences_completed && res.locals.localisation_completed && res.locals.photos_completed){
-
-					// }
-
-
-
+					if (res.locals.preferences_completed && res.locals.localisation_completed && res.locals.photos_completed){
+						bdd_about.isCompleted(id_user);
+					}
 					res.render('about-you.ejs', {session: req.session});
 				})
 			})

@@ -79,7 +79,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 				var todo = [id_user, gender, orientation, bio, inter, birthday];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
-					isCompleted(id_user, gender, orientation, bio, interests);
+					//isCompleted(id_user, gender, orientation, bio, interests);
 				})
 			}
 		});
@@ -92,7 +92,7 @@ exports.insert_info_user = function (id_user, gender, orientation, bio, interest
 		var todo = [id_user, gender, orientation, bio, inter, birthday];
 		conn.connection.query(sql, todo, (error, result) => {
 			if (error) throw error;
-			isCompleted(id_user, gender, orientation, bio, interests);
+			//isCompleted(id_user, gender, orientation, bio, interests);
 		});
 	}
 }
@@ -122,7 +122,7 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 				var todo = [gender, orientation, bio, inter, birthday,  id_user];
 				conn.connection.query(sql, todo, (error, result) => {
 					if (error) throw error;
-					isCompleted(id_user, gender, orientation, bio, interests);
+					//isCompleted(id_user, gender, orientation, bio, interests);
 				})
 			}
 		});
@@ -135,7 +135,7 @@ exports.update_info_user = function (id_user, gender, orientation, bio, interest
 		conn.connection.query(sql, todo, (error, result) => {
 			console.log(error);
 			if (error) throw error;
-			isCompleted(id_user, gender, orientation, bio, interests);
+			//isCompleted(id_user, gender, orientation, bio, interests);
 		});
 	}
 }
