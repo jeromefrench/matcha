@@ -4,38 +4,8 @@ const router = require('express').Router();
 const opencage = require('opencage-api-client');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-function processPreferences(result, res){
-	if (result[0] != undefined) {
-		res.locals.infos = result[0];
-		// console.log(res.locals.infos);
-		res.locals.infos.birthday = res.locals.infos.birth;
-		if (res.locals.infos.birthday != null)
-		{
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
-			res.locals.infos.birthday  = res.locals.infos.birthday.split("/");
-			res.locals.infos.birthday  = res.locals.infos.birthday[1]+ "/"+ res.locals.infos.birthday[2]+"/"+res.locals.infos.birthday[0];
-		}
-		if (res.locals.infos.interests != null){
-			res.locals.infos.interArray = res.locals.infos.interests.split(",");
-			if (res.locals.infos.gender != null && res.locals.infos.orientation != null && res.locals.infos.bio != null){
-				res.locals.preferences_completed = true;
-			}
-		}
-	}
-}
 
 router.route('/').get((req, res) => {
-
-
-
-
-
-
-
-
-
 	res.locals.preferences_completed = false;
 	res.locals.localisation_completed = false;
 	res.locals.photos_completed = false;
@@ -213,4 +183,35 @@ function addPicture(id_user, req, rootPath){
 		// console.log("size 0");
 	}
 }
+
+
+
+function processPreferences(result, res){
+	if (result[0] != undefined) {
+		res.locals.infos = result[0];
+		console.log(res.locals.infos);
+		res.locals.infos.birthday = res.locals.infos.birth;
+		if (res.locals.infos.birthday != null)
+		{
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			res.locals.infos.birthday = res.locals.infos.birthday.replace("\\", "/");
+			res.locals.infos.birthday  = res.locals.infos.birthday.split("/");
+			res.locals.infos.birthday  = res.locals.infos.birthday[1]+ "/"+ res.locals.infos.birthday[2]+"/"+res.locals.infos.birthday[0];
+		}
+		if (res.locals.infos.interests != null){
+			res.locals.infos.interArray = res.locals.infos.interests.split(",");
+			if (res.locals.infos.gender != null &&
+				res.locals.infos.orientation != null &&
+				res.locals.infos.bio != null &&
+				res.locals.infos.birthday != null){
+				res.locals.preferences_completed = true;
+			}
+		}
+		if (res.locals.infos.city != null && res.locals.infos.country != null && res.locals.infos.zip_code != null && res.locals.infos.longitude != null && res.locals.infos.latitude != null ){
+			res.locals.localisation_completed = true;
+		}
+	}
+}
+
 module.exports = router;
