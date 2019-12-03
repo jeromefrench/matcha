@@ -15,7 +15,7 @@
 
 
 	<div class="ui special cards centered">
-		<% if (locals.users[0]){
+		<% if (locals.users && locals.users[0]){
 			locals.users.forEach(function(user) {  %>
 			<%- include('elements/profile_card', {user: user}) %>
 		<% }); } else { console.log("pas de user"); }%>
