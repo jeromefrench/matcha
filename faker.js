@@ -16,9 +16,9 @@ router.route('/').get((req, res) => {
 	res.send("<p>Your on faker page</p>");
 });
 
-router.route('/500').get((req, res) => {
+router.route('/:num').get((req, res) => {
 	i = 0;
-	while (i < 500){
+	while (i < req.params.num){
 		fakeUser();
 		i++;
 	}
