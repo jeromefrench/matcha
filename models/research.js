@@ -8,13 +8,37 @@ exports.get_user = function (login, callback){
 	about.get_info_user(login, (info_user) => {
 		bdd.get_id_user(login, (id_user) => {
 			if (info_user[0].orientation == 'women'){
-				var sql = "	SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1 AND `docker`.`user`.`id` != ? AND `docker`.`user_info`.`gender` = 'female'";
+				if (info_user[0].gender == 'male'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else if (info_user[0].gender == 'female'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else{
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
 			}
 			else if (info_user[0].orientation == 'men'){
-				var sql = "	SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1 AND `docker`.`user`.`id` != ? AND `docker`.`user_info`.`gender` = 'male'";
+				if (info_user[0].gender == 'male'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else if (info_user[0].gender == 'female'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else{
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
 			}
-			else{
-				var sql = "	SELECT * FROM `docker`.`user` INNER JOIN `docker`.`user_info` ON `docker`.`user`.`id` = `docker`.`user_info`.`id_user` INNER JOIN `docker`.`photo` ON `docker`.`user`.`id` = `docker`.`photo`.`id_user` WHERE `docker`.`user_info`.`completed` = 1 AND `docker`.`photo`.`profile` = 1 AND `docker`.`user`.`id` != ?";
+			else {
+				if (info_user[0].gender == 'male'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else if (info_user[0].gender == 'female'){
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
+				else{
+					var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')";
+				}
 			}
 			var todo = [id_user];
 			conn.connection.query(sql, todo, (error, result) => {
@@ -22,7 +46,7 @@ exports.get_user = function (login, callback){
 				callback(result);
 			});
 		});
-	})
+	});
 }
 
 
@@ -82,35 +106,35 @@ exports.search = function (user, search, callback){
 	dateur(search.age_debut, search.age_fin, (debut, fin) => {
 		if (user.orientation == 'women'){
 			if (user.gender == 'male'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'women' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else if (user.gender == 'female'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'men' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else{
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 		}
 		else if (user.orientation == 'men'){
 			if (user.gender == 'male'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'women' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else if (user.gender == 'female'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'men' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else{
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'male' AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 		}
 		else {
 			if (user.gender == 'male'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'women' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else if (user.gender == 'female'){
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'men' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 			else{
-				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user`.`id` WHERE `user`.`id` != ? AND `user_info`.`orientation` = 'everyone' AND `birthday` BETWEEN ? AND ?";
+				var sql = "SELECT * FROM `docker`.`user_info` INNER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` INNER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` INNER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` = 'everyone' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = '1')AND `birthday` BETWEEN ? AND ?";
 			}
 		}
 		var todo = [user.id_user, fin, debut];
