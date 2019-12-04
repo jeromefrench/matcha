@@ -1,18 +1,48 @@
-<% include elements/header %>
-<h1>My Account</h1>
-Login :
-<input type="text" name="login" id="login" value=<%= login %>>
-<br/>
-First name : 
-<input type="text" name="fname" id="fname" value=<%= fname %>>
-</br>
-Last name :
-<input type="text" name="lname" id="lname" value=<%= lname %>>
-<br/>
-Mail :
-<input type="text" name="mail" id="mail" value=<%= mail %>>
-<br/>
-Password :
-<input type="password" name="passwd" id="passwd" value=<%= passwd %>>
-<br/>
-<% include elements/footer %>
+<% include elements/header.ejs %>
+
+<% if (locals.flash && locals.flash.error) { %>
+	<div class="ui negative message">
+		<%= flash.error %>
+	</div>
+<% } %>
+
+<% if (locals.flash && locals.flash.success) { %>
+	<div class="ui positive message">
+		<%= flash.success %>
+	</div>
+<% } %>
+
+<div class="ui container" style="margin-top: 30px">
+	<div class="ui middle aligned center aligned grid">
+		<form method="POST" action="/my-account" class="ui large form">
+			<h2 class="ui teal image header">
+				<div class="content">
+					Account informations
+				</div>
+			</h2>
+			<div class="ui stacked segment">
+				<div class="inline field">
+					<div class="field"> <label>Login</label> </div>
+					<input type="text" name="login" <%- include('elements/values_signup.ejs', {val: locals.login}); %>required>
+					<!-- <%- include('elements/empty.ejs', {empty: session.lnamewrong}); %> -->
+				</div>
+				<div class="inline field">
+					<div class="field"> <label>First Name</label> </div>
+					<input type="text" name="fname" <%- include('elements/values_signup.ejs', {val: locals.fname}); %>required>
+				</div>
+				<div class="inline field">
+					<div class="field"> <label>Last Name</label> </div>
+					<input type="text" name="lname" <%- include('elements/values_signup.ejs', {val: locals.lname}); %>required>
+				</div>
+				<div class="inline field">
+					<div class="field"> <label>Mail</label> </div>
+					<input type="email" name="mail" <%- include('elements/values_signup.ejs', {val: locals.mail}); %>required>
+				</div>
+    			<div class="ui fluid">
+    				<input type="submit" class="ui fluid primary button" value="Change (pas encore fait)">
+    			</div>
+			</div>
+		</form>
+	</div>
+</div>
+<% include elements/footer.ejs %>

@@ -16,6 +16,13 @@ router.route('/').get((req, res) => {
 	});
 });
 
-router.route('/').post((req, res) => {});
+router.route('/').post((req, res) => {
+	login = req.body.login;
+	fname = req.body.fname;
+	lname = req.body.lname;
+	mail = req.body.mail;
+	console.log(login);
+	res.redirect('/my-account');
+});
 
 module.exports = router;
