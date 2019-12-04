@@ -7,7 +7,7 @@ const saltRounds = 2;
 // var faker = require('faker');
 var cities = require("all-the-cities");
 const router = require('express').Router();
-var faker = require('faker/locale/fr');
+faker = require('faker/locale/fr');
 var Fakerator = require('fakerator');
 var fakerator = Fakerator("fr-FR");
 
@@ -47,7 +47,13 @@ function fakeUser()
 					gender = faker.random.arrayElement(["male","female","other"]);
 					orientation = faker.random.arrayElement(["men","women","everyone"]);
 					bio = faker.lorem.sentence();
-					interests = faker.random.arrayElement(["voyage","cuisine","escalade","equitation","soleil","sieste"]);
+					interests = [];
+					number = faker.random.arrayElement(["1","2","3","4","5","6"]);
+					i = 0;
+					while (i < number){
+						interests.push(faker.random.arrayElement(["voyage","cuisine","escalade","equitation","soleil","sieste"])) ;
+						i++;
+					}
 					birthdate = faker.date.between('1920-01-01', '2001-01-01');
 					city = user.address.city;
 

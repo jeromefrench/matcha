@@ -1,4 +1,4 @@
-var bdd1 = require('./models/bdd_functions.js');
+const bdd1 = require('./models/bdd_functions.js')
 const express = require('express');
 const fileUpload = require('express-fileupload');
 let session = require("express-session");
@@ -114,15 +114,11 @@ app.use('/dashboard', dashboard);
 app.use('/fake', fake);
 app.use('/block', block);
 app.use('/notifications', notifications);
-//**************404************************************************************
-app.use(function(req, res, next){
-	res.setHeader('Content-Type', 'text/plain');
-	res.status(404).send('Page introuvable');
-});
-
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
+const test_erreur = require('./test_tchat.js');
+app.use('/test_erreur', test_erreur);
 app.get('/test', (req, res) => {
 	console.log(req.session.flash);
 	if (req.session.test){
@@ -148,4 +144,9 @@ app.post('/test', (req, res) => {
 			res.redirect('/test');  // pour rediriger vers une url
 		})
 	}
+});
+//**************404************************************************************
+app.use(function(req, res, next){
+	res.setHeader('Content-Type', 'text/plain');
+	res.status(404).send('Page introuvable');
 });
