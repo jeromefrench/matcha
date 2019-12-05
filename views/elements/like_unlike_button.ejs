@@ -1,13 +1,24 @@
 <% if (like == true) {%>
 	<a href="/like-this-user/<%= login %>">
-		<div id="like_button" class="ui black button mini">
+		<div id="unlike_button" class="ui black button mini">
 	  		<i class="heart icon"></i> Unlike
 		</div>
 	</a>
 <% }else{%>
 	<a href="/like-this-user/<%= login %>">
-		<div class="ui red button medium">
+		<div id="like_button" class="ui red button medium">
 	  		<i class="heart icon"></i> Like
 		</div>
 	</a>
 <%}%>
+
+<script>
+
+$('#like_button').click(function(event){
+	console.log("j;aime**************************************************************");
+	socket.emit('like', {
+		room: '<%= locals.login_profil %>'
+	});
+});
+
+</script>

@@ -45,10 +45,15 @@ exports = module.exports = function(io){
     								//if (le current user a matcher avec data room){
     								io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
     								//}
-  								});
+								});
+								socket.on('like', (data) => {
+									console.log(data.room + " = jenvoie le like&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+									io.to(data.room).emit('notiflike', {user: currentUser.login});
+								});
 							})
 						console.log("tableau user");
 						console.log(users);
+
 						socket.on('disconnect', () => {
 							if (currentUser){
 								user = users.find(u => u.id == currentUser.id);
