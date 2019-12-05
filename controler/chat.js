@@ -72,7 +72,6 @@ router.route('/:login').post((req, res) => {
 			bdd_message.save_message(id_author, id_recever, message_content, date);
 
 			bdd_notif.save_notif(author, le_recever, message_content, (result) => {
-
 			});
 
 			//regarder si il est connecter
