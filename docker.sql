@@ -2,10 +2,10 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Dec 03, 2019 at 06:35 PM
--- Server version: 5.7.28
--- PHP Version: 7.2.23
+-- Hôte : mysql:3306
+-- Généré le :  jeu. 05 déc. 2019 à 18:22
+-- Version du serveur :  5.7.28
+-- Version de PHP :  7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `docker`
+-- Base de données :  `docker`
 --
 CREATE DATABASE IF NOT EXISTS `docker` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `docker`;
@@ -27,7 +27,7 @@ USE `docker`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `block`
+-- Structure de la table `block`
 --
 
 CREATE TABLE IF NOT EXISTS `block` (
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `block` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `connection_log`
+-- Structure de la table `connection_log`
 --
 
 CREATE TABLE IF NOT EXISTS `connection_log` (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `connection_log` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `like_table`
+-- Structure de la table `like_table`
 --
 
 CREATE TABLE IF NOT EXISTS `like_table` (
@@ -61,12 +61,12 @@ CREATE TABLE IF NOT EXISTS `like_table` (
   `id_user` int(11) NOT NULL,
   `id_i_like` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Structure de la table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -76,18 +76,19 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `message_content` text NOT NULL,
   `data_stamp` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Structure de la table `notifications`
 --
 
 CREATE TABLE IF NOT EXISTS `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) DEFAULT NULL,
-  `messages` int(11) DEFAULT NULL,
+  `id_user_i_send` int(11) NOT NULL,
+  `messages` text,
   `lu` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `photo`
+-- Structure de la table `photo`
 --
 
 CREATE TABLE IF NOT EXISTS `photo` (
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `popularite`
+-- Structure de la table `popularite`
 --
 
 CREATE TABLE IF NOT EXISTS `popularite` (
@@ -124,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `popularite` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report_fake`
+-- Structure de la table `report_fake`
 --
 
 CREATE TABLE IF NOT EXISTS `report_fake` (
@@ -132,12 +133,12 @@ CREATE TABLE IF NOT EXISTS `report_fake` (
   `id_user` int(11) NOT NULL,
   `id_faker` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Structure de la table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -154,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_info`
+-- Structure de la table `user_info`
 --
 
 CREATE TABLE IF NOT EXISTS `user_info` (
@@ -177,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_sub`
+-- Structure de la table `user_sub`
 --
 
 CREATE TABLE IF NOT EXISTS `user_sub` (
@@ -189,12 +190,12 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
   `mail` text NOT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `visited`
+-- Structure de la table `visited`
 --
 
 CREATE TABLE IF NOT EXISTS `visited` (
@@ -202,12 +203,12 @@ CREATE TABLE IF NOT EXISTS `visited` (
   `id_user` int(11) NOT NULL,
   `id_visited` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vue_profile`
+-- Structure de la table `vue_profile`
 --
 
 CREATE TABLE IF NOT EXISTS `vue_profile` (
