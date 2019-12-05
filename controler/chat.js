@@ -60,9 +60,11 @@ router.route('/:login').post((req, res) => {
 			//le receveur id_recever
 			id_recever = result;
 			//le messages message_content
-			message_content = req.body.message;
+			message_content = req.body.message_content;
 			date = new Date();
 			//l'envoyer dans la base de donne
+			console.log("the message");
+			console.log(message_content);
 			bdd_message.save_message(id_author, id_recever, message_content, date);
 		})
 	})

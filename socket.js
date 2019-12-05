@@ -31,6 +31,12 @@ exports = module.exports = function(io){
 						if (user == undefined){
 							console.log("ADDED");
 							users.push(currentUser);
+							// socket.emit('result_connect', {result: true})
+						}
+						else{
+							console.log("count = " + user.count);
+							user.count++;
+						}
 							socket.join(currentUser.login, () => {
 								socket.on('message', function(data){
 									console.log("on a un new message");
@@ -39,14 +45,7 @@ exports = module.exports = function(io){
     								console.log(data.message);
     								io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
   								});
-
 							})
-							// socket.emit('result_connect', {result: true})
-						}
-						else{
-							console.log("count = " + user.count);
-							user.count++;
-						}
 						console.log("tableau user");
 						console.log(users);
 						socket.on('disconnect', () => {

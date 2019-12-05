@@ -9,6 +9,8 @@
 	<% });  %>
 <% } %>
 
+<div id="new_message">
+</div>
 
 <% include elements/chat_send_form %>
 </div>
@@ -17,6 +19,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script>
+	function addMessage(message_){
+var div = document.createElement('div');
+		div.innerHTML = '<a class="avatar">'+
+		'<img src="/assets/avatar/jenny.jpg">'+
+			'</a>'+
+	'<div class="content">'+
+		'<a class="author"> <%= locals.my_login  %> </a>'+
+		'<div class="text">'
+			+message_+
+		'</div>'+
+	'</div>';
+		div.className = "comment";
+var myElement = document.getElementById("new_message");
+		myElement.append(div);
+		
+
+	}
 
 	var $chat = $('#chat');
 
@@ -33,15 +52,14 @@
 
 	$chat.submit(function(e){
 		e.preventDefault();
-		//socket.emit('message', {message: $message_area})
 var x = document.getElementById("myTextarea").value;
 
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
 		console.log("j'envoi le message");
 		console.log(x);
+		addMessage(x);
+		//$chat.submit();
 	});
-
-
 
 
 </script>
