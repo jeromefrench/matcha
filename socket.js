@@ -36,20 +36,25 @@ exports = module.exports = function(io){
 							console.log("count = " + user.count);
 							user.count++;
 						}
-							socket.join(currentUser.login, () => {
-								socket.on('message', function(data){
-									console.log("on a un new message");
-    								console.log(data.room);
-    								console.log(data.message);
-    								//if (le current user a matcher avec data room){
-    								io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
-    								//}
-								});
-								socket.on('like', (data) => {
-									console.log(data.room + " = jenvoie le like&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-									io.to(data.room).emit('notiflike', {user: currentUser.login});
-								});
-							})
+						socket.join(currentUser.login, () => {
+							socket.on('message', function(data){
+								console.log("on a un new message");
+    							console.log(data.room);
+    							console.log(data.message);
+    							//if (le current user a matcher avec data room){
+    							io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
+    							//}
+							});
+							socket.on('like', (data) => {
+								io.to(data.room).emit('notiflike', {user: currentUser.login});
+							});
+							console.log("ici toi");
+							socket.on('vue_profile', (data) => {
+								console.log("hello you");
+								console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" + data.room);
+								io.to(data.room).emit('notifvue', {user: currentUser.login});
+							});
+						})
 						console.log("tableau user");
 						console.log(users);
 

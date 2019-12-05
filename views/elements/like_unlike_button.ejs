@@ -15,7 +15,6 @@
 <script>
 
 $('#like_button').click(function(event){
-	console.log("j;aime**************************************************************");
 	socket.emit('like', {
 		room: '<%= locals.login_profil %>'
 	});
