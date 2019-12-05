@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 
 exports = module.exports = function(io){
 
+
+	//io.on('message', function(data)//{
+		//console.log("on a un new message");
+    	//							io.broadcast.to(data.room).emit('message', data.message);
+		//
+		//}//)
+
 	io.on('connection', socket => {
 		var currentUser = null;
 		console.log("on a une connection");
@@ -24,6 +31,16 @@ exports = module.exports = function(io){
 						if (user == undefined){
 							console.log("ADDED");
 							users.push(currentUser);
+							socket.join(currentUser.login, () => {
+								socket.on('message', function(data){
+									console.log("on a un new message");
+    								//socket.broadcast.to(data.room).emit('message', data.message);
+    								console.log(data.room);
+    								console.log(data.message);
+    								io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
+  								});
+
+							})
 							// socket.emit('result_connect', {result: true})
 						}
 						else{

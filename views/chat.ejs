@@ -18,15 +18,8 @@
 
 <script>
 
-	var $id = <%= locals.the_login_i_chat; %>
-
 	var $chat = $('#chat');
-	var $message_area = $('#message_area');
 
-	$chat.submit(function(e){
-		e.preventDefault();
-		socket.broadcast.to($id).emit('new_message', $message_area.value());
-	});
 
 
 	var socket = io.connect('http://localhost:8080');
@@ -36,8 +29,21 @@
 		socket.on('new_message', (message) => {
 			console.log(message);
 		})
-
 	})
+
+	$chat.submit(function(e){
+		e.preventDefault();
+		//socket.emit('message', {message: $message_area})
+var x = document.getElementById("myTextarea").value;
+
+		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
+		console.log("j'envoi le message");
+		console.log(x);
+	});
+
+
+
+
 </script>
 
 <% include elements/footer %>
