@@ -4,10 +4,10 @@ exports = module.exports = function(io){
 
 
 	//io.on('message', function(data)//{
-		//console.log("on a un new message");
-    	//							io.broadcast.to(data.room).emit('message', data.message);
-		//
-		//}//)
+	//console.log("on a un new message");
+    //							io.broadcast.to(data.room).emit('message', data.message);
+	//
+	//}//)
 
 	io.on('connection', socket => {
 		var currentUser = null;
@@ -36,7 +36,15 @@ exports = module.exports = function(io){
 							console.log("count = " + user.count);
 							user.count++;
 						}
+							socket.on('vue_profile', (data) => {
+								console.log("hello you ici");
+								console.log(data);
+							});
 						socket.join(currentUser.login, () => {
+							socket.on('vue_profile', (data) => {
+								console.log("hello you ici bas");
+								console.log(data);
+							});
 							socket.on('message', function(data){
 								console.log("on a un new message");
     							console.log(data.room);
@@ -49,11 +57,7 @@ exports = module.exports = function(io){
 								io.to(data.room).emit('notiflike', {user: currentUser.login});
 							});
 							console.log("ici toi");
-							socket.on('vue_profile', (data) => {
-								console.log("hello you");
-								console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" + data.room);
-								io.to(data.room).emit('notifvue', {user: currentUser.login});
-							});
+							console.log("ici toi seconde");
 						})
 						console.log("tableau user");
 						console.log(users);

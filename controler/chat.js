@@ -1,5 +1,6 @@
 var bdd = require('../models/bdd_functions.js');
 var bdd_message = require('../models/message.js');
+var bdd_notif = require('../models/notifications.js');
 const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {
@@ -67,7 +68,19 @@ router.route('/:login').post((req, res) => {
 			//l'envoyer dans la base de donne
 			console.log("the message");
 			console.log(message_content);
+			//regarder si ils ont match
 			bdd_message.save_message(id_author, id_recever, message_content, date);
+
+			bdd_notif.save_notif(author, le_recever, message_content, (result) => {
+
+			});
+
+			//regarder si il est connecter
+			// connecter on envoi le message dans notification avec mention lu
+			//else
+			//pas conencter on envvoi le message dans notification avec mention non lu
+
+
 		})
 	})
 	res.redirect('/chat/'+login+'');
