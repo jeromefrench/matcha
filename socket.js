@@ -43,7 +43,9 @@ exports = module.exports = function(io){
     								//socket.broadcast.to(data.room).emit('message', data.message);
     								console.log(data.room);
     								console.log(data.message);
+    								//if (le current user a matcher avec data room){
     								io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
+    								//}
   								});
 							})
 						console.log("tableau user");
