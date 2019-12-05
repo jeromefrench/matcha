@@ -58,17 +58,4 @@
 	<%- include('elements/block.ejs', {login: locals.login_profil, block: user.block}) %>
 </div>
 
-<script>
-	var event = new Event('vue');
-
-	document.addEventListener('vue', function(e){
-		socket.emit('message', {message: 'test', room: 'test'});
-		console.log("seconde");
-		socket.emit('vue_profile', {
-			room: 'test'
-		});
-	});
-
-</script>
-
 <%- include('elements/footer'); %>
