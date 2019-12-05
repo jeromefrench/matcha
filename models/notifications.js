@@ -21,3 +21,14 @@ exports.save_notif = function (login, login_i_send, notification,  callback){
 		});
 	});
 }
+
+exports.get_notif = function (login, callback){
+	bdd.get_id_user(login, (id_login) => {
+		var sql = "SELECT * FROM `notifications` WHERE `id_user_i_send` = ?";
+		var todo = [id_login];
+		conn.connection.query(sql, todo, (error, result) => {
+			if (error) throw error;
+			callback(result);
+		});
+	});
+}
