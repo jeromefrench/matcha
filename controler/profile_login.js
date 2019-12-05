@@ -8,6 +8,7 @@ const router = require('express').Router();
 router.route('/:login').get((req, res) => {
 	res.locals.login_profil = req.params.login;
 	res.locals.session = req.session;
+	res.locals.title = "Profile";
 
 	bdd_like.countVue(req.params.login, (nbVue) => {
 		bdd_re.get_user_profile(req.params.login, (result) => {

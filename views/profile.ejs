@@ -59,15 +59,15 @@
 </div>
 
 <script>
+	var event = new Event('vue');
 
-var event = new Event('vue');
-
-document.addEventListener('vue', function(event){
-	console.log("seconde");
-	socket.emit('vue_profile', {
-		room: 'test'
+	document.addEventListener('vue', function(e){
+		socket.emit('message', {message: 'test', room: 'test'});
+		console.log("seconde");
+		socket.emit('vue_profile', {
+			room: 'test'
+		});
 	});
-});
 
 </script>
 
