@@ -52,11 +52,6 @@
 					console.log("Jai recu un message");
 					notification({title: 'New message from '+ data.leUser, content: data.message, icon: '&#128077;'})
 				})
-				socket.on('result_connect', (data) => {
-					if (data.result == true){
-						notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
-					}
-				})
 			});
 		<% } else { %>
 					console.log("pas de locals");

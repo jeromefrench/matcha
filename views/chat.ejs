@@ -41,15 +41,6 @@ var myElement = document.getElementById("new_message");
 
 
 
-	var socket = io.connect('http://localhost:8080');
-	socket.on('connect', () => {
-		console.log('Je suis connectée');
-		//on emet les messages a la room = login
-		socket.on('new_message', (message) => {
-			console.log(message);
-		})
-	})
-
 	$chat.submit(function(e){
 		e.preventDefault();
 var x = document.getElementById("myTextarea").value;

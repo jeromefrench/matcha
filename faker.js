@@ -33,8 +33,8 @@ function fakeUser()
 	var mail = user.email;
 
 	var passwd = user.password;
-	var fname = user.firstName;
-	var lname = user.lastName;
+	var fname = user.lastName;
+	var lname = user.firstName;
 
 	bcrypt.genSalt(saltRounds, function(err, salt) {
     	bcrypt.hash(passwd, salt, function(err, hash) {
