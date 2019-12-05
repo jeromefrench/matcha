@@ -3,6 +3,7 @@ let bdd_re = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bl = require('../models/block.js');
 var fk = require('../models/fake.js');
+var bdd_notif = require('../models/notifications.js');
 const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {
@@ -37,6 +38,8 @@ router.route('/:login').get((req, res) => {
 								bl.IsBlocked(req.session.login, req.params.login, (block) => {
 									user.block = block;
 									bdd_like.addLikeVue(user.id_user, count_like, nbVue, (pop) => {
+										bdd_notif.save_notif(req.session.login, req.params.login, req.session.login + " is looking at your profile page", (result) => {
+										});
 										req.session.pop = pop;
 										res.render('profile.ejs', {session: req.session, user: user, report: result});									
 									});

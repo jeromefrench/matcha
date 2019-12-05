@@ -45,10 +45,10 @@
 			var test = localStorage.getItem('Thetoken');
 			socket = io.connect('http://localhost:8080');
 			socket.on('connect', () => {
-				if(event != undefined){
-					console.log("first");
-					//document.dispatchEvent(event);
-				}
+				socket.on('notifvue', (data) => {
+					console.log("blajfiheruaghergaowfe");
+					notification({title: "New vue!", content: data.user + " is looking at your profile page", icon: '&#128077;'});
+				});
 				socket.emit('identify', {
 					token: test
 				});
@@ -59,12 +59,10 @@
 				socket.on('notiflike', (data) => {
 					notification({title: "New like", content: data.user + " likes you!", icon: '&#128077;'});
 				});
-				socket.on('notifvue', (data) => {
-					notification({title: "New vue!", content: data.user + " is looking at your profile page", icon: '&#128077;'});
-				});
+				
 				<% if (locals.title == "Profile"){ %>
 					socket.emit('vue_profile', {
-						room: 'test'
+						room: '<%= locals.login_profil %>'
 					});
 				<%}%>
 			});

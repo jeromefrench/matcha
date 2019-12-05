@@ -36,14 +36,11 @@ exports = module.exports = function(io){
 							console.log("count = " + user.count);
 							user.count++;
 						}
-							socket.on('vue_profile', (data) => {
-								console.log("hello you ici");
-								console.log(data);
-							});
 						socket.join(currentUser.login, () => {
 							socket.on('vue_profile', (data) => {
 								console.log("hello you ici bas");
 								console.log(data);
+								io.to(data.room).emit('notifvue', {user: currentUser.login});
 							});
 							socket.on('message', function(data){
 								console.log("on a un new message");
@@ -56,8 +53,6 @@ exports = module.exports = function(io){
 							socket.on('like', (data) => {
 								io.to(data.room).emit('notiflike', {user: currentUser.login});
 							});
-							console.log("ici toi");
-							console.log("ici toi seconde");
 						})
 						console.log("tableau user");
 						console.log(users);
