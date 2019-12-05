@@ -39,7 +39,6 @@ exports = module.exports = function(io){
 							socket.join(currentUser.login, () => {
 								socket.on('message', function(data){
 									console.log("on a un new message");
-    								//socket.broadcast.to(data.room).emit('message', data.message);
     								console.log(data.room);
     								console.log(data.message);
     								//if (le current user a matcher avec data room){
