@@ -31,7 +31,6 @@ exports = module.exports = function(io){
 						if (user == undefined){
 							console.log("ADDED");
 							users.push(currentUser);
-							// socket.emit('result_connect', {result: true})
 						}
 						else{
 							console.log("count = " + user.count);
