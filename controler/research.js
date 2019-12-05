@@ -53,11 +53,6 @@ router.route('/').get((req, res) => {
 				else{
 					req.session.previous = undefined;
 				}
-				// res.locals.users.forEach((profile) => {
-				// 	console.log("user id &&&&&&&***************************************" + user[0].id_user);
-				// 	console.log("profile id &&&&&&&***************************************" + profile.id_user);
-				// 	bl.IdBlocked(res.locals.users, user[0].id_user, profile.id_user);
-				// });
 				res.locals.users = res.locals.users.slice(startIndex, endIndex);
 				res.render('research.ejs', {session: req.session});
 			});	
