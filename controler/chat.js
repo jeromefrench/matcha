@@ -60,7 +60,9 @@ router.route('/:login').post((req, res) => {
 			//le receveur id_recever
 			id_recever = result;
 			//le messages message_content
-			message_content = req.body.message_content;
+			message_content = req.body.message_hello;
+			console.log("ici");
+			console.log(req.body.message_hello);
 			date = new Date();
 			//l'envoyer dans la base de donne
 			console.log("the message");

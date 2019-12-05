@@ -20,21 +20,29 @@
 
 <script>
 	function addMessage(message_){
-var div = document.createElement('div');
+		var div = document.createElement('div');
 		div.innerHTML = '<a class="avatar">'+
-		'<img src="/assets/avatar/jenny.jpg">'+
+			'<img src="/assets/avatar/jenny.jpg">'+
 			'</a>'+
-	'<div class="content">'+
-		'<a class="author"> <%= locals.my_login  %> </a>'+
-		'<div class="text">'
+			'<div class="content">'+
+			'<a class="author"> <%= locals.my_login  %> </a>'+
+			'<div class="text">'
 			+message_+
-		'</div>'+
-	'</div>';
+			'</div>'+
+			'</div>';
 		div.className = "comment";
-var myElement = document.getElementById("new_message");
+		var myElement = document.getElementById("new_message");
 		myElement.append(div);
-		
+document.getElementById("myTextarea").value = "";
 
+		const Url = 'http://localhost:8080/chat/<%= locals.the_login_i_chat %>'
+		const data = {
+			message_hello: message_
+		};
+
+		$.post(Url, data, function(){
+			console.log("message post")
+		})
 	}
 
 	var $chat = $('#chat');
@@ -43,7 +51,7 @@ var myElement = document.getElementById("new_message");
 
 	$chat.submit(function(e){
 		e.preventDefault();
-var x = document.getElementById("myTextarea").value;
+		var x = document.getElementById("myTextarea").value;
 
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
 		console.log("j'envoi le message");
