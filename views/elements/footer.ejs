@@ -59,7 +59,9 @@
 				socket.on('notiflike', (data) => {
 					notification({title: "New like", content: data.user + " likes you!", icon: '&#128077;'});
 				});
-				
+				socket.on('notifmatch', (data) => {
+					notification({title: "It\'s a match!", content: data.user + "likes you too!", icon: '&#128077;'});
+				});
 				<% if (locals.title == "Profile"){ %>
 					socket.emit('vue_profile', {
 						room: '<%= locals.login_profil %>'

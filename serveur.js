@@ -62,6 +62,7 @@ app.use(function (req, res, next) {
 		req.session.complete_message = false;
 		res.locals.complete_message = true;
 	}
+	req.io = io;
 	next();
 })
 app.use('/confirm', confirm);

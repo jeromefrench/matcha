@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+var conn = require('./models/connection_bdd.js');
 
 exports = module.exports = function(io){
 
@@ -51,7 +52,21 @@ exports = module.exports = function(io){
     							//}
 							});
 							socket.on('like', (data) => {
-								io.to(data.room).emit('notiflike', {user: currentUser.login});
+								if (data.like == 1){
+									var sql = "SELECT COUNT(*) AS 'count' FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
+									var todo = [currentUser.id, currentUser.id];
+									conn.connection.query(sql, todo, (err, result) => {
+										if (err) {console.log(err);}
+										console.log('bla***********************');
+										console.log(result[0].count);
+										if (result[0].count != 0){
+											io.to(data.room).emit('notifmatch', {user: currentUser.login});
+										}
+										else if (result[0].count == 0){
+											io.to(data.room).emit('notiflike', {user: currentUser.login});
+										}
+									});
+								}
 							});
 						})
 						console.log("tableau user");

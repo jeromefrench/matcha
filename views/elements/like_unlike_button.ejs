@@ -16,6 +16,14 @@
 
 $('#like_button').click(function(event){
 	socket.emit('like', {
+		like: 1,
+		room: '<%= locals.login_profil %>'
+	});
+});
+
+$('#unlike_button').click(function(event){
+	socket.emit('like', {
+		like: 0,
 		room: '<%= locals.login_profil %>'
 	});
 });

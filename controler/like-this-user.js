@@ -8,12 +8,13 @@ router.route('/:login').get((req, res) => {
 	bdd.doILike(my_login, the_login_i_like, (result) => {
 		if (result){
 			bdd.unLike(my_login, the_login_i_like);
-			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " doesn't you anymore", (result) => {
+			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " doesn't like you anymore", (result) => {
 			});
 			res.redirect('back');
 		}
 		else {
 			bdd.addLike(my_login, the_login_i_like);
+			// req.io.
 			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " likes you!", (result) => {
 			});
 			res.redirect('back');
