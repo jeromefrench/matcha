@@ -5,7 +5,7 @@ let bdd = require('../models/bdd_functions.js');
 
 exports.save_notif = function (login, login_i_send, notification,  callback){
 	connected = users.find(u => u.login == login_i_send);
-	if (connected == false){
+	if (connected == undefined){
 		lu = 0;
 	}else{
 		lu = 1;

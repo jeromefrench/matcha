@@ -1,5 +1,7 @@
 let si = require('../models/sign_in.js');
 var bdd = require('../models/bdd_functions.js');
+var conn = require('../models/connection_bdd.js');
+
 const router = require('express').Router();
 // var bcrypt = require('bcrypt');
 // var jwtUtil = require('../utils/jwt_util.js');
@@ -40,21 +42,32 @@ router.route('/').post((req, res) => {
 				if (match) {
 					//	console.log("Password Match");
 					bdd.get_id_user(login, (userId) => {
-						si.save_connection_log(userId);
-						login = req.body.login;
-						req.session.logon = true;
-						req.session.login = login;
-						req.session.vpass = 0;
-						console.log(req.session.token);
-						const user = {
-							id: userId, 
-							username: req.session.login,
-							// email: 'brad@gmail.com'
-						}
-						let jwtToken = jwt.sign(user, 'secretkey');
-						req.session.token = jwtToken;
-						req.session.first_log = true;
-						res.redirect('/about-you');
+						var sql = "SELECT COUNT(*) AS 'count' FROM `notifications` WHERE `id_user_i_send` = ? AND `lu` = 0";
+						var todo = [userId];
+						conn.connection.query(sql, todo, (err, tab) => {
+							if (err) {console.log(err);}
+							if (tab[0].count == 0){
+								bell = 0;
+							}
+							else{
+							    bell = 1;
+							}
+							si.save_connection_log(userId);
+							login = req.body.login;
+							req.session.logon = true;
+							req.session.login = login;
+							req.session.vpass = 0;
+							console.log(req.session.token);
+							const user = {
+								id: userId, 
+								username: req.session.login,
+								// email: 'brad@gmail.com'
+							}
+							let jwtToken = jwt.sign(user, 'secretkey');
+							req.session.token = jwtToken;
+							req.session.first_log = true;
+							res.redirect('/about-you');
+						});
 					});
 				}
 				else {

@@ -7,7 +7,7 @@
 	</a>
 <% }else{%>
 	<a id="like" href="/like-this-user/<%= login %>">
-		<div id="like_button" class="ui red button medium">
+		<div id="like_button" class="ui green button medium">
 	  		<i class="heart icon"></i> Like
 		</div>
 	</a>
@@ -63,7 +63,7 @@ Match :
 		console.log($('#like_button_area').children(":first").attr("id"));
 		if($('#like_button_area').children(":first").attr("id") == "unlike") {
 			console.log("on unlike");
-			$('#unlike').children(":first").attr("class", "ui red button medium");
+			$('#unlike').children(":first").attr("class", "ui green button medium");
 			$('#unlike').children(":first").html('<i class="heart icon"></i>Like');
 			$('#like_button_area').children(":first").attr("id", "like");
 

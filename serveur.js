@@ -43,6 +43,7 @@ const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
 const notifications = require('./controler/notifications.js');
 users = [];
+bell = 0;
 
 app.use(function (req, res, next) {
 	if (req.session && req.session.token){
