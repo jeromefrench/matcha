@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le :  jeu. 05 déc. 2019 à 18:22
+-- Généré le :  ven. 06 déc. 2019 à 11:03
 -- Version du serveur :  5.7.28
 -- Version de PHP :  7.2.23
 
@@ -48,7 +48,14 @@ CREATE TABLE IF NOT EXISTS `connection_log` (
   `id_user` int(11) NOT NULL,
   `last_visit` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `connection_log`
+--
+
+INSERT INTO `connection_log` (`id`, `id_user`, `last_visit`) VALUES
+(1, 1, '2019-12-06');
 
 -- --------------------------------------------------------
 
@@ -105,7 +112,14 @@ CREATE TABLE IF NOT EXISTS `photo` (
   `path_photo` text NOT NULL,
   `profile` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `photo`
+--
+
+INSERT INTO `photo` (`id`, `id_user`, `path_photo`, `profile`) VALUES
+(1, '1', '/public/photo/bbchat/0', 1);
 
 -- --------------------------------------------------------
 
@@ -150,7 +164,15 @@ CREATE TABLE IF NOT EXISTS `user` (
   `mail` text NOT NULL,
   `num` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `login`, `passwd`, `fname`, `lname`, `mail`, `num`) VALUES
+(1, 'bbchat', '$2b$04$wcGOVqKuxE08UbmejX8/ZeD9h2s9r1ShntWPu16IytuCm8q7SJY7W', 'Laëtitia', 'Lejeune', 'laetitia-lejeune@live.fr', NULL),
+(2, 'blabli', '$2b$04$C6TkzeWb5ObygBjohVowNuuaJUgZysQUGdxTU5xyv/GO7/H9On2u.', 'Blibli', 'Blabla', 'wesovok966@newmail.top', NULL);
 
 -- --------------------------------------------------------
 
@@ -173,7 +195,14 @@ CREATE TABLE IF NOT EXISTS `user_info` (
   `latitude` float DEFAULT NULL,
   `completed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `user_info`
+--
+
+INSERT INTO `user_info` (`id`, `id_user`, `gender`, `orientation`, `bio`, `birthday`, `interests`, `country`, `city`, `zip_code`, `longitude`, `latitude`, `completed`) VALUES
+(1, 1, 'female', 'men', 'adsdfghj', '1992-05-28', 'voyage,cuisine,escalade', 'France', 'Paris', '75017', 2.29, 48.8761, 1);
 
 -- --------------------------------------------------------
 
@@ -190,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `user_sub` (
   `mail` text NOT NULL,
   `num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 

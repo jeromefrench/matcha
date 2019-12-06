@@ -7,6 +7,7 @@ const saltRounds = 2;
 router.route('/').get((req, res) => {
     res.locals.title = "Sign Up";
     if (req.session.upOk == 1){
+        req.session.upOk = 0;
         res.render('signup_envoye.ejs', {session: req.session});
     }
     else{
