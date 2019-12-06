@@ -97,7 +97,11 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', function(req, res){
-	res.redirect('/sign-in');
+	if (req.session.logon) {
+		res.redirect('/about-you');
+	}else{
+		res.redirect('/sign-in');
+	}
 });
 app.use('/sign-out', signout);
 app.use('/sign-up', signup);
