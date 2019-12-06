@@ -150,31 +150,36 @@ exports.search = function (user, search, callback){
 		}
 		conn.connection.query(sql, todo, (err, result) => {
 			if (err) throw err;
-			var dist_user = {lat: user.latitude, lon: user.longitude};
-			result.forEach((profile) => {
-				i++;
-				birthday = moment(profile.birthday);
-				profile.age = -(birthday.diff(moment(), 'years'));
-				profile.ecart = profile.age - user.age;
-				if (profile.ecart < 0){profile.ecart = -profile.ecart;}
-				profile.popRequired = search.popularite;
-				profile.array_inter = array_inter;
-				profile.nb_inter = search.interet;
-				var dist_profile = {lat: profile.latitude, lon: profile.longitude};
-				var dist = geodist(dist_profile, dist_user, {unit: 'km'});
-				profile.distance = dist;
-				profile.distance_max = search.distance;
-				inter_rab(profile, (nb_com) => {
-					profile.nb_com = nb_com;
-					if (i == result.length){
-						var filter_result = result.filter(distance_function);
-						var filter_res = filter_result.filter(inter_function);
-						filter_result = filter_res.filter(pop_function);
-						console.log(filter_result);
-						callback(filter_result);
-					}
+			if(result[0] == undefined){
+				callback (result);
+			}
+			else{
+				var dist_user = {lat: user.latitude, lon: user.longitude};
+				result.forEach((profile) => {
+					i++;
+					birthday = moment(profile.birthday);
+					profile.age = -(birthday.diff(moment(), 'years'));
+					profile.ecart = profile.age - user.age;
+					if (profile.ecart < 0){profile.ecart = -profile.ecart;}
+					profile.popRequired = search.popularite;
+					profile.array_inter = array_inter;
+					profile.nb_inter = search.interet;
+					var dist_profile = {lat: profile.latitude, lon: profile.longitude};
+					var dist = geodist(dist_profile, dist_user, {unit: 'km'});
+					profile.distance = dist;
+					profile.distance_max = search.distance;
+					inter_rab(profile, (nb_com) => {
+						profile.nb_com = nb_com;
+						if (i == result.length){
+							var filter_result = result.filter(distance_function);
+							var filter_res = filter_result.filter(inter_function);
+							filter_result = filter_res.filter(pop_function);
+							console.log(filter_result);
+							callback(filter_result);
+						}
+					});
 				});
-			});
+			}
 		});
 	});
 }
