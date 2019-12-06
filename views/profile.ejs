@@ -13,10 +13,7 @@
 			</div>
 			<div class="ui raised segment">
       			<h3 class="ui header"></h3>
-				<%- include('elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like}); %></br>
-				Like me :<%- include('elements/green_check_red_cross', {bool: user.does_it_like_me}); %></br>
-				Match :<%- include('elements/green_check_red_cross', {bool: user.match});  %></br>
-				<%- include('elements/chat_button', {match: user.match, login:user.login});   %>
+				<%- include('elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like, does_it_like_me: user.does_it_like_me, match: user.match}); %>
 			</div>
 
 			<div class="ui raised segment">

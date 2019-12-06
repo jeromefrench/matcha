@@ -35,11 +35,12 @@
 		myElement.append(div);
 document.getElementById("myTextarea").value = "";
 
+
+
 		const Url = 'http://localhost:8080/chat/<%= locals.the_login_i_chat %>'
 		const data = {
 			message_hello: message_
 		};
-
 		$.post(Url, data, function(){
 			console.log("message post")
 		})
