@@ -1,31 +1,116 @@
+<div id="like_button_area">
 <% if (like == true) {%>
-	<a href="/like-this-user/<%= login %>">
+	<a id="unlike" href="/like-this-user/<%= login %>">
 		<div id="unlike_button" class="ui black button mini">
 	  		<i class="heart icon"></i> Unlike
 		</div>
 	</a>
 <% }else{%>
-	<a href="/like-this-user/<%= login %>">
+	<a id="like" href="/like-this-user/<%= login %>">
 		<div id="like_button" class="ui red button medium">
 	  		<i class="heart icon"></i> Like
 		</div>
 	</a>
 <%}%>
+</div>
+
+<div id="like_me_area">
+Like me :
+
+			<% if (does_it_like_me == true) {%>
+<i class="green checkmark icon"></i>
+			<% }else{%>
+<i class="red checkmark icon"></i>
+			<%}%>
+
+</div>
+<div id="match_area">
+Match :
+
+			<% if (match == true) {%>
+<i class="green checkmark icon"></i>
+			<% }else{%>
+<i class="red checkmark icon"></i>
+			<%}%>
+
+</div>
+<div id="chat_area">
+			<% if (match == true) {%>
+<a href="/chat/<%= login %>">
+<button class="ui green button">
+  <i class="user icon"></i> Chat
+</button>
+</a>
+			<% }else{%>
+<a href="/chat/<%= login %>">
+<button class="ui green button">
+  <i class="user icon"></i> Chat
+</button>
+</a>
 
 <script>
+	$('#chat_area').hide();
+</script>
 
-$('#like_button').click(function(event){
-	socket.emit('like', {
-		like: 1,
-		room: '<%= locals.login_profil %>'
-	});
-});
+			<%}%>
 
-$('#unlike_button').click(function(event){
-	socket.emit('like', {
-		like: 0,
-		room: '<%= locals.login_profil %>'
+</div>
+
+<script>
+	$('#like_button_area').click(function(event){
+		event.preventDefault();
+		console.log("ici");
+		console.log($('#like_button_area').children(":first").attr("id"));
+		if($('#like_button_area').children(":first").attr("id") == "unlike") {
+			console.log("on unlike");
+			$('#unlike').children(":first").attr("class", "ui red button medium");
+			$('#unlike').children(":first").html('<i class="heart icon"></i>Like');
+			$('#like_button_area').children(":first").attr("id", "like");
+
+			$('#chat_area').hide();
+			$("#match_area").children(":first").attr("class", "red checkmark icon");
+
+			const Url = 'http://localhost:8080/like-this-user/<%= login %>'
+			const data = { };
+			$.post(Url, data, function(answer){
+				console.log("message post")
+				console.log(answer);
+				socket.emit('like', {
+					like: 0,
+					room: '<%= locals.login_profil %>'
+				});
+			})
+		} else {
+			console.log("onlike");
+			$('#like').children(":first").attr("class", "ui black button mini");
+			$('#like').children(":first").html('<i class="heart icon"></i>Unlike');
+			$('#like_button_area').children(":first").attr("id", "unlike");
+
+			<% if (does_it_like_me == true) {%>
+				$("#match_area").children(":first").attr("class", "green checkmark icon");
+				$('#chat_area').show();
+			<%}%>
+
+
+			const Url = 'http://localhost:8080/like-this-user/<%= login %>'
+			const data = { };
+			$.post(Url, data, function(answer){
+				console.log("message post")
+				console.log(answer);
+				socket.emit('like', {
+					like: 1,
+					room: '<%= locals.login_profil %>'
+				});
+			})
+		}
 	});
-});
+
+	$('#like_button').click(function(event){
+		event.preventDefault();
+	});
+
+	$('#unlike_button').click(function(event){
+		event.preventDefault();
+	});
 
 </script>
