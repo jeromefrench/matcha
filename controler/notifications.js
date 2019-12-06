@@ -1,14 +1,26 @@
+var conn = require('../models/connection_bdd.js');
 
 const router = require('express').Router();
-let bdd = require('../models/notifications.js');
+let notif = require('../models/notifications.js');
+var bdd = require('../models/bdd_functions.js');
 
 router.route('/').get((req, res) => {
-    bdd.get_notif(req.session.login, (result) => {
+    notif.get_notif(req.session.login, (result) => {
 		bell = 0;
-    	console.log(result);
-    	res.locals.notifs = result;
- 		res.render('notifications', {session:req.session});
-    })
+		bdd.get_id_user(req.session.login, (userId) => {
+			var sql = "UPDATE `notifications` SET `lu` = 1 WHERE `id_user_i_send` = ?";
+			var todo = [userId];
+			conn.connection.query(sql, todo, (err) => {
+				if (err) {console.log(err);}
+				console.log(result);
+				res.locals.notifs = result;
+				res.render('notifications', {session:req.session});
+			});
+		});
+    	// console.log(result);
+    	// res.locals.notifs = result;
+ 		// res.render('notifications', {session:req.session});
+    });
 });
 
 module.exports = router;
