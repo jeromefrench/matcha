@@ -51,19 +51,17 @@
 
 	<img class="ui medium image" src="<%= pic_link %>"/>
 
-
-
 	</div>
 	<div class="content">
-		<a class="header"><%= user.login %> </a>
+		<a class="header" style="display: inline-block;"><%= user.login %> </a><img <% if (user.gender == 'female') {%>src="/assets/female.png"<% }else if (user.gender == 'male'){ %>src="/assets/male.jpg"<%} else {%>src="/assets/other.png" <%}%>width="15" height="15" style="display: inline-block; margin-left:5px; vertical-align: middle;">
 		<div class="meta">
-			<span class="date">Created in Sep 2014</span>
+			<span>Age: <%= user.age %></span>
+			<span>Distance: <%= user.distance %> km
 		</div>
 	</div>
 	<div class="extra content">
 		<a>
-			<i class="users icon"></i>
-			2 Members
+			<%- include('popularite.ejs', {pop: user.pop}); %>
 		</a>
 	</div>
 </div>

@@ -2,8 +2,11 @@ let bdd = require('../models/research.js');
 let bdd_like = require('../models/like.js');
 var bdd1 = require('../models/bdd_functions.js');
 var bl = require('../models/block.js');
+var about = require('../models/about_you.js');
 
 var sortBy = require('array-sort-by');
+var moment = require('moment');
+var geodist = require('geodist');
 const router = require('express').Router();
 
 
@@ -20,9 +23,7 @@ router.route('/').get((req, res) => {
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		bdd1.recover_user(req.session.login, (user) => {
 			bdd.search(user[0], req.session.search, (result) => {
-				console.log("lalalalala***************************************************");		
 				if (result[0] == undefined){
-					console.log("pas de users*****************************************");
 					res.render('research.ejs', {session: req.session});
 				}
 				else{
@@ -61,6 +62,8 @@ router.route('/').get((req, res) => {
 						req.session.previous = undefined;
 					}
 					res.locals.users = res.locals.users.slice(startIndex, endIndex);
+					console.log("USER RESEARCH******************************");
+					console.log(res.locals.users);
 					res.render('research.ejs', {session: req.session});
 				}
 			});	
@@ -89,7 +92,36 @@ router.route('/').get((req, res) => {
 						req.session.previous = undefined;
 					}
 					res.locals.users = all_user.slice(startIndex, endIndex);
-					res.render('research.ejs', {session: req.session});
+					i = 0;
+					console.log("&&&&&&&&&&&&&&&&&&&&&&&****************************");
+					about.get_info_user(req.session.login, (info) => {
+						loc = {lat: info[0].latitude, lon: info[0].longitude};
+						console.log(loc);
+						res.locals.users.forEach(() => {
+							console.log("bladdddddddddddd((((((((((((((((((((((((((((((((((((");
+							var dist_user = {lat: res.locals.users[i].latitude, lon: res.locals.users[i].longitude};
+							console.log("dist user = " + dist_user);
+							res.locals.users[i].distance = geodist(dist_user, loc, {unit: 'km'});
+							// res.locals.users[i].distance = dist;
+							birthdate = moment(res.locals.users[i].birthday);
+							res.locals.users[i].age = -(birthdate.diff(moment(), 'years'));
+							i++;
+						});
+						console.log("USER RE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+						console.log(res.locals.users);
+						res.render('research.ejs', {session: req.session});
+					});
+					// res.locals.users.forEach(() => {
+					// 	// dist_user = {lat: res.locals.users[i].latitude, lon: res.locals.user[i].longitude};
+					// 	// dist = geodist(dist_user, , {unit: 'km'});
+					// 	// res.locals.users[i].distance = dist;
+					// 	birthdate = moment(res.locals.users[i].birthday);
+					// 	res.locals.users[i].age = -(birthdate.diff(moment(), 'years'));
+					// 	i++;
+					// });
+					// console.log("USER RE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+					// console.log(res.locals.users);
+					// res.render('research.ejs', {session: req.session});
 				}
 			});
 	}
