@@ -41,6 +41,10 @@ router.route('/:login').get((req, res) => {
 										bdd_notif.save_notif(req.session.login, req.params.login, req.session.login + " is looking at your profile page", (result) => {
 										});
 										req.session.pop = pop;
+										find = users.find(element => element.login == req.params.login);
+										if (find != undefined){
+											user.last_visit = 'online';
+										}
 										res.render('profile.ejs', {session: req.session, user: user, report: result});									
 									});
 								});

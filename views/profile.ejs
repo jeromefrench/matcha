@@ -2,7 +2,7 @@
 
 <div class="ui container">
 
-	<h1 class="ui header">Your on <%= user.fname %> <%= user.lname %> profile</h1>
+	<h1 class="ui header">Your on <%= user.login %>'s profile</h1>
 	<div class="ui two column centered grid">
   		<div class="column right aligned">
 			<!-- #############################################################################3 -->
@@ -17,8 +17,12 @@
 			</div>
 
 			<div class="ui raised segment">
-      			<h3 class="ui header">Connection log</h3>
-				<p>Last seen : <%= user.last_visit %></p>
+				<h3 class="ui header">Connection log</h3>
+				<% if (user.last_visit == 'online') {%>
+					<p><i class="circle icon" style="color:green"></i> <%= user.login%> is online</p>
+				<%}else{%>
+				<p><i class="circle icon" style="color:red"></i> Last seen : <%= user.last_visit %></p>
+				<%}%>
 			</div>
 
   		</div>
@@ -27,7 +31,8 @@
 			<div class="ui raised segment">
       			<h3 class="ui header">Information</h3>
 				<p>
-					<strong>Firsname:</strong> <%= user.fname %>   </br>
+					<strong>Gender:</strong> <i <% if (user.gender == 'female') {%>class="venus icon" style="width:15px; height:15px; color:#db12a9;"<% }else if (user.gender == 'male'){ %>class="mars icon" style="width:15px; height: 15px; color:blue;"<%} else {%>class="transgender icon" style="width:15px; height:15px; color: purple;"<%}%>></i></br>
+					<strong>Firstname:</strong> <%= user.fname %>   </br>
 					<strong>Lastname: </strong><%= user.lname %>   </br>
 					<strong>Location: </strong><%= user.city %>, <%= user.country %></br>
 					<strong>Popularity score: </strong><%- include('elements/popularite.ejs', {pop: session.pop}); %></br>
