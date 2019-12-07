@@ -1,10 +1,13 @@
 let bdd = require('../models/bdd_functions.js');
 var cp = require('../models/change-passwd.js');
+const bcrypt = require('bcrypt');
 const router = require('express').Router();
+const saltRounds = 2;
 
 router.route('/:login/:num').get((req, res) => {
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
         if (req.session.changeOk == 1){
+            req.session.changeOk = 0;
             res.render('changepassok.ejs', {session: req.session});
         }
         else{
@@ -40,9 +43,13 @@ router.route('/:login/:num').post((req, res) => {
             req.session.passwd = npass;
         }
         if (answer, answer1, checkOk, match){
-            cp.changePass(login, npass);
-            req.session.changeOk = 1;
-            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+            bcrypt.genSalt(saltRounds, function(err, salt) {
+                bcrypt.hash(npass, salt, function(err, hash) {
+                    cp.changePass(login, hash);
+                    req.session.changeOk = 1;
+                    res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+                });
+            });
         }
         else{
             res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);

@@ -76,7 +76,7 @@ router.route('/').post((req, res) => {
                 		req.session.upOk = 1;
                 		res.redirect('/sign-up');
     				});
-				})
+				});
             }
             else{
                 res.redirect('/sign-up');
