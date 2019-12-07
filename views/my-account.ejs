@@ -38,7 +38,7 @@
 				</div>
 				<div class="inline field">
 					<div class="field"> <label>Mail</label> </div>
-					<input type="email" name="mail" <%- include('elements/values_signup.ejs', {val: locals.mail}); %>required>
+					<input type="email" name="email" <%- include('elements/values_signup.ejs', {val: locals.mail}); %>required>
 					<%- include('elements/signup_email.ejs', {mailexist: session.mailexist, empty: session.emailwrong}); %>
 				</div>
 				<div class="inline field">

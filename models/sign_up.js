@@ -78,15 +78,20 @@ function check_login(login, callback){
 		todo = [login];
 		conn.connection.query(sql, todo, function (err1, result1){
 			if (err1) throw err1;
-			if (result[0].count != 0 || result1[0].count != 0){
-				callback(true);
+			if (result[0].count == 0 || result1[0].count == 0){
+				callback(false);
+			}
+			else if(result[0].count == 1 || result1[0].count == 1){
+				callback('changeok');
 			}
 			else{
-				callback(false);
+				callback(true);
 			}
 		});
 	});
 }
+
+
 
 function check_mail(mail, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
@@ -97,12 +102,15 @@ function check_mail(mail, callback){
 		todo = [mail];
 		conn.connection.query(sql, todo, function (err1, result1){
 			if (err1) throw err1;
-			if (result[0].count != 0)
-				callback(1);
+			if (result[0].count == 0)
+				callback(0);
 			else if (result1[0].count != 0)
 				callback(2);
+			else if (result[0].count == 1){
+				callback('changeok');
+			}	
 			else
-				callback(0);
+				callback(1);
 		});
 	});
 }

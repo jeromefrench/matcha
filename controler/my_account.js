@@ -1,6 +1,7 @@
 let bdd = require('../models/bdd_functions.js');
 let su = require('../models/sign_up.js');
 var cp = require('../models/change-passwd.js');
+var ma = require('../models/my-account.js');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const saltRounds = 2;
@@ -38,6 +39,7 @@ router.route('/').post((req, res) => {
 	req.session.logexist = 0;
 	req.session.mailexist = 0;
 	su.check_fieldOk(lname, fname, email, login, npass, (i1, i2, i3, i4, i5, result1, result2) => {
+		console.log("RESSSS = " + i1 + ' ' + i2 + ' ' + i3 + ' ' + i4 + ' ' + i5 + ' ' + result1 + ' ' + result2);
 		if (i1 == 1) {
 			req.session.lnamewrong = 1;
 		}
@@ -56,33 +58,37 @@ router.route('/').post((req, res) => {
 		if (result1 == 1) {
 			req.session.logexist = 1;
 		}
-		if (result2 == 1) {
-			req.session.mailexist = 1;
-		}
-		else if (result2 == 2) {
+		if (result2 == 2) {
 			req.session.mailexist = 2;
 		}
-		if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0) {
+		if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && (result1 == 'changeok' || result1 == false) && (result2 == 'changeok' || result2 == 0)) {
 			cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
-				if (!answer || !checkOk) {
-					req.session.passwrong = 1;
-					req.session.passwd = undefined;
-				}
-				if (!answer1 || !match) {
-					req.session.vwrong = 1;
-					req.session.passwd = npass;
-				}
-				if (answer, answer1, checkOk, match) {
-					bcrypt.genSalt(saltRounds, function (err, salt) {
-						bcrypt.hash(npass, salt, function (err, hash) {
-							cp.changePass(login, hash);
-							res.redirect('/my-account');
+				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				ma.change_log_mail(req.session.login, login, email, () => {
+					console.log("*************************************************");
+					req.session.login = login;
+					req.session.email = email;
+					if (!answer || !checkOk) {
+						req.session.passwrong = 1;
+						req.session.passwd = undefined;
+					}
+					if (!answer1 || !match) {
+						req.session.vwrong = 1;
+						req.session.passwd = npass;
+					}
+					if (answer, answer1, checkOk, match) {
+						bcrypt.genSalt(saltRounds, function (err, salt) {
+							bcrypt.hash(npass, salt, function (err, hash) {
+								cp.changePass(login, hash);
+								res.redirect('/my-account');
+							});
 						});
-					});
-				}
-				else {
-					res.redirect('/my-account');
-				}
+					}
+					else {
+						res.redirect('/my-account');
+					}
+				});
+				
 			});
 		}
 		else {
