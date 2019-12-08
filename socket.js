@@ -15,12 +15,33 @@ function isBlock(userLog, isblockLog, callback){
 			});
 		});
 	});
-	// var sql = "SELECT COUNT(*) AS 'count' FROM `block` WHERE `id_user` = ? AND `id_block` = ?";
-	// var todo = [userLog, isblockLog];
+}
+
+function isMatch(userLog, ismatchLog, callback){
+	bdd.get_id_user(userLog, (userId) => {
+		bdd.get_id_user(ismatchLog, (ismatchId) => {
+			var sql = "SELECT * FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
+			var todo = [userId, userId];
+			conn.connection.query(sql, todo, (err, result) => {
+				if(err){console.log(err);}
+				else {
+					var find = result.find(element => element.id_user == ismatchId);
+					if (find == undefined){
+						callback(false);
+					}
+					else{
+						console.log("find = " + find);
+						callback(true);
+					}
+				}
+			});
+		});
+	});
+	// var sql = "SELECT COUNT(*) AS 'count' FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
+	// var todo = [userLog, ismatchLog];
 	// conn.connection.query(sql, todo, (err, result) => {
-	// 	if (err){console.log(err);}
-	// 	else{
-	// 		console.log("block = " + result[0].count);
+	// 	if(err){console.log(err);}
+	// 	else {
 	// 		callback(result[0].count);
 	// 	}
 	// });
@@ -91,16 +112,13 @@ exports = module.exports = function(io){
 								isBlock(data.room, currentUser.login, (block) => {
 									if (block == 0){
 										if (data.like == 1){
-											var sql = "SELECT COUNT(*) AS 'count' FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
-											var todo = [currentUser.id, currentUser.id];
-											conn.connection.query(sql, todo, (err, result) => {
-												if (err) {console.log(err);}
+											isMatch(data.room, currentUser.login, (match) => {
 												console.log('bla***********************');
-												console.log(result[0].count);
-												if (result[0].count != 0){
+												console.log(match);
+												if (match != 0){
 													io.to(data.room).emit('notifmatch', {user: currentUser.login});
 												}
-												else if (result[0].count == 0){
+												else {
 													io.to(data.room).emit('notiflike', {user: currentUser.login});
 												}
 											});
