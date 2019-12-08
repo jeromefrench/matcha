@@ -77,11 +77,11 @@ function check_login(login, callback){
 		todo = [login];
 		conn.connection.query(sql, todo, function (err1, result1){
 			if (err1) throw err1;
-			if (result[0].count == 0 || result1[0].count == 0){
-				callback(false);
+			if (result[0].count == 0 && result1[0].count == 0){
+				callback(true);
 			}
 			else{
-				callback(true);
+				callback(false);
 			}
 		});
 	});

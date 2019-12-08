@@ -5,7 +5,11 @@ const bcrypt = require('bcrypt');
 const saltRounds = 2;
 
 router.route('/').get((req, res) => {
+    req.session.vpass = undefined;
+    req.session.logexists = undefined;
+    req.session.logwrong = undefined;
     res.locals.title = "Sign Up";
+    console.log("logexist get = " + req.session.logexist);
     if (req.session.upOk == 1){
         req.session.upOk = 0;
         res.render('signup_envoye.ejs', {session: req.session});
@@ -54,7 +58,7 @@ router.route('/').post((req, res) => {
             if (i5 == 1){
                 req.session.passwrong = 1;
             }
-            if (result1 == 1){
+            if (result1 == false){
                 req.session.logexist = 1;
                 req.session.login = undefined;
             }
@@ -66,13 +70,14 @@ router.route('/').post((req, res) => {
                 req.session.mailexist = 2;
                 req.session.login = undefined;
             }
-            if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == 0 && result2 == 0){
+            if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && result1 == true && result2 == 0){
 				bcrypt.genSalt(saltRounds, function(err, salt) {
     				bcrypt.hash(passwd, salt, function(err, hash) {
         				// Store hash in your password DB.
                 		//su.insert_user(login, passwd, fname, lname, email);
                 		su.insert_user(login, hash, fname, lname, email);
-                		req.session.upOk = 1;
+                        req.session.upOk = 1;
+                        console.log("logexist post = " + req.session.logexist);
                 		res.redirect('/sign-up');
     				});
 				});
