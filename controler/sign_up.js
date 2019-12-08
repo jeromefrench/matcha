@@ -9,7 +9,6 @@ router.route('/').get((req, res) => {
     req.session.logexists = undefined;
     req.session.logwrong = undefined;
     res.locals.title = "Sign Up";
-    console.log("logexist get = " + req.session.logexist);
     if (req.session.upOk == 1){
         req.session.upOk = 0;
         res.render('signup_envoye.ejs', {session: req.session});
@@ -38,7 +37,6 @@ router.route('/').post((req, res) => {
     req.session.login = login;
     req.session.upOk = 0;
         su.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
-            console.log("results = " + result1);
             if (i1 == 1){
                 req.session.lnamewrong = 1;
                 req.session.lname = undefined;
@@ -77,7 +75,6 @@ router.route('/').post((req, res) => {
                 		//su.insert_user(login, passwd, fname, lname, email);
                 		su.insert_user(login, hash, fname, lname, email);
                         req.session.upOk = 1;
-                        console.log("logexist post = " + req.session.logexist);
                 		res.redirect('/sign-up');
     				});
 				});
