@@ -50,7 +50,6 @@ function check_noempty(lname, fname, mail, login, passwd, callback){
 	var i3 = 0;
 	var i4 = 0;
 	var i5 = 0;
-	console.log("checkpass = " + check_passwd(passwd));
 	if (help_noempty(lname) == false){
 		i1 = 1;
 	}
@@ -80,9 +79,6 @@ function check_login(login, callback){
 			if (err1) throw err1;
 			if (result[0].count == 0 || result1[0].count == 0){
 				callback(false);
-			}
-			else if(result[0].count == 1 || result1[0].count == 1){
-				callback('changeok');
 			}
 			else{
 				callback(true);
@@ -118,6 +114,35 @@ function check_mail(mail, callback){
 exports.check_fieldOk = function (lname, fname, mail, login, passwd, callback){
 	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
 		check_login(login, (result1) => {
+			check_mail(mail, (result2) => {
+				callback(i1, i2, i3, i4, i5, result1, result2);
+			});
+		});
+	});
+}
+
+function check_logAccount(login, callback){
+	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
+		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+		todo = [login];
+		conn.connection.query(sql, todo, function (err1, result1){
+			if (err1) throw err1;
+			if (result[0].count > 1 || result1[0].count > 1){
+				callback('nochange');
+			}
+			else{
+				callback('changeok');
+			}
+		});
+	});
+}
+
+exports.checkAccount = function (lname, fname, mail, login, passwd, callback){
+	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
+		check_logAccount(login, (result1) => {
 			check_mail(mail, (result2) => {
 				callback(i1, i2, i3, i4, i5, result1, result2);
 			});

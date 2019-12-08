@@ -39,7 +39,7 @@
 					<%- include('elements/signup_login.ejs', {logexist: session.logexist, empty:session.loginwrong}); %>
 				</div>
 				<div class="inline field">
-					<input type="password" name="passwd" placeholder="Password" <%- include('elements/values_signup.ejs', {val: session.passwd}); %>required>
+					<input type="password" name="passwd" placeholder="Password" required>
 					<%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: 0}); %>
 				</div>
     			<div class="ui fluid">

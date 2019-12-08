@@ -32,9 +32,9 @@ router.route('/').post((req, res) => {
     req.session.fname = fname;
     req.session.email = email;
     req.session.login = login;
-    req.session.passwd = passwd;
     req.session.upOk = 0;
         su.check_fieldOk(lname, fname, email, login, passwd, (i1, i2, i3, i4, i5, result1, result2) => {
+            console.log("results = " + result1);
             if (i1 == 1){
                 req.session.lnamewrong = 1;
                 req.session.lname = undefined;
@@ -53,7 +53,6 @@ router.route('/').post((req, res) => {
             }
             if (i5 == 1){
                 req.session.passwrong = 1;
-                req.session.passwd = undefined;
             }
             if (result1 == 1){
                 req.session.logexist = 1;

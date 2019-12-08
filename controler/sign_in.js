@@ -9,6 +9,12 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
 router.route('/').get((req, res) => {
+	req.session.lnamewrong = 0;
+    req.session.fnamewrong = 0;
+    req.session.emailwrong = 0;
+    req.session.loginwrong = 0;
+    req.session.passwrong = 0;
+    req.session.mailexist = 0;
 	res.locals.title = "Sign In";
 	res.locals.jwtToken = req.session.jwtToken;
 
@@ -25,6 +31,8 @@ router.route('/').post((req, res) => {
 	// console.log("la console" + req.body.login);
 	var login = req.body.login;
 	req.session.login = login;
+    req.session.vpass = 0;
+    req.session.logexist = 0;
 	si.check_log(login, (result, result1) => {
 		req.session.logexist = undefined;
 		if (result == 0 && result1 == 0){

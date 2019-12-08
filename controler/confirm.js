@@ -3,6 +3,13 @@ var bdd = require('../models/bdd_functions.js');
 const router = require('express').Router();
 
 router.route('/:login/:num').get((req, res) => {
+    req.session.lnamewrong = 0;
+    req.session.fnamewrong = 0;
+    req.session.emailwrong = 0;
+    req.session.loginwrong = 0;
+    req.session.passwrong = 0;
+    req.session.logexist = 0;
+    req.session.mailexist = 0;
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user_sub", (suspense) => {
         if (suspense){
             res.locals.title = "Welcome " + req.params.login + "!";

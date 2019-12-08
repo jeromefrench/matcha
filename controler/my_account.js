@@ -1,5 +1,4 @@
 let bdd = require('../models/bdd_functions.js');
-let su = require('../models/sign_up.js');
 var cp = require('../models/change-passwd.js');
 var ma = require('../models/my-account.js');
 const bcrypt = require('bcrypt');
@@ -38,8 +37,7 @@ router.route('/').post((req, res) => {
 	req.session.passwrong = 0;
 	req.session.logexist = 0;
 	req.session.mailexist = 0;
-	su.check_fieldOk(lname, fname, email, login, npass, (i1, i2, i3, i4, i5, result1, result2) => {
-		console.log("RESSSS = " + i1 + ' ' + i2 + ' ' + i3 + ' ' + i4 + ' ' + i5 + ' ' + result1 + ' ' + result2);
+	ma.checkAccount(lname, fname, email, req.session.login, login, npass, (i1, i2, i3, i4, i5, result1, result2) => {
 		if (i1 == 1) {
 			req.session.lnamewrong = 1;
 		}
@@ -55,7 +53,7 @@ router.route('/').post((req, res) => {
 		if (i5 == 1) {
 			req.session.passwrong = 1;
 		}
-		if (result1 == 1) {
+		if (result1 == 'nochange') {
 			req.session.logexist = 1;
 		}
 		if (result2 == 2) {
@@ -63,9 +61,7 @@ router.route('/').post((req, res) => {
 		}
 		if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && (result1 == 'changeok' || result1 == false) && (result2 == 'changeok' || result2 == 0)) {
 			cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
-				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-				ma.change_log_mail(req.session.login, login, email, () => {
-					console.log("*************************************************");
+				ma.change_log_mail(req.session.login, login, email, lname, fname, () => {
 					req.session.login = login;
 					req.session.email = email;
 					if (!answer || !checkOk) {
