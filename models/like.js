@@ -1,5 +1,6 @@
 var conn = require('./connection_bdd.js');
 let bdd = require('../models/bdd_functions.js');
+var dash = require('../models/dashboard.js');
 
 exports.add_visited_profile = function (my_login, login_i_visit, callback){
 	bdd.get_id_user(my_login, (my_id) => {
@@ -202,5 +203,43 @@ exports.addLikeVue = function(id_user, countLike, nbVue, callback){
 				});
 			});
 		}
+	});
+}
+
+exports.updateMatch = function(userLog, ismatchLog){
+	bdd.get_id_user(userLog, (userId) => {
+		bdd.get_id_user(ismatchLog, (ismatchId) => {
+			dash.get_user_my_match(userLog, (matches) => {
+				var sql = "UPDATE `like_table` SET `match` = ? WHERE `id_user` = ? AND `id_i_like` = ?";
+				var find = matches.find(element => element.id == ismatchId);
+				if (find != undefined){
+					var todo = [1, userId, ismatchId];
+				}
+				else {
+					var todo = [0, userId, ismatchId];
+				}
+				conn.connection.query(sql, todo, (err) => {
+					if (err){console.log(err);}
+					else{
+						console.log("match on like table UPDATED");
+					}
+				});
+			});
+		});
+	});
+}
+
+exports.wasMatch = function(userLog, wasmatchLog, callback){
+	bdd.get_id_user(userLog, (userId) => {
+		bdd.get_id_user(wasmatchLog, (wasmatchId) => {
+			var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
+			var todo = [userId, wasmatchId];
+			conn.connection.query(sql, todo, (err, result) => {
+				if(err){console.log(err);}
+				else{
+					callback(result[0]);
+				}
+			});
+		});
 	});
 }

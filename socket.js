@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 var conn = require('./models/connection_bdd.js');
 var bdd = require('./models/bdd_functions.js');
+var like = require('./models/like.js');
 
 function isBlock(userLog, isblockLog, callback){
 	bdd.get_id_user(userLog, (userId) => {
@@ -120,6 +121,17 @@ exports = module.exports = function(io){
 												}
 												else {
 													io.to(data.room).emit('notiflike', {user: currentUser.login});
+												}
+											});
+										}
+										else if (data.like == 0){
+											like.wasMatch(data.room, currentUser.login, (result) => {
+												console.log("HELLO ICI ICI ICI BAS");
+												console.log(data.room);
+												if (result != undefined && result.match == 1){
+													like.updateMatch(data.room, currentUser.login);
+													like.updateMatch(currentUser.login, data.room);
+													io.to(data.room).emit('notifnomatch', {user: currentUser.login});
 												}
 											});
 										}
