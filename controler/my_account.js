@@ -27,37 +27,35 @@ router.route('/').post((req, res) => {
 	email = req.body.email;
 	npass = req.body.npass;
 	verif = req.body.verif;
-	req.session.passwrong = 0;
-	req.session.vpasswrong = 0;
-	req.session.vwrong = 0;
-	req.session.lnamewrong = 0;
-	req.session.fnamewrong = 0;
-	req.session.emailwrong = 0;
-	req.session.loginwrong = 0;
-	req.session.passwrong = 0;
-	req.session.logexist = 0;
-	req.session.mailexist = 0;
+	req.session.pwdwrong = 0;
+	req.session.vpwrong = 0;
+	req.session.lwrong = 0;
+	req.session.fwrong = 0;
+	req.session.ewrong = 0;
+	req.session.lowrong = 0;
+	req.session.loginexist = 0;
+	req.session.mailexists = 0;
 	ma.checkAccount(lname, fname, email, req.session.login, login, npass, (i1, i2, i3, i4, i5, result1, result2) => {
 		if (i1 == 1) {
-			req.session.lnamewrong = 1;
+			req.session.lwrong = 1;
 		}
 		if (i2 == 1) {
-			req.session.fnamewrong = 1;
+			req.session.fwrong = 1;
 		}
 		if (i3 == 1) {
-			req.session.emailwrong = 1;
+			req.session.ewrong = 1;
 		}
 		if (i4 == 1) {
-			req.session.loginwrong = 1;
+			req.session.lowrong = 1;
 		}
 		if (i5 == 1) {
-			req.session.passwrong = 1;
+			req.session.pwdwrong = 1;
 		}
 		if (result1 == 'nochange') {
-			req.session.logexist = 1;
+			req.session.loginexist = 1;
 		}
 		if (result2 == 2) {
-			req.session.mailexist = 2;
+			req.session.mailexists = 2;
 		}
 		if (i1 == 0 && i2 == 0 && i3 == 0 && i4 == 0 && i5 == 0 && (result1 == 'changeok' || result1 == false) && (result2 == 'changeok' || result2 == 0)) {
 			cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
@@ -65,11 +63,11 @@ router.route('/').post((req, res) => {
 					req.session.login = login;
 					req.session.email = email;
 					if (!answer || !checkOk) {
-						req.session.passwrong = 1;
+						req.session.pwdwrong = 1;
 						req.session.passwd = undefined;
 					}
 					if (!answer1 || !match) {
-						req.session.vwrong = 1;
+						req.session.vpwrong = 1;
 						req.session.passwd = npass;
 					}
 					if (answer, answer1, checkOk, match) {

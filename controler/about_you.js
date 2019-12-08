@@ -6,8 +6,9 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 
 router.route('/').get((req, res) => {
-	req.session.vpass = 0;
-    req.session.logexist = 0;
+	req.session.vpass = undefined;
+	req.session.logexists = undefined;
+	req.session.logwrong = undefined;
 	res.locals.preferences_completed = false;
 	res.locals.localisation_completed = false;
 	res.locals.photos_completed = false;

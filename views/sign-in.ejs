@@ -14,7 +14,7 @@
 					<div class="ui left icon input">
 						<i class="user icon"></i>
 						<input type="text" name="login" placeholder="Login" <%- include('elements/values_signup.ejs', {val: session.login}); %>required>
-						<%- include('elements/signup_login.ejs', {logexist: session.logexist, empty: 0}); %>
+						<%- include('elements/signup_login.ejs', {logexist: session.logexists, empty: session.logwrong}); %>
 					</div>
 				</div>
 				<div class="inline field">
