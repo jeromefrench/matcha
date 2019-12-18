@@ -60,7 +60,11 @@
 					notification({title: "New like", content: data.user + " likes you!", icon: '&#128077;'});
 				});
 				socket.on('notifmatch', (data) => {
-					notification({title: "It\'s a match!", content: data.user + "likes you too!", icon: '&#128077;'});
+					notification({title: "It\'s a match!", content: data.user + " likes you too!", icon: '&#128077;'});
+				});
+				socket.on('notifnomatch', (data) => {
+					console.log("NO LONGER MATCH");
+					notification({title: "A match is gone ...", content: data.user + " no longer likes you.", icon: '&#128077;'});
 				});
 				<% if (locals.title == "Profile"){ %>
 					socket.emit('vue_profile', {

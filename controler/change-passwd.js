@@ -1,10 +1,15 @@
 let bdd = require('../models/bdd_functions.js');
 var cp = require('../models/change-passwd.js');
+const bcrypt = require('bcrypt');
 const router = require('express').Router();
+const saltRounds = 2;
 
 router.route('/:login/:num').get((req, res) => {
     bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
         if (req.session.changeOk == 1){
+            req.session.pwrong = undefined;
+            req.session.vwrong = undefined;
+            req.session.changeOk = 0;
             res.render('changepassok.ejs', {session: req.session});
         }
         else{
@@ -26,13 +31,12 @@ router.route('/:login/:num').post((req, res) => {
     var login = req.params.login;
     var npass = req.body.npass;
     var verif = req.body.verif;
-    req.session.passwrong = 0;
-    req.session.vpasswrong = 0;
+    req.session.pwrong = 0;
     req.session.vwrong = 0;
     req.session.changeOk = 0;
     cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
         if (!answer || !checkOk){
-            req.session.passwrong = 1;
+            req.session.pwrong = 1;
             req.session.passwd = undefined;
         }
         if (!answer1 || !match){
@@ -40,9 +44,13 @@ router.route('/:login/:num').post((req, res) => {
             req.session.passwd = npass;
         }
         if (answer, answer1, checkOk, match){
-            cp.changePass(login, npass);
-            req.session.changeOk = 1;
-            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+            bcrypt.genSalt(saltRounds, function(err, salt) {
+                bcrypt.hash(npass, salt, function(err, hash) {
+                    cp.changePass(login, hash);
+                    req.session.changeOk = 1;
+                    res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+                });
+            });
         }
         else{
             res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);

@@ -4,7 +4,7 @@ Enter the email address associated with your Matcha's account.</br>
 <form method="POST" action="/forgotten-passwd" class="ui form">
     <div class="ui input">
         <input type="email" name="email" placeholder="Email" required>
-        <%- include('elements/signup_email.ejs', {mailexist: session.mailexist, empty: 0}); %>
+        <%- include('elements/signup_email.ejs', {mailexist: session.mlexist, empty: 0}); %>
     </div>
     </br>
     <input type="submit" class="ui primary button" value="Send">        

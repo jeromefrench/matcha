@@ -9,14 +9,15 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
 router.route('/').get((req, res) => {
+	req.session.lnamewrong = undefined;
+    req.session.fnamewrong = undefined;
+    req.session.emailwrong = undefined;
+    req.session.loginwrong = undefined;
+	req.session.passwrong = undefined;
+	req.session.logexist = undefined;
+    req.session.mailexist = undefined;
 	res.locals.title = "Sign In";
 	res.locals.jwtToken = req.session.jwtToken;
-
-
-	
-
-
-
 	req.session.jwtToken = undefined;
 	res.render('sign-in.ejs', { session: req.session});
 });
@@ -25,15 +26,23 @@ router.route('/').post((req, res) => {
 	// console.log("la console" + req.body.login);
 	var login = req.body.login;
 	req.session.login = login;
+    req.session.vpass = 0;
+	req.session.logexists = 0;
+	req.session.logwrong = 0;
 	si.check_log(login, (result, result1) => {
-		req.session.logexist = undefined;
+		req.session.logexists = undefined;
 		if (result == 0 && result1 == 0){
-			req.session.logexist = 2;
+			req.session.logexists = 2;
+			req.session.login = undefined;
+			res.redirect('/sign-in');
+		}
+		else if(result == 'vide' && result1 == 'vide'){
+			req.session.logwrong = 1;
 			req.session.login = undefined;
 			res.redirect('/sign-in');
 		}
 		else if (result1 > 0){
-			req.session.logexist = 3;
+			req.session.logexists = 3;
 			req.session.login = undefined;
 			res.redirect('/sign-in');
 		}

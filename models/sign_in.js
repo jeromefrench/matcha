@@ -1,18 +1,29 @@
 var conn = require('./connection_bdd.js');
 const bcrypt = require('bcrypt');
 
+function help_noempty(champs){
+	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
+		return false;
+	return true;
+}
+
 exports.check_log = function (login, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-	var todo = [login];
-	conn.connection.query(sql, todo, function (err, result) {
-		if (err) throw err;
-		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-		todo = [login];
-		conn.connection.query(sql, todo, function (err1, result1){
-			if (err1) throw err1;
-			callback(result[0].count, result1[0].count);
+	if (help_noempty(login) == false){
+		callback('vide','vide');
+	}
+	else{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		conn.connection.query(sql, todo, function (err, result) {
+			if (err) throw err;
+			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+			todo = [login];
+			conn.connection.query(sql, todo, function (err1, result1){
+				if (err1) throw err1;
+				callback(result[0].count, result1[0].count);
+			});
 		});
-	});
+	}
 }
  
 exports.isLoginPasswdMatch = async function isMatch (login, passwd, callback){

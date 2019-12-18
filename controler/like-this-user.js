@@ -9,14 +9,16 @@ router.route('/:login').post((req, res) => {
 	bdd.doILike(my_login, the_login_i_like, (result) => {
 		if (result){
 			bdd.unLike(my_login, the_login_i_like);
-			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " doesn't like you anymore", (result) => {
-			});
+			// bdd_notif.save_notif(my_login, the_login_i_like, my_login + " doesn't like you anymore", (result) => {
+			// });
 			//res.redirect('back');
 			res.send("ok");
 		}
 		else {
 			bdd.addLike(my_login, the_login_i_like);
 			// req.io.
+			bdd.updateMatch(my_login, the_login_i_like);
+			bdd.updateMatch(the_login_i_like, my_login);
 			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " likes you!", (result) => {
 			});
 			//res.redirect('back');

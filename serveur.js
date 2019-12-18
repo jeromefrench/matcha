@@ -68,6 +68,7 @@ app.use(function (req, res, next) {
 })
 app.use('/confirm', confirm);
 app.use('/forgotten-passwd', sendpass);
+app.use('/change-passwd', changepass);
 app.use('/faker', faker);
 app.use(function (req, res, next) {
 	if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" ){
@@ -112,7 +113,6 @@ app.use('/about-you', aboutyou);
 app.use('/profile/', profile);
 app.use('/like-this-user', like);
 app.use('/research', research);
-app.use('/change-passwd', changepass);
 app.use('/public/photo', delpic);
 app.use('/public/photo', makeProfilePic);
 app.use('/chat', chat);
