@@ -1,46 +1,57 @@
 <% include elements/header.ejs %>
-
-<% if (locals.flash && locals.flash.error) { %>
-	<div class="ui negative message">
-		<%= flash.error %>
-	</div>
-<% } %>
-
-<% if (locals.flash && locals.flash.success) { %>
-	<div class="ui positive message">
-		<%= flash.success %>
-	</div>
-<% } %>
-
 <div class="ui container" style="margin-top: 30px">
 	<div class="ui middle aligned center aligned grid">
 		<form method="POST" action="/sign-up" class="ui large form">
 			<h2 class="ui teal image header">
-				<!-- <img src="assets/images/logo.png" class="image"> -->
 				<div class="content">
 					Sign-up to your account
 				</div>
 			</h2>
 			<div class="ui stacked segment">
-				<div class="inline field">
-					<input type="text" name="lname" placeholder="Last name" <%- include('elements/values_signup.ejs', {val: session.lname}); %>required>
-					<%- include('elements/empty.ejs', {empty: session.lnamewrong}); %>
+				<div class="field">
+					<label>Last name</label>
 				</div>
 				<div class="inline field">
-					<input type="text" name="fname" placeholder="First name" <%- include('elements/values_signup.ejs', {val: session.fname}); %>required>
-					<%- include('elements/empty.ejs', {empty: session.fnamewrong}); %>
+					<input type="text" name="lname" placeholder="Last name" <%- include('elements/values_signup.ejs', {val: locals.ans['lname']}); %>required>
+					<% if (locals.ans['lname_check']) { %>
+						<%- include('elements/empty.ejs', {empty: locals.ans['lname_check']}); %>
+					<% } %>
+				</div>
+				<div class="field">
+					<label>First name</label>
 				</div>
 				<div class="inline field">
-					<input type="email" name="email" placeholder="Email" <%- include('elements/values_signup.ejs', {val: session.email}); %>required>
+					<input type="text" name="fname" placeholder="First name" <%- include('elements/values_signup.ejs', {val: locals.ans['fname']}); %>required>
+						<% if (locals.ans['fname_check']) { %>
+					<%- include('elements/empty.ejs', {empty: locals.ans['fname_check']}); %>
+						<% } %>
+				</div>
+				<div class="field">
+					<label>Email</label>
+				</div>
+				<div class="inline field">
+					<input type="email" name="email" placeholder="Email" <%- include('elements/values_signup.ejs', {val: locals.ans['email']}); %>required>
+						<% if (locals.ans['email_check']) { %>
 					<%- include('elements/signup_email.ejs', {mailexist: session.mailexist, empty: session.emailwrong}); %>
+						<% } %>
+				</div>
+				<div class="field">
+					<label>Login</label>
 				</div>
 				<div class="inline field">
-					<input type="text" name="login" placeholder="Login" <%- include('elements/values_signup.ejs', {val: session.login}); %>required>
+					<input type="text" name="login" placeholder="Login" <%- include('elements/values_signup.ejs', {val: locals.ans['login']}); %>required>
+						<% if (locals.ans['login_check']) { %>
 					<%- include('elements/signup_login.ejs', {logexist: session.logexist, empty:session.loginwrong}); %>
+						<% } %>
+				</div>
+				<div class="field">
+					<label>Password</label>
 				</div>
 				<div class="inline field">
 					<input type="password" name="passwd" placeholder="Password" required>
+						<% if (locals.ans['passwd_check']) { %>
 					<%- include('elements/passwd.ejs', {empty: session.passwrong, vpass: 0}); %>
+						<% } %>
 				</div>
     			<div class="ui fluid">
     				<input type="submit" class="ui fluid primary button" value="Create">

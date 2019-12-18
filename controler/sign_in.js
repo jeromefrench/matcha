@@ -1,88 +1,75 @@
-let si = require('../models/sign_in.js');
+let bdd_sign_in = require('../models/sign_in.js');
 var bdd = require('../models/bdd_functions.js');
 var conn = require('../models/connection_bdd.js');
 
 const router = require('express').Router();
-// var bcrypt = require('bcrypt');
-// var jwtUtil = require('../utils/jwt_util.js');
-
 const jwt = require('jsonwebtoken');
 
 router.route('/').get((req, res) => {
-	req.session.lnamewrong = undefined;
-    req.session.fnamewrong = undefined;
-    req.session.emailwrong = undefined;
-    req.session.loginwrong = undefined;
-	req.session.passwrong = undefined;
-	req.session.logexist = undefined;
-    req.session.mailexist = undefined;
 	res.locals.title = "Sign In";
 	res.locals.jwtToken = req.session.jwtToken;
 	req.session.jwtToken = undefined;
-	res.render('sign-in.ejs', { session: req.session});
+	console.log("res locals ans");
+	console.log(res.locals.ans)
+	res.render('sign-in.ejs', { locals: res.locals, session: req.session});
 });
 
 router.route('/').post((req, res) => {
 	var login = req.body.login;
-	req.session.login = login;
-    req.session.vpass = 0;
-	req.session.logexists = 0;
-	req.session.logwrong = 0;
-	si.check_log(login, (result, result1) => {
-		req.session.logexists = undefined;
-		if (result == 0 && result1 == 0){
-			req.session.logexists = 2;
-			req.session.login = undefined;
+	var passwd = req.body.passwd;
+	bdd_sign_in.check_login(login, (result) => {
+		console.log("login result")
+		console.log(result);
+		if (result == "empty"){
+			req.session.ans['login_check'] = "empty";
 			res.redirect('/sign-in');
 		}
-		else if(result == 'vide' && result1 == 'vide'){
-			req.session.logwrong = 1;
-			req.session.login = undefined;
+		else if(result == "need_confirm"){
+			req.session.ans['login_check'] = "need_confirm";
 			res.redirect('/sign-in');
 		}
-		else if (result1 > 0){
-			req.session.logexists = 3;
-			req.session.login = undefined;
+		else if (result == "login_no_exist"){
+			req.session.ans['login_check'] = "login_no_exist";
+			console.log(req.session.ans);
 			res.redirect('/sign-in');
 		}
-		else if (result > 0){
-			si.isLoginPasswdMatch(login, req.body.passwd, function(match){
-				if (match) {
-					//	console.log("Password Match");
+		else{
+			req.session.ans['login'] = login;
+			bdd_sign_in.isLoginPasswdMatch(login, passwd, function(passwd_match){
+				if (passwd_match == "empty"){
+					req.session.ans['pass_check'] = "empty";
+					res.redirect('/sign-in');
+				}
+				else if (passwd_match == false){
+					req.session.ans['pass_check'] = "dont_match";
+					res.redirect('/sign-in');
+				}
+				else if (passwd_match == true){
 					bdd.get_id_user(login, (userId) => {
+						req.session.token = jwtToken;
+						req.session.first_log = true;
+						req.session.logon = true;
+						req.session.login = login;
+						const user = { id: userId, username: login};
+						bdd_sign_in.save_connection_log(userId);
+						let jwtToken = jwt.sign(user, 'secretkey');
+
+						//**********je sais pas ce que sais*********************
 						var sql = "SELECT COUNT(*) AS 'count' FROM `notifications` WHERE `id_user_i_send` = ? AND `lu` = 0";
 						var todo = [userId];
 						conn.connection.query(sql, todo, (err, tab) => {
-							if (err) {console.log(err);}
+							if (err) {
+								console.log(err);
+							}
 							if (tab[0].count == 0){
 								bell = 0;
 							}
 							else{
-							    bell = 1;
+								bell = 1;
 							}
-							si.save_connection_log(userId);
-							login = req.body.login;
-							req.session.logon = true;
-							req.session.login = login;
-							req.session.vpass = 0;
-							console.log(req.session.token);
-							const user = {
-								id: userId, 
-								username: req.session.login,
-								// email: 'brad@gmail.com'
-							}
-							let jwtToken = jwt.sign(user, 'secretkey');
-							req.session.token = jwtToken;
-							req.session.first_log = true;
 							res.redirect('/about-you');
 						});
 					});
-				}
-				else {
-					// console.log("Password dont Match");
-					req.session.vpass = 2;
-					req.session.logon = false;
-					res.redirect('/sign-in');
 				}
 			});
 		}

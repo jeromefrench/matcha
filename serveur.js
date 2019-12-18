@@ -46,6 +46,8 @@ users = [];
 bell = 0;
 
 app.use(function (req, res, next) {
+	console.log("middle ware");
+	console.log(req.session.ans);
 	if (req.session && req.session.token){
 		res.locals.token = req.session.token;
 	}
@@ -64,6 +66,15 @@ app.use(function (req, res, next) {
 		res.locals.complete_message = true;
 	}
 	req.io = io;
+	if (req.session.ans != undefined){
+		res.locals.ans = req.session.ans;
+		req.session.ans = undefined;
+		req.session.ans = {};
+	}
+	else{
+		res.locals.ans = {};
+		req.session.ans = {};
+	}
 	next();
 })
 app.use('/confirm', confirm);

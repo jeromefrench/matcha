@@ -8,6 +8,41 @@ function help_noempty(champs){
 	return true;
 }
 
+function check_noempty(lname, fname, mail, login, passwd, callback){
+	var check_lname = "ok";
+	var check_fname = "ok";
+	var check_mail = "ok";
+	var check_login = "ok";
+	var check_passwd = "ok";
+	if (help_noempty(lname) == false){
+		i1 = "empty";
+	}
+	if (help_noempty(fname) == false){
+		i2 = "empty";
+	}
+	if (help_noempty(mail) == false){
+		i3 = "empty";
+	}
+	if (help_noempty(login) == false){
+		i4 = "empty";
+	}
+	if (check_passwd(passwd) == false){
+		i5 = "empty";
+	}
+	callback(check_lname, check_fname, check_mail, check_login, check_passwd);
+}
+
+exports.check_field_sign_up = function (lname, fname, mail, login, passwd, callback){
+	check_noempty(lname, fname, mail, login, passwd, (check_lname, check_fname, check_mail, check_login, check_passwd) => {
+		check_login(login, check_login, (check_login) => {
+			check_mail(mail, check_mail,  (check_mail) => {
+				callback(check_lname, check_fname, check_mail, check_login, check_passwd);
+			});
+		});
+	});
+}
+
+
 function check_passwd(passwd){
 	var letters = "abcdefghijklmnopqrstuvwxyz";
 	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -44,82 +79,58 @@ function check_passwd(passwd){
 	return true;
 }
 
-function check_noempty(lname, fname, mail, login, passwd, callback){
-	var i1 = 0;
-	var i2 = 0;
-	var i3 = 0;
-	var i4 = 0;
-	var i5 = 0;
-	if (help_noempty(lname) == false){
-		i1 = 1;
+function check_login(login, check_login, callback){
+	if (check_login == "empty"){
+		callback("empty")
 	}
-	if (help_noempty(fname) == false){
-		i2 = 1;
-	}
-	if (help_noempty(mail) == false){
-		i3 = 1;
-	}
-	if (help_noempty(login) == false){
-		i4 = 1;
-	}
-	if (check_passwd(passwd) == false){
-		i5 = 1;
-	}
-	callback(i1, i2, i3, i4, i5);
-}
-
-function check_login(login, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-	var todo = [login];
-	conn.connection.query(sql, todo, function (err, result) {
-		if (err) throw err;
-		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-		todo = [login];
-		conn.connection.query(sql, todo, function (err1, result1){
-			if (err1) throw err1;
-			if (result[0].count == 0 && result1[0].count == 0){
-				callback(true);
-			}
-			else{
-				callback(false);
-			}
+	else{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		conn.connection.query(sql, todo, function (err, result) {
+			if (err) throw err;
+			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+			//		todo = [login];
+			//conn.connection.query(sql, todo, function (err1, result1){
+			//	if (err1) throw err1;
+			if (result[0].count == 0){// && result1[0].count == 0){
+					callback("ok");
+				}
+				else{
+					callback("login_already_taken");
+				}
+			//});
 		});
-	});
+	}
 }
-
-
 
 function check_mail(mail, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-	var todo = [mail];
-	conn.connection.query(sql, todo, function (err, result) {
-		if (err) throw err;
-		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
-		todo = [mail];
-		conn.connection.query(sql, todo, function (err1, result1){
-			if (err1) throw err1;
-			if (result[0].count == 0)
-				callback(0);
-			else if (result1[0].count != 0)
-				callback(2);
-			else if (result[0].count == 1){
-				callback('changeok');
-			}	
-			else
-				callback(1);
-		});
-	});
+	if (check_mail == "empty"){
+		callback("empty")
+	}
+	else{
+		callback("ok")
+		// var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+		// var todo = [mail];
+		// conn.connection.query(sql, todo, function (err, result) {
+		// 	if (err) throw err;
+		// 	sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
+		// 	todo = [mail];
+		// 	conn.connection.query(sql, todo, function (err1, result1){
+		// 		if (err1) throw err1;
+		// 		if (result[0].count == 0)
+		// 			callback(0);
+		// 		else if (result1[0].count != 0)
+		// 			callback(2);
+		// 		else if (result[0].count == 1){
+		// 			callback('changeok');
+		// 		}	
+		// 		else
+		// 			callback(1);
+		// 	});
+		// });
+	}
 }
 
-exports.check_fieldOk = function (lname, fname, mail, login, passwd, callback){
-	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
-		check_login(login, (result1) => {
-			check_mail(mail, (result2) => {
-				callback(i1, i2, i3, i4, i5, result1, result2);
-			});
-		});
-	});
-}
 
 function check_logAccount(login, callback){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
