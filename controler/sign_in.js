@@ -23,7 +23,6 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post((req, res) => {
-	// console.log("la console" + req.body.login);
 	var login = req.body.login;
 	req.session.login = login;
     req.session.vpass = 0;
