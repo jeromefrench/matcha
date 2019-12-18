@@ -24,7 +24,7 @@ router.route('/:login').get((req, res) => {
 						//ajouter add_visited_on_profile
 						bdd_like.add_visited_profile(req.session.login, req.params.login, (callback) => {
 							if (user.do_i_like && user.does_it_like_me){
-								user.match = true;
+								ser.match = true;
 							}
 							else {
 								user.match = false;
