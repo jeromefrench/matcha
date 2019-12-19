@@ -3,14 +3,15 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
     res.locals.title = "Forgotten Password";
-    if (req.session.fpOk == 1){
-        req.session.fOk = 0;
-        req.session.mlexist = undefined;
-        res.render('fp_envoye.ejs', {session: req.session});
-    }
-    else{
-        res.render('forgotten-passwd.ejs', {session: req.session});
-    }
+    res.render('forgotten-passwd.ejs', {session: req.session});
+    //if (req.session.fpOk == 1){
+    //req.session.fOk = 0;
+    //req.session.mlexist = undefined;
+    //res.render('fp_envoye.ejs', {session: req.session});
+    //}
+    //else{
+    //res.render('forgotten-passwd.ejs', {session: req.session});
+    //}
 });
 
 router.route('/').post((req, res) => {
@@ -28,6 +29,7 @@ router.route('/').post((req, res) => {
         else if (result == 1){
             req.session.fpOk = 1;
         }
+		req.session.ans['notification_general'] = "An email with a link has been sent";
         res.redirect('/forgotten-passwd');
     });
 });

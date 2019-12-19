@@ -1,28 +1,35 @@
-let cf = require('../models/confirm.js');
-var bdd = require('../models/bdd_functions.js');
+let bdd = require('../models/account.js');
+var bdd_func = require('../models/bdd_functions.js');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 
 router.route('/:login/:num').get((req, res) => {
-    req.session.lnamewrong = undefined;
-    req.session.fnamewrong = undefined;
-    req.session.emailwrong = undefined;
-    req.session.loginwrong = undefined;
-    req.session.passwrong = undefined;
-    req.session.logexist = undefined;
-    req.session.mailexist = undefined;
-    bdd.IsLoginNumMatch(req.params.login, req.params.num, "user_sub", (suspense) => {
-        if (suspense){
-            res.locals.title = "Welcome " + req.params.login + "!";
-            cf.recover_user_data(req.params.num, (data) => {
-                cf.valide_user(data.login, data.passwd, data.lname, data.fname, data.mail);
-            });
-            res.render('confirm.ejs', {session: req.session});
-        }
-        else{
-            res.locals.title = "Sorry :(";
-            res.render('unconfirm.ejs', {session: req.session});
-        }
-    });
+	login = req.params.login;
+	num = req.params.num;
+
+	bdd_func.IsLoginNumMatch(login, num, "user_sub", (suspense) => {
+		if (suspense){
+			bdd.recover_user_data(num, (data) => {
+				bdd.valide_user(data.login, data.passwd, data.lname, data.fname, data.mail, num, (ok) => {
+					bdd.save_connection_log(login);
+					bdd.notification(login, (user_id) =>{
+						const user = { id: user_id, username: login};
+						let jwtToken = jwt.sign(user, 'secretkey');
+						req.session.token = jwtToken;
+						req.session.first_log = true;
+						req.session.logon = true;
+						req.session.login = login;
+						req.session.ans['notification_general'] = "Your account is validated please fill your profile"
+						res.redirect('/about-you');
+					});
+				});
+			});
+		}
+		else{
+			req.session.ans['notification_general'] = "Sorry something wrong happen"
+			res.redirect('/sign-in');
+		}
+	});
 });
 
 module.exports = router;

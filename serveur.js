@@ -75,6 +75,8 @@ app.use(function (req, res, next) {
 		res.locals.ans = {};
 		req.session.ans = {};
 	}
+	res.locals.jwtToken = req.session.jwtToken;
+	req.session.jwtToken = undefined;
 	next();
 })
 app.use('/confirm', confirm);

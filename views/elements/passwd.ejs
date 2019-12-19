@@ -1,23 +1,30 @@
-<% if (pass_check == 1){ %>
+<% if (check_passwd == 1 || check_passwd == "wrong_format"){ %>
     <div class="ui left pointing red basic label">
         Your password must contain a least 8 characters, 1 uppercase letter,</br>1 lowercase letter, 1 number and 1 special character (%#:$*@_-&^!>?()[]{}+=.,;).
     </div>
 <% } %>
 
-<% if (pass_check == 2){ %>
+<% if (check_passwd == 2){ %>
     <div class="ui left pointing red basic label">
         Please write the same password as above.
     </div>
 <% } %>
 
-<% if (pass_check == "dont_match"){ %>
+<% if (check_passwd == "dont_match"){ %>
     <div class="ui left pointing red basic label">
         Wrong password, try again.
     </div>
 <% } %>
 
-<% if (pass_check == "empty"){ %>
+<% if (check_passwd == "empty"){ %>
     <div class="ui left pointing red basic label">
         Please fill in this field correctly.
+    </div>
+<% } %>
+
+
+<% if (check_passwd == "passwd_different"){ %>
+    <div class="ui left pointing red basic label">
+        Your two password doesn't match.
     </div>
 <% } %>

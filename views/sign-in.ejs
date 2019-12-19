@@ -14,8 +14,8 @@
 					<div class="ui left icon input">
 						<i class="user icon"></i>
 						<input type="text" name="login" placeholder="Login" <% if (locals.ans['login']){ %> value=<%= locals.ans.login %> <% }else{ %> value="" <% } %> required>
-						<% if (locals.ans['login_check']) { %>
-							<%- include('elements/signup_login.ejs', {login_check: locals.ans['login_check']}); %>
+						<% if (locals.ans['check_login']) { %>
+							<%- include('elements/signup_login.ejs', {check_login: locals.ans['check_login']}); %>
 						<% } %>
 					</div>
 				</div>
@@ -26,8 +26,8 @@
 					<div class="ui left icon input">
 						<i class="lock icon"></i>
 						<input type="password" name="passwd" placeholder="Password" required>
-						<% if (locals.ans['login_check']) { %>
-						<%- include('elements/passwd.ejs', {pass_check: locals.ans['pass_check']}); %>
+						<% if (locals.ans['check_passwd']) { %>
+							<%- include('elements/passwd.ejs', {check_passwd: locals.ans['check_passwd']}); %>
 						<% } %>
 					</div>
 				</div>

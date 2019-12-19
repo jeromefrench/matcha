@@ -45,6 +45,12 @@
 		})
 	}
 
+
+		<% if( locals.ans['notification_general'] != undefined ) { %>
+					notification({title: 'Message', content: '<%= locals.ans['notification_general'] %>', icon: '&#128077;'})
+		<% } %>
+
+
 		<% if( locals.first_log ) { %>
 					notification({title: 'Notification', content: 'You logged on sucessfully', icon: '&#128077;'})
 			<% } %>

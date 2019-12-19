@@ -1,49 +1,10 @@
+//**********************sign-up************************************************
 var conn = require('./connection_bdd.js');
 var mailer = require("nodemailer");
 var emoji = require('node-emoji');
 
-function help_noempty(champs){
-	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
-		return false;
-	return true;
-}
 
-function check_noempty(lname, fname, mail, login, passwd, callback){
-	var check_lname = "ok";
-	var check_fname = "ok";
-	var check_mail = "ok";
-	var check_login = "ok";
-	var check_passwd = "ok";
-	if (help_noempty(lname) == false){
-		i1 = "empty";
-	}
-	if (help_noempty(fname) == false){
-		i2 = "empty";
-	}
-	if (help_noempty(mail) == false){
-		i3 = "empty";
-	}
-	if (help_noempty(login) == false){
-		i4 = "empty";
-	}
-	if (check_passwd(passwd) == false){
-		i5 = "empty";
-	}
-	callback(check_lname, check_fname, check_mail, check_login, check_passwd);
-}
-
-exports.check_field_sign_up = function (lname, fname, mail, login, passwd, callback){
-	check_noempty(lname, fname, mail, login, passwd, (check_lname, check_fname, check_mail, check_login, check_passwd) => {
-		check_login(login, check_login, (check_login) => {
-			check_mail(mail, check_mail,  (check_mail) => {
-				callback(check_lname, check_fname, check_mail, check_login, check_passwd);
-			});
-		});
-	});
-}
-
-
-function check_passwd(passwd){
+function check_passwd_function(passwd){
 	var letters = "abcdefghijklmnopqrstuvwxyz";
 	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	var numbers = "0123456789";
@@ -79,7 +40,7 @@ function check_passwd(passwd){
 	return true;
 }
 
-function check_login(login, check_login, callback){
+function check_login_function(login, check_login, callback){
 	if (check_login == "empty"){
 		callback("empty")
 	}
@@ -103,7 +64,7 @@ function check_login(login, check_login, callback){
 	}
 }
 
-function check_mail(mail, callback){
+function check_mail_function(mail, check_mail, callback){
 	if (check_mail == "empty"){
 		callback("empty")
 	}
@@ -151,11 +112,43 @@ function check_logAccount(login, callback){
 	});
 }
 
-exports.checkAccount = function (lname, fname, mail, login, passwd, callback){
-	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
-		check_logAccount(login, (result1) => {
-			check_mail(mail, (result2) => {
-				callback(i1, i2, i3, i4, i5, result1, result2);
+
+
+function help_noempty(champs){
+	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
+		return false;
+	return true;
+}
+
+function check_noempty(lname, fname, mail, login, passwd, callback){
+	var check_lname = "ok";
+	var check_fname = "ok";
+	var check_mail = "ok";
+	var check_login = "ok";
+	var check_passwd = "ok";
+	if (help_noempty(lname) == false){
+		i1 = "empty";
+	}
+	if (help_noempty(fname) == false){
+		i2 = "empty";
+	}
+	if (help_noempty(mail) == false){
+		i3 = "empty";
+	}
+	if (help_noempty(login) == false){
+		i4 = "empty";
+	}
+	if (check_passwd_function(passwd) == false){
+		i5 = "empty";
+	}
+	callback(check_lname, check_fname, check_mail, check_login, check_passwd);
+}
+
+exports.check_field_sign_up = function (lname, fname, mail, login, passwd, callback){
+	check_noempty(lname, fname, mail, login, passwd, (check_lname, check_fname, check_mail, check_login, check_passwd) => {
+		check_login_function(login, check_login, (check_login) => {
+			check_mail_function(mail, check_mail,  (check_mail) => {
+				callback(check_lname, check_fname, check_mail, check_login, check_passwd);
 			});
 		});
 	});
@@ -198,4 +191,7 @@ exports.insert_user = function (name, passwd, fname, lname, mail){
 	});
 	sendmail(mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
 }
+
+
+//**********************sign-up************************************************
 

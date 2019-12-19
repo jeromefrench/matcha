@@ -1,4 +1,111 @@
+//**********************my-account************************************************
 var conn = require('./connection_bdd.js');
+
+exports.check_field_my_account = function (lname, fname, mail, login, passwd, verif,  callback){
+	check_noempty(lname, fname, mail, login, passwd, verif, (check_lname, check_fname, check_mail, check_login, check_passwd) => {
+		check_login_function(login, check_login, (check_login) => {
+			check_mail_function(mail, check_mail,  (check_mail) => {
+				check_passwd_function(passwd, verif, (check_passwd) => {
+					callback(check_lname, check_fname, check_mail, check_login, check_passwd);
+				})
+			});
+		});
+	});
+}
+
+
+function check_passwd_function(passwd, verif, callback){
+	if (passwd == verif && verif == ""){
+		callback("ok");
+	}
+	else if (passwd != verif){
+		callback("passwd_different");
+	}
+	else if (passwd == verif){
+		check = check_passwd(passwd);
+		if (check == true){
+			callback("change passwd")
+		}
+		else {
+			callback("wrong format");
+		}
+	}
+}
+
+
+function check_noempty(lname, fname, mail, login, callback){
+	var check_lname = "ok";
+	var check_fname = "ok";
+	var check_mail = "ok";
+	var check_login = "ok";
+	if (help_noempty(lname) == false){
+		check_lname = "empty";
+	}
+	if (help_noempty(fname) == false){
+		check_fname = "empty";
+	}
+	if (help_noempty(mail) == false){
+		check_mail = "empty";
+	}
+	if (help_noempty(login) == false){
+		check_login = "empty";
+	}
+	callback(check_lname, check_fname, check_mail, check_login);
+}
+
+
+function check_login_function(login, check_login, callback){
+	if (check_login == "empty"){
+		callback("empty")
+	}
+	else{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		conn.connection.query(sql, todo, function (err, result) {
+			if (err) throw err;
+			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+			//		todo = [login];
+			//conn.connection.query(sql, todo, function (err1, result1){
+			//	if (err1) throw err1;
+			if (result[0].count == 0){// && result1[0].count == 0){
+					callback("ok");
+			}
+			else{
+				callback("login_already_taken");
+			}
+			//});
+		});
+	}
+}
+
+
+function check_mail_function(mail, check_mail, callback){
+	if (check_mail == "empty"){
+		callback("empty")
+	}
+	else{
+		callback("ok")
+		// var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+		// var todo = [mail];
+		// conn.connection.query(sql, todo, function (err, result) {
+		// 	if (err) throw err;
+		// 	sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
+		// 	todo = [mail];
+		// 	conn.connection.query(sql, todo, function (err1, result1){
+		// 		if (err1) throw err1;
+		// 		if (result[0].count == 0)
+		// 			callback(0);
+		// 		else if (result1[0].count != 0)
+		// 			callback(2);
+		// 		else if (result[0].count == 1){
+		// 			callback('changeok');
+		// 		}	
+		// 		else
+		// 			callback(1);
+		// 	});
+		// });
+	}
+}
 
 exports.change_log_mail = function(oldlog, login, email, lname, fname, callback){
     console.log("oldlog = " + oldlog);
@@ -15,53 +122,29 @@ exports.change_log_mail = function(oldlog, login, email, lname, fname, callback)
     });
 }
 
-function check_logAccount(oldlog, login, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` IN (?, ?)";
-	var todo = [oldlog, login];
-	conn.connection.query(sql, todo, function (err, result) {
-		if (err) throw err;
-		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-		todo = [login];
-		conn.connection.query(sql, todo, function (err1, result1){
-			if (err1) throw err1;
-			if (result[0].count > 1 || result1[0].count > 1){
-				callback('nochange');
-			}
-			else{
-				callback('changeok');
-			}
-		});
-	});
-}
+// function check_logAccount(oldlog, login, callback){
+// 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` IN (?, ?)";
+// 	var todo = [oldlog, login];
+// 	conn.connection.query(sql, todo, function (err, result) {
+// 		if (err) throw err;
+// 		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+// 		todo = [login];
+// 		conn.connection.query(sql, todo, function (err1, result1){
+// 			if (err1) throw err1;
+// 			if (result[0].count > 1 || result1[0].count > 1){
+// 				callback('nochange');
+// 			}
+// 			else{
+// 				callback('changeok');
+// 			}
+// 		});
+// 	});
+// }
 
 function help_noempty(champs){
 	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
 		return false;
 	return true;
-}
-
-function check_noempty(lname, fname, mail, login, passwd, callback){
-	var i1 = 0;
-	var i2 = 0;
-	var i3 = 0;
-	var i4 = 0;
-	var i5 = 0;
-	if (help_noempty(lname) == false){
-		i1 = 1;
-	}
-	if (help_noempty(fname) == false){
-		i2 = 1;
-	}
-	if (help_noempty(mail) == false){
-		i3 = 1;
-	}
-	if (help_noempty(login) == false){
-		i4 = 1;
-	}
-	if (check_passwd(passwd) == false){
-		i5 = 1;
-	}
-	callback(i1, i2, i3, i4, i5);
 }
 
 function check_passwd(passwd){
@@ -122,12 +205,19 @@ function check_mail(mail, callback){
 	});
 }
 
-exports.checkAccount = function (lname, fname, mail, oldlog, login, passwd, callback){
-	check_noempty(lname, fname, mail, login, passwd, (i1, i2, i3, i4, i5) => {
-		check_logAccount(oldlog, login, (result1) => {
-			check_mail(mail, (result2) => {
-				callback(i1, i2, i3, i4, i5, result1, result2);
-			});
-		});
+exports.update_user = function (lname, fname, email, login, old_login){
+    var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `email` = ?, `login`= ? WHERE `login` = ?";
+	var todo = [lname, fname, email, login, old_login];
+	conn.connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
 	});
 }
+
+exports.update_user_and_passwd = function (lname, fname, email, login, passwd,  old_login){
+    var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `email` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
+	var todo = [lname, fname, email, login, passwd, old_login];
+	conn.connection.query(sql, todo, function (err, result) {
+		if (err) throw err;
+	});
+}
+//**********************my-account************************************************
