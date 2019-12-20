@@ -1,5 +1,4 @@
 let bdd = require('../models/account.js');
-var bdd_func = require('../models/bdd_functions.js');
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
@@ -7,7 +6,7 @@ router.route('/:login/:num').get((req, res) => {
 	login = req.params.login;
 	num = req.params.num;
 
-	bdd_func.IsLoginNumMatch(login, num, "user_sub", (suspense) => {
+	bdd.IsLoginNumMatch(login, num, "user_sub", (suspense) => {
 		if (suspense){
 			bdd.recover_user_data(num, (data) => {
 				bdd.valide_user(data.login, data.passwd, data.lname, data.fname, data.mail, num, (ok) => {

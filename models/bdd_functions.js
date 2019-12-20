@@ -1,19 +1,5 @@
 var conn = require('./connection_bdd.js');
 
-exports.IsLoginNumMatch = function (login, num, cat, callback){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
-	var todo = [login, num];
-	conn.connection.query(sql, todo, (err, result) => {
-		if (result[0].count == 0){
-			callback(false);
-			console.log("login num pas ok");
-		}
-		else{
-			callback(true);
-			console.log("login num ok");
-		}
-	});
-}
 
 exports.get_id_user = function (login, callback){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
@@ -62,14 +48,6 @@ exports.recover_user = function (login, callback){
 	});
 }
 
-exports.recover_user_ = function (login, callback){
-	var sql = "SELECT * FROM `user`  WHERE `login` LIKE ?";
-	var todo = [login];
-	conn.connection.query(sql, todo, function (err, results) {
-		if (err) throw err;
-		callback(results);
-	});
-}
 
 exports.insert_log = function (id_user){
 	var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';

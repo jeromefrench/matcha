@@ -1,12 +1,11 @@
 let bdd = require('../models/account.js');
-var bdd_user = require('../models/bdd_functions.js');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/').get((req, res) => {
 	res.locals.title = "My Account";
-	bdd_user.recover_user_(req.session.login, (info) => {
+	bdd.recover_user_(req.session.login, (info) => {
 		res.locals.user = info[0];
 		console.log(res.locals.user);
 		res.render('my-account.ejs', { locals: res.locals, session: req.session });

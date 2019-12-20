@@ -1,5 +1,4 @@
-var conn = require('./connection_bdd.js');
-
+//************change-passwd****************************************************
 function IsFieldEmpty(field, callback){
 	if (field == undefined || field == "" || field.indexOf(" ") > -1)
 		callback(false);
@@ -71,3 +70,4 @@ exports.changePass = function (login, npass){
 		console.log("pass changé !");
 	});
 }
+//************change-passwd****************************************************

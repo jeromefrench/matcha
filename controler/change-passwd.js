@@ -1,61 +1,43 @@
-let bdd = require('../models/bdd_functions.js');
-var cp = require('../models/change-passwd.js');
+var bdd = require('../models/account.js');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/:login/:num').get((req, res) => {
-    bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
-        if (req.session.changeOk == 1){
-            req.session.pwrong = undefined;
-            req.session.vwrong = undefined;
-            req.session.changeOk = 0;
-            res.render('changepassok.ejs', {session: req.session});
-        }
-        else{
-            if (suspense){
-                res.locals.title = "Change Password";
-                res.locals.login = req.params.login;
-                res.locals.num = req.params.num;
-                res.render('change-passwd.ejs', {session: req.session});
-            }
-            else{
-                res.locals.title = "Sorry :(";
-                res.render('unconfirm.ejs', {session: req.session});
-            }
-        }
-    });
+	res.locals.login = req.params.login;
+	res.locals.num = req.params.num;
+	res.render('change-passwd.ejs', {locals: res.locals, session: req.session});
 });
 
 router.route('/:login/:num').post((req, res) => {
-    var login = req.params.login;
-    var npass = req.body.npass;
-    var verif = req.body.verif;
-    req.session.pwrong = 0;
-    req.session.vwrong = 0;
-    req.session.changeOk = 0;
-    cp.IsFieldOk(npass, verif, (answer, answer1, checkOk, match) => {
-        if (!answer || !checkOk){
-            req.session.pwrong = 1;
-            req.session.passwd = undefined;
-        }
-        if (!answer1 || !match){
-            req.session.vwrong = 1;
-            req.session.passwd = npass;
-        }
-        if (answer, answer1, checkOk, match){
-            bcrypt.genSalt(saltRounds, function(err, salt) {
-                bcrypt.hash(npass, salt, function(err, hash) {
-                    cp.changePass(login, hash);
-                    req.session.changeOk = 1;
-                    res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
-                });
-            });
-        }
-        else{
-            res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
-        }
-    });
+	var login = req.params.login;
+	var num = req.params.num;
+	var npass = req.body.npass;
+	var verif = req.body.verif;
+
+	bdd.IsLoginNumMatch(req.params.login, req.params.num, "user", (suspense) => {
+		if (suspense == false){
+			req.session.ans['notification_general'] = "The login and num dont match";
+			res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+		}
+		else{
+			bdd.IsFieldOk(npass, verif, (check_passwd) => {
+				if (check_passwd != "ok"){
+					req.session.ans['check_passwd'] = check_passwd;
+					res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+				}
+				else{
+					bcrypt.genSalt(saltRounds, function(err, salt) {
+						bcrypt.hash(npass, salt, function(err, hash) {
+							bdd.changePass(login, hash);
+							req.session.ans['notification_general'] = "Your password has been change you can log in";
+							res.redirect('/sign-in');
+						});
+					});
+				}
+			});
+		}
+	});
 });
 
 module.exports = router;

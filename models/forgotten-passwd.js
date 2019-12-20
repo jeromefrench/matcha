@@ -1,3 +1,6 @@
+
+//*****************forgotten passwd*******************************************
+
 var conn = require('./connection_bdd.js');
 var mailer = require("nodemailer");
 var emoji = require('node-emoji');
@@ -79,3 +82,8 @@ exports.send_passwd = function (mail, callback){
 		}
 	});
 }
+
+
+
+
+//*****************forgotten passwd*******************************************
