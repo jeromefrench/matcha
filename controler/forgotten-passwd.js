@@ -3,7 +3,7 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Forgotten Password";
-	res.render('forgotten-passwd.ejs', {session: req.session});
+	res.render('main_view/forgotten-passwd.ejs', {session: req.session});
 });
 
 router.route('/').post((req, res) => {

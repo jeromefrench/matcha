@@ -8,7 +8,7 @@ router.route('/').get((req, res) => {
 	bdd.recover_user_(req.session.login, (info) => {
 		res.locals.user = info[0];
 		console.log(res.locals.user);
-		res.render('my-account.ejs', { locals: res.locals, session: req.session });
+		res.render('main_view/my-account.ejs', { locals: res.locals, session: req.session });
 	});
 });
 

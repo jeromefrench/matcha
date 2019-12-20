@@ -1,23 +1,22 @@
-
-<% if (check_login == 1 || check_login == "empty"){ %>
+<% if (check_login == "empty"){ %>
     <div class="ui left pointing red basic label">
         Please fill in this field correctly.
     </div>
 <% } %>
 
-<% if (check_login == 2 || check_login == "login_no_exist"){ %>
+<% if (check_login == "login_no_exist"){ %>
     <div class="ui left pointing red basic label">
         Login doesn't exist.
     </div>
 <% } %>
 
-<% if (check_login == 3  || check_login == "need_confirm"){ %>
+<% if (check_login == "need_confirm"){ %>
     <div class="ui left pointing red basic label">
         You need to confirm your account first, please check your mailbox.
     </div>
 <% } %>
 
-<% if (check_login == 1 || check_login == "login_already_taken"){ %>
+<% if (check_login == "login_already_taken"){ %>
     <div class="ui left pointing red basic label">
         Login already exists, please try another one.
     </div>

@@ -6,7 +6,7 @@ const saltRounds = 2;
 router.route('/:login/:num').get((req, res) => {
 	res.locals.login = req.params.login;
 	res.locals.num = req.params.num;
-	res.render('change-passwd.ejs', {locals: res.locals, session: req.session});
+	res.render('main_view/change-passwd.ejs', {locals: res.locals, session: req.session});
 });
 
 router.route('/:login/:num').post((req, res) => {

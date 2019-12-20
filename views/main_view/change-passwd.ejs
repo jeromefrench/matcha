@@ -1,5 +1,4 @@
-<% include elements/header %>
-
+<%- include('../elements/header.ejs') %>
 <div class="ui container" style="margin-top: 30px">
 	<div class="ui middle aligned center aligned grid">
 		<form method="POST" action="/change-passwd/<%= locals.login %>/<%= locals.num %>" class="ui form">
@@ -9,7 +8,7 @@
 			<div class="inline field">
 				<input type="password" name="npass" placeholder="New password" required>
 				<% if (locals.ans['check_passwd']) { %>
-					<%- include('elements/passwd.ejs', {check_passwd: locals.ans['check_passwd']}); %>
+					<%- include('../check_field/check_passwd.ejs', {check_passwd: locals.ans['check_passwd']}); %>
 				<% } %>
 			</div>
 			<div class="inline field">
@@ -19,5 +18,4 @@
 		</form>
 	</div>
 </div>
-
-<% include elements/footer %>
+<%- include('../elements/footer.ejs') %>

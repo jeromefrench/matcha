@@ -1,12 +1,7 @@
-<% if (check_passwd == 1 || check_passwd == "wrong_format"){ %>
+<% if (check_passwd == "wrong_format"){ %>
     <div class="ui left pointing red basic label">
-        Your password must contain a least 8 characters, 1 uppercase letter,</br>1 lowercase letter, 1 number and 1 special character (%#:$*@_-&^!>?()[]{}+=.,;).
-    </div>
-<% } %>
-
-<% if (check_passwd == 2){ %>
-    <div class="ui left pointing red basic label">
-        Please write the same password as above.
+        Your password must contain a least 8 characters, 1 uppercase letter,</br>
+        1 lowercase letter, 1 number and 1 special character (%#:$*@_-&^!>?()[]{}+=.,;).
     </div>
 <% } %>
 

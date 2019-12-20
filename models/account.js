@@ -248,67 +248,6 @@ exports.valide_user = function (login, passwd, lname, fname, mail, num, callback
 
 
 
-// exports.check_log = function (login, callback){
-// 	if (help_noempty(login) == false){
-// 		callback('vide','vide');
-// 	}
-// 	else{
-// 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-// 		var todo = [login];
-// 		conn.connection.query(sql, todo, function (err, result) {
-// 			if (err) throw err;
-// 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-// 			todo = [login];
-// 			conn.connection.query(sql, todo, function (err1, result1){
-// 				if (err1) throw err1;
-// 				callback(result[0].count, result1[0].count);
-// 			});
-// 		});
-// 	}
-// }
-
-// exports.change_log_mail = function(oldlog, login, email, lname, fname, callback){
-//     console.log("oldlog = " + oldlog);
-//     console.log("log = " + login);
-//     console.log("email = " + email);
-//     var sql = "UPDATE `user` SET `login` = ?, `mail` = ?, `fname` = ?, `lname`= ? WHERE `login` = ?";
-//     var todo = [login, email, fname, lname, oldlog];
-//     conn.connection.query(sql, todo, (err) => {
-//         if (err){console.log(err);}
-//         else {
-//             console.log("USER UPDATED");
-//             callback();
-//         }
-//     });
-// }
-
-
-// exports.update_user_and_passwd = function (lname, fname, email, login, passwd,  old_login){
-//     var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `email` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
-// 	var todo = [lname, fname, email, login, passwd, old_login];
-// 	conn.connection.query(sql, todo, function (err, result) {
-// 		if (err) throw err;
-// 	});
-// }
-
-// exports.valide_user_fake = function (login, passwd, lname, fname, mail, callback){
-// 	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-// 	var todo = [login, passwd, fname, lname, mail];
-// 	conn.connection.query(sql, todo, (err, res) => {
-// 		if (err) throw err;
-// 		console.log(login + "added in user");
-// 		callback();
-// 	});
-// 	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
-// 	// todo = [login];
-// 	// conn.connection.query(sql, todo, (err, res) => {
-// 		// if (err) throw err;
-// 		// console.log(login + "deleted from user_sub");
-// 	// });
-// }
-
-
-
 function check_passwd_function(passwd, verif, callback){
 	if (passwd == verif && verif == ""){
 		callback("ok");
@@ -545,3 +484,64 @@ function recoveruser_wmail(email, callback){
 		callback(results[0]);
 	});
 }
+
+
+// exports.check_log = function (login, callback){
+// 	if (help_noempty(login) == false){
+// 		callback('vide','vide');
+// 	}
+// 	else{
+// 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+// 		var todo = [login];
+// 		conn.connection.query(sql, todo, function (err, result) {
+// 			if (err) throw err;
+// 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+// 			todo = [login];
+// 			conn.connection.query(sql, todo, function (err1, result1){
+// 				if (err1) throw err1;
+// 				callback(result[0].count, result1[0].count);
+// 			});
+// 		});
+// 	}
+// }
+
+// exports.change_log_mail = function(oldlog, login, email, lname, fname, callback){
+//     console.log("oldlog = " + oldlog);
+//     console.log("log = " + login);
+//     console.log("email = " + email);
+//     var sql = "UPDATE `user` SET `login` = ?, `mail` = ?, `fname` = ?, `lname`= ? WHERE `login` = ?";
+//     var todo = [login, email, fname, lname, oldlog];
+//     conn.connection.query(sql, todo, (err) => {
+//         if (err){console.log(err);}
+//         else {
+//             console.log("USER UPDATED");
+//             callback();
+//         }
+//     });
+// }
+
+
+// exports.update_user_and_passwd = function (lname, fname, email, login, passwd,  old_login){
+//     var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `email` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
+// 	var todo = [lname, fname, email, login, passwd, old_login];
+// 	conn.connection.query(sql, todo, function (err, result) {
+// 		if (err) throw err;
+// 	});
+// }
+
+// exports.valide_user_fake = function (login, passwd, lname, fname, mail, callback){
+// 	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+// 	var todo = [login, passwd, fname, lname, mail];
+// 	conn.connection.query(sql, todo, (err, res) => {
+// 		if (err) throw err;
+// 		console.log(login + "added in user");
+// 		callback();
+// 	});
+// 	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+// 	// todo = [login];
+// 	// conn.connection.query(sql, todo, (err, res) => {
+// 		// if (err) throw err;
+// 		// console.log(login + "deleted from user_sub");
+// 	// });
+// }
+

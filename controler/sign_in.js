@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
-	res.render('sign-in.ejs', { locals: res.locals, session: req.session});
+	res.render('main_view/sign-in.ejs', { locals: res.locals, session: req.session});
 });
 
 router.route('/').post((req, res) => {
