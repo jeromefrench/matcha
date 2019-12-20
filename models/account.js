@@ -5,55 +5,116 @@ var mailer = require("nodemailer");
 var emoji = require('node-emoji');
 
 //**********************sign-in************************************************
-exports.checkLoginSignIn = function (login, callback){
-	if (login == undefined || login == "" || login.indexOf(" ") > -1){
-		callback("empty");
-	}
-	else{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-		var todo = [login];
-		conn.connection.query(sql, todo, function (err, count_user) {
-			if (err) throw err;
+const util = require( 'util' );
+const mysql = require( 'mysql' );
+
+config = { host     : '192.168.99.100',
+			user     : 'root',
+			password : 'tiger',
+			port	: '3306',
+			database : 'docker' };
+
+
+function makeConn( config ) {
+  const connection = mysql.createConnection( config );
+  return {
+    query( sql, args ) {
+      return util.promisify( connection.query )
+        .call( connection, sql, args );
+    },
+    close() {
+      return util.promisify( connection.end ).call( connection );
+    }
+  };
+}
+
+exports.checkLoginSignIn = async function (login){
+	try {
+		if (login == undefined || login == "" || login.indexOf(" ") > -1){
+			return ("empty");
+		}
+		else{
+			db = makeConn(config);
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+			var todo = [login];
+			count_user = await db.query(sql, todo);
+			console.log("count user");
+			console.log(count_user);
 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
 			todo = [login];
-			conn.connection.query(sql, todo, function (err1, count_user_sub){
-				console.log(count_user[0].count);
-				console.log(count_user_sub[0].count);
-				if (err1) throw err1;
-				if (count_user[0].count > 0){
-					callback("ok");
-				}
-				else if (count_user_sub[0].count > 0){
-					callback("need_confirm");
-				}
-				else{
-					callback("login_no_exist");
-				}
-			});
-		});
+			count_user_sub = await db.query(sql, todo);
+			console.log("count user sub");
+			console.log(count_user);
+			if (count_user[0].count > 0){
+				return "ok";
+			}
+			else if (count_user_sub[0].count > 0){
+				return "need_confirm";
+			}
+			else{
+				return "login_no_exist";
+			}
+		}
+	}
+	catch{
+		console.log("une erreur AAAAAAAAAAAAAAAAAAAAAAA");
+		return (err);
 	}
 }
 
-exports.isLoginPasswdMatch = async function isMatch (login, passwd, callback){
-	if (passwd == undefined || passwd == "" || passwd.indexOf(" ") > -1){
-		callback("empty");
+exports.isLoginPasswdMatch = async function isMatch (login, passwd){
+	db = makeConn(config);
+	try {
+		if (passwd == undefined || passwd == "" || passwd.indexOf(" ") > -1){
+			return "empty";
+		}
+		else{
+			var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
+			var todo = [login];
+			results = await db.query(sql, todo);
+			res = await bcrypt.compare(passwd, results[0].passwd);
+			if(res) {
+				return "match";
+			}
+			else{
+				return "dont_match";
+			}
+		}
 	}
-	else{
-		var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
-		var todo = [login];
-		conn.connection.query(sql, todo, (error, results, fields) => {
-			if (error) throw error;
-			bcrypt.compare(passwd, results[0].passwd , function(err, res) {
-				if(res) {
-					callback("match") ;
-				}
-				else{
-					callback("dont_match") ;
-				}
-			});
-		});
+	catch {
+		return err;
 	}
 }
+
+// exports.checkLoginSignIn = function (login, callback){
+// 	if (login == undefined || login == "" || login.indexOf(" ") > -1){
+// 		callback("empty");
+// 	}
+// 	else{
+// 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+// 		var todo = [login];
+// 		conn.connection.query(sql, todo, function (err, count_user) {
+// 			if (err) throw err;
+// 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+// 			todo = [login];
+// 			conn.connection.query(sql, todo, function (err1, count_user_sub){
+// 				console.log(count_user[0].count);
+// 				console.log(count_user_sub[0].count);
+// 				if (err1) throw err1;
+// 				if (count_user[0].count > 0){
+// 					callback("ok");
+// 				}
+// 				else if (count_user_sub[0].count > 0){
+// 					callback("need_confirm");
+// 				}
+// 				else{
+// 					callback("login_no_exist");
+// 				}
+// 			});
+// 		});
+// 	}
+// }
+
 
 exports.save_connection_log = function (login){
 	bdd.get_id_user(login, (id_user) => {
