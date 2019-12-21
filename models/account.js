@@ -3,6 +3,7 @@ var bdd = require('../models/bdd_functions.js');
 const bcrypt = require('bcrypt');
 var mailer = require("nodemailer");
 var emoji = require('node-emoji');
+const jwt = require('jsonwebtoken');
 
 //**********************sign-in************************************************
 const util = require( 'util' );
@@ -15,7 +16,7 @@ config = { host     : '192.168.99.100',
 			database : 'docker' };
 
 
-function makeConn( config ) {
+function makeConn(config){
   const connection = mysql.createConnection( config );
   return {
     query( sql, args ) {
@@ -28,42 +29,39 @@ function makeConn( config ) {
   };
 }
 
+
+db = makeConn(config);
+
+
 exports.checkLoginSignIn = async function (login){
-	try {
-		if (login == undefined || login == "" || login.indexOf(" ") > -1){
-			return ("empty");
+try {
+	if (login == undefined || login == "" || login.indexOf(" ") > -1){
+		return ("empty");
+	}
+	else{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		count_user = await db.query(sql, todo);
+		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+		todo = [login];
+		count_user_sub = await db.query(sql, todo);
+		if (count_user[0].count > 0){
+			return "ok";
+		}
+		else if (count_user_sub[0].count > 0){
+			return "need_confirm";
 		}
 		else{
-			db = makeConn(config);
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-			var todo = [login];
-			count_user = await db.query(sql, todo);
-			console.log("count user");
-			console.log(count_user);
-			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-			todo = [login];
-			count_user_sub = await db.query(sql, todo);
-			console.log("count user sub");
-			console.log(count_user);
-			if (count_user[0].count > 0){
-				return "ok";
-			}
-			else if (count_user_sub[0].count > 0){
-				return "need_confirm";
-			}
-			else{
-				return "login_no_exist";
-			}
+			return "login_no_exist";
 		}
 	}
-	catch{
-		console.log("une erreur AAAAAAAAAAAAAAAAAAAAAAA");
+}
+catch{
 		return (err);
 	}
 }
 
 exports.isLoginPasswdMatch = async function isMatch (login, passwd){
-	db = makeConn(config);
 	try {
 		if (passwd == undefined || passwd == "" || passwd.indexOf(" ") > -1){
 			return "empty";
@@ -86,104 +84,38 @@ exports.isLoginPasswdMatch = async function isMatch (login, passwd){
 	}
 }
 
-// exports.checkLoginSignIn = function (login, callback){
-// 	if (login == undefined || login == "" || login.indexOf(" ") > -1){
-// 		callback("empty");
-// 	}
-// 	else{
-// 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-// 		var todo = [login];
-// 		conn.connection.query(sql, todo, function (err, count_user) {
-// 			if (err) throw err;
-// 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-// 			todo = [login];
-// 			conn.connection.query(sql, todo, function (err1, count_user_sub){
-// 				console.log(count_user[0].count);
-// 				console.log(count_user_sub[0].count);
-// 				if (err1) throw err1;
-// 				if (count_user[0].count > 0){
-// 					callback("ok");
-// 				}
-// 				else if (count_user_sub[0].count > 0){
-// 					callback("need_confirm");
-// 				}
-// 				else{
-// 					callback("login_no_exist");
-// 				}
-// 			});
-// 		});
-// 	}
-// }
-
-
-exports.save_connection_log = function (login){
-	bdd.get_id_user(login, (id_user) => {
-		var  sql = 'SELECT * FROM `connection_log` WHERE `id_user` = ? ';
-		var todo = [id_user];
-		var stop = false;
-		conn.connection.query(sql, todo, (error, results, fields) => {
-			if (error) throw error;
-			if (!results[0]) {
-				var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
-				date = new Date();
-				var todo = [id_user, date];
-				conn.connection.query(sql, todo, (error, results, fields) => {
-					if (error) throw error;
-				})
-			}
-			else {
-				var sql = 'UPDATE `connection_log` SET `last_visit` = ? WHERE `connection_log`.`id` = ?';
-				date = new Date();
-				var todo = [date, id_user];
-				conn.connection.query(sql, todo, (error, results, fields) => {
-					if (error) throw error;
-				})
-			}
-		});
-	});
-}
-
-exports.notification = function (login, callback){
-	bdd.get_id_user(login, (id_user) => {
-		var sql = "SELECT COUNT(*) AS 'count' FROM `notifications` WHERE `id_user_i_send` = ? AND `lu` = 0";
-		var todo = [id_user];
-		conn.connection.query(sql, todo, (err, tab) => {
-			if (err) {
-				console.log(err);
-			}
-			if (tab[0].count == 0){
-				bell = 0;
-			}
-			else{
-				bell = 1;
-			}
-			callback(id_user)
-		});
-	});
+exports.connect_user = async function (login, req){
+	req.session.first_log = true;
+	req.session.logon = true;
+	req.session.login = login;
+	done = await bdd.save_connection_log(login);
+	user_id = await bdd.notification(login);
+	const user = { id: user_id, username: login};
+	let jwtToken = jwt.sign(user, 'secretkey');
+	req.session.token = jwtToken;
+	return "done";
 }
 
 //**********************sign-up************************************************
-exports.check_field_sign_up = function (lname, fname, mail, login, passwd, verif, callback){
-	check_noempty(lname, fname, mail, login, (check_lname, check_fname, check_mail, check_login) => {
-		check_login_function(login, check_login, (check_login) => {
-			check_mail_function(mail, check_mail,  (check_mail) => {
-				check_passwd_sign_up(passwd, verif, (check_passwd) => {
-					callback(check_lname, check_fname, check_mail, check_login, check_passwd);
-				});
-			});
-		});
-	});
+exports.check_field_sign_up = async function (field){
+	try{
+		check_field = check_noempty(field);
+		check_field['login'] = await check_login_function(field['login'], check_field['login']);
+		check_field['mail'] = await check_mail_function(field['mail'], check_field['mail']);
+		check_field['passwd'] = check_passwd_sign_up(field['passwd'], field['verif']);
+		return (check_field);
+	}catch (err){
+		return err;
+	}
 }
 
-exports.insert_user = function (name, passwd, fname, lname, mail){
+exports.insert_user = async function (field, passwd){
 	var num = getRandomInt(10000);
 	var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
-	var todo = [name, passwd, lname, fname, mail];
-	conn.connection.query(sql, todo, function (err, result) {
-		if (err) throw err;
-		console.log("1 record inserted");
-	});
+	var todo = [field['name'], passwd, field['lname'], field['fname'], field['mail']];
+	result = await db.query(sql, todo);
 	sendmail(mail, "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ name + '/' + num + "\">Confirmer</a>");
+	return "done";
 }
 
 //**********************sign-up************************************************
@@ -354,27 +286,29 @@ function check_login_function_my_account(old_login, login, check_login, callback
 	}
 }
 
-function check_login_function(login, check_login, callback){
-	if (check_login == "empty"){
-		callback("empty")
-	}
-	else{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-		var todo = [login];
-		conn.connection.query(sql, todo, function (err, result) {
-			if (err) throw err;
+async function check_login_function(login, check_login, callback){
+	try {
+		if (check_login == "empty"){
+			return ("empty")
+		}
+		else{
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+			var todo = [login];
+			result = await db.query(sql, todo);
 			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
 			//		todo = [login];
 			//conn.connection.query(sql, todo, function (err1, result1){
 			//	if (err1) throw err1;
 			if (result[0].count == 0){// && result1[0].count == 0){
-					callback("ok");
+					return ("ok");
 			}
 			else{
-				callback("login_already_taken");
+				return ("login_already_taken");
 			}
 			//});
-		});
+		}
+	} catch (err) {
+	 	 return (err);
 	}
 }
 
@@ -387,7 +321,6 @@ function check_passwd(passwd){
 	var m = 0;
 	var n = 0;
 	var s = 0;
-
 	for(var i = 0; i < letters.length; i++){
 		if (passwd.indexOf(letters.charAt(i)) != -1){
 			l++;
@@ -429,58 +362,31 @@ function check_mail(mail, callback){
 				callback(2);
 			else if (result[0].count == 1){
 				callback('changeok');
-			}	
+			}
 			else
 				callback(1);
 		});
 	});
 }
 
-function check_passwd_sign_up(passwd, verif, callback){
+function check_passwd_sign_up(passwd, verif){
 	if (passwd != verif){
-		callback("passwd_different");
+		return ("passwd_different");
 	}
 	else if (passwd == verif && (verif == "" || verif == " ")){
-		callback("empty");
+		return ("empty");
 	}
 	else if (passwd == verif){
 		check = check_passwd(passwd);
 		if (check == true){
-			callback("ok")
+			return ("ok")
 		}
 		else {
-			callback("wrong_format");
+			return ("wrong_format");
 		}
 	}
 }
 
-function check_mail_function(mail, check_mail, callback){
-	if (check_mail == "empty"){
-		callback("empty");
-	}
-	else{
-		callback("ok");
-		// var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-		// var todo = [mail];
-		// conn.connection.query(sql, todo, function (err, result) {
-		// 	if (err) throw err;
-		// 	sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
-		// 	todo = [mail];
-		// 	conn.connection.query(sql, todo, function (err1, result1){
-		// 		if (err1) throw err1;
-		// 		if (result[0].count == 0)
-		// 			callback(0);
-		// 		else if (result1[0].count != 0)
-		// 			callback(2);
-		// 		else if (result[0].count == 1){
-		// 			callback('changeok');
-		// 		}	
-		// 		else
-		// 			callback(1);
-		// 	});
-		// });
-	}
-}
 
 function help_noempty(champs){
 	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
@@ -488,26 +394,26 @@ function help_noempty(champs){
 	return true;
 }
 
-function check_noempty(lname, fname, mail, login, callback){
-	var check_lname = "ok";
-	var check_fname = "ok";
-	var check_mail = "ok";
-	var check_login = "ok";
-	if (help_noempty(lname) == false){
-		check_lname = "empty";
+function check_noempty(field){
+	check_field = {};
+	check_field['lname'] = "ok";
+	check_field['fname'] = "ok";
+	check_field['mail'] = "ok";
+	check_field['login'] = "ok";
+	if (help_noempty(field['lname']) == false){
+		check_field['lname']= "empty";
 	}
-	if (help_noempty(fname) == false){
-		check_fname = "empty";
+	if (help_noempty(field['fname']) == false){
+		check_field['fname'] = "empty";
 	}
-	if (help_noempty(mail) == false){
-		check_mail = "empty";
+	if (help_noempty(field['mail']) == false){
+		check_field['mail'] = "empty";
 	}
-	if (help_noempty(login) == false){
-		check_login = "empty";
+	if (help_noempty(field['login']) == false){
+		check_field['login'] = "empty";
 	}
-	callback(check_lname, check_fname, check_mail, check_login);
+	return check_field;
 }
-
 
 function sendmail(mail, subject, text){
 	var transporter = mailer.createTransport({
@@ -545,6 +451,81 @@ function recoveruser_wmail(email, callback){
 		callback(results[0]);
 	});
 }
+
+async function notification (login){
+try{
+	id_user = await bdd.get_id_user(login);
+	var sql = "SELECT COUNT(*) AS 'count' FROM `notifications` WHERE `id_user_i_send` = ? AND `lu` = 0";
+	var todo = [id_user];
+	tab = await db.query(sql, todo);
+	if (tab[0].count == 0){
+		bell = 0;
+	}
+	else{
+		bell = 1;
+	}
+	return (id_user)
+}
+catch {
+	return err;
+	}
+}
+
+async function save_connection_log (login){
+	id_user = await bdd.get_id_user(login);
+	var  sql = 'SELECT * FROM `connection_log` WHERE `id_user` = ? ';
+	var todo = [id_user];
+	var stop = false;
+	results = await db.query(sql, todo);
+	if (!results[0]) {
+		var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
+		date = new Date();
+		var todo = [id_user, date];
+		results = await db.query(sql, todo);
+		return "done";
+	}
+	else {
+		var sql = 'UPDATE `connection_log` SET `last_visit` = ? WHERE `connection_log`.`id` = ?';
+		date = new Date();
+		var todo = [date, id_user];
+		results = await db.query(sql, todo);
+		return "done";
+	}
+}
+
+
+
+async function check_mail_function(mail, check_mail){
+	if (check_mail == "empty"){
+		return ("empty");
+	}
+	else{
+		return ("ok");
+	}
+}
+
+ // var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+// var todo = [mail];
+// conn.connection.query(sql, todo, function (err, result) {
+	// if (err) throw err;
+	// sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
+	// todo = [mail];
+	// conn.connection.query(sql, todo, function (err1, result1){
+		// if (err1) throw err1;
+		// if (result[0].count == 0)
+			// callback(0);
+		// else if (result1[0].count != 0)
+			// callback(2);
+		// else if (result[0].count == 1){
+			// callback('changeok');
+		// }
+		// else
+			// callback(1);
+	// });
+// });
+
+
+
 
 
 // exports.check_log = function (login, callback){
@@ -605,4 +586,8 @@ function recoveruser_wmail(email, callback){
 // 		// console.log(login + "deleted from user_sub");
 // 	// });
 // }
+
+
+
+
 
