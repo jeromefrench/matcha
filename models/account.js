@@ -5,40 +5,6 @@ var mailer = require("nodemailer");
 var emoji = require('node-emoji');
 const jwt = require('jsonwebtoken');
 
-function check_passwd(passwd){
-	var letters = "abcdefghijklmnopqrstuvwxyz";
-	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var numbers = "0123456789";
-	var spec = "%#:$*@_-&^!>?()[]{}+=.,;";
-	var l = 0;
-	var m = 0;
-	var n = 0;
-	var s = 0;
-	for(var i = 0; i < letters.length; i++){
-		if (passwd.indexOf(letters.charAt(i)) != -1){
-			l++;
-		}
-	}
-	for (i = 0; i < maj.length; i++){
-		if (passwd.indexOf(maj.charAt(i)) != -1){
-			m++;
-		}
-	}
-	for (i = 0; i < numbers.length; i++){
-		if (passwd.indexOf(numbers.charAt(i)) != -1){
-			n++;
-		}
-	}
-	for (i = 0; i < spec.length; i++){
-		if (passwd.indexOf(spec.charAt(i)) != -1){
-			s++;
-		}
-	}
-	if (l == 0 || m == 0 || n == 0 || s == 0 || passwd.length < 9){
-		return false;
-	}
-	return true;
-}
 
 //**********************sign-in************************************************
 const util = require( 'util' );
@@ -49,7 +15,6 @@ config = { host     : '192.168.99.100',
 			password : 'tiger',
 			port	: '3306',
 			database : 'docker' };
-
 
 function makeConn(config){
   const connection = mysql.createConnection( config );
@@ -66,8 +31,6 @@ function makeConn(config){
 
 
 db = makeConn(config);
-
-
 
 exports.checkLoginSignIn = async function (login){
 try {
@@ -259,8 +222,6 @@ exports.valide_user = async function (login, passwd, lname, fname, mail, num){
 //**********************confirm************************************************
 //*****************************************************************************
 
-
-
 function check_passwd_function(passwd, verif){
 	if (passwd == verif && verif == ""){
 		return ("ok");
@@ -329,7 +290,6 @@ async function check_login_function(login, check_login, callback){
 	}
 }
 
-
 async function check_mail(mail){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 	var todo = [mail];
@@ -368,7 +328,6 @@ function check_passwd_sign_up(passwd, verif){
 		}
 	}
 }
-
 
 function help_noempty(champs){
 	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
@@ -487,6 +446,41 @@ async function check_mail_function(mail, check_mail){
 	else{
 		return ("ok");
 	}
+}
+
+function check_passwd(passwd){
+	var letters = "abcdefghijklmnopqrstuvwxyz";
+	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var numbers = "0123456789";
+	var spec = "%#:$*@_-&^!>?()[]{}+=.,;";
+	var l = 0;
+	var m = 0;
+	var n = 0;
+	var s = 0;
+	for(var i = 0; i < letters.length; i++){
+		if (passwd.indexOf(letters.charAt(i)) != -1){
+			l++;
+		}
+	}
+	for (i = 0; i < maj.length; i++){
+		if (passwd.indexOf(maj.charAt(i)) != -1){
+			m++;
+		}
+	}
+	for (i = 0; i < numbers.length; i++){
+		if (passwd.indexOf(numbers.charAt(i)) != -1){
+			n++;
+		}
+	}
+	for (i = 0; i < spec.length; i++){
+		if (passwd.indexOf(spec.charAt(i)) != -1){
+			s++;
+		}
+	}
+	if (l == 0 || m == 0 || n == 0 || s == 0 || passwd.length < 9){
+		return false;
+	}
+	return true;
 }
 
 // var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
