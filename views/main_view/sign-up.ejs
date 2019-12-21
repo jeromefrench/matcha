@@ -30,8 +30,8 @@
 					<label>Email</label>
 				</div>
 				<div class="inline field">
-					<input type="email" name="email" placeholder="Email" <%- include('../check_field/val.ejs', {val: locals.ans['email']}); %>required>
-					<% if (locals.ans['check_email']) { %>
+					<input type="email" name="mail" placeholder="Email" <%- include('../check_field/val.ejs', {val: locals.ans['mail']}); %>required>
+					<% if (locals.ans['check_mail']) { %>
 						<%- include('../check_field/check_mail.ejs', {mailexist: session.mailexist, empty: session.emailwrong}); %>
 					<% } %>
 				</div>

@@ -27,8 +27,9 @@ try {
 		res.redirect('/about-you');
 	}
 }
-catch{
+catch (err){
 	console.log("une erreur");
+	console.log(err);
 }
 });
 

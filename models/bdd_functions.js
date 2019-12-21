@@ -10,14 +10,6 @@ exports.get_id_user = function (login, callback){
 	});
 }
 
-function get_id_user (login, callback){
-	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
-	var todo = [login];
-	conn.connection.query(sql, todo, (error, result) => {
-		if (error) throw error;
-		callback(result[0].id);
-	});
-}
 
 exports.get_completed = function (login, callback){
 	get_id_user(login, (id_user) => {

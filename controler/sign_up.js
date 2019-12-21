@@ -12,7 +12,7 @@ router.route('/').post(async (req, res) => {
 	field = {};
 	field['lname']  = req.body.lname;
 	field['fname']  = req.body.fname;
-	field['email']  = req.body.email;
+	field['mail']  = req.body.mail;
 	field['login']  = req.body.login;
 	field['passwd'] = req.body.passwd;
 	field['verif']  = req.body.verif;
@@ -24,15 +24,8 @@ router.route('/').post(async (req, res) => {
 		}
 	}
 	if (check == "error"){
-		req.session.ans['check_lname'] = check_field['lname'];
-		req.session.ans['check_fname'] = check_field['fname'];
-		req.session.ans['check_email'] = check_field['email'];
-		req.session.ans['check_login'] = check_field['login'];
-		req.session.ans['check_passwd'] = check_field['passwd'];
-		req.session.ans['lname'] = ['lname'];
-		req.session.ans['fname'] = ['fname'];
-		req.session.ans['email'] = ['email'];
-		req.session.ans['login'] = ['login'];
+		req.session.ans.check_field = check_field;
+		req.session.ans.field = field;
 		res.redirect('/sign-up');
 	}
 	else{
