@@ -12,7 +12,7 @@
 				<div class="inline field">
 					<div class="ui left icon input">
 						<i class="user icon"></i>
-						<input type="text" name="login" placeholder="Login" <% if (locals.ans['login']){ %> value=<%= locals.ans.login %> <% }else{ %> value="" <% } %> required>
+						<input type="text" name="login" placeholder="Login" <%- include('../check_field/val.ejs', {val: locals.ans['login']}); %> required>
 						<% if (locals.ans['check_login']) { %>
 							<%- include('../check_field/check_login.ejs', {check_login: locals.ans['check_login']}); %>
 						<% } %>

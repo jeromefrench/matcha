@@ -3,7 +3,7 @@ const router = require('express').Router();
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign In";
-	res.render('main_view/sign-in.ejs', { locals: res.locals, session: req.session});
+	res.render('main_view/sign-in.ejs');
 });
 
 router.route('/').post( async (req, res) => {

@@ -10,7 +10,7 @@ router.route('/').get(async (req, res) => {
 
 	res.locals.title = "My Account";
 	res.locals.user = await bdd.recover_user_(req.session.login);
-	res.render('main_view/my-account.ejs', { locals: res.locals, session: req.session });
+	res.render('main_view/my-account.ejs');
 });
 
 router.route('/').post(async (req, res) => {

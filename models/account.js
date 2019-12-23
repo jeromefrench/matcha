@@ -1,12 +1,10 @@
-var conn = require('./connection_bdd.js');
-var bdd = require('../models/bdd_functions.js');
 const bcrypt = require('bcrypt');
 var mailer = require("nodemailer");
 var emoji = require('node-emoji');
 const jwt = require('jsonwebtoken');
 
 
-//**********************sign-in************************************************
+//**********************connection**********************************************
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
@@ -32,6 +30,7 @@ function makeConn(config){
 
 db = makeConn(config);
 
+//**********************sign-in************************************************
 exports.checkLoginSignIn = async function (login){
 try {
 	if (login == undefined || login == "" || login.indexOf(" ") > -1){

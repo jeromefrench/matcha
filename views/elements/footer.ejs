@@ -59,7 +59,7 @@
 			<% } %>
 
 		<% if(locals.token) { %>
-					localStorage.setItem('Thetoken', "<%= session.token %>");
+					localStorage.setItem('Thetoken', "<%= locals.token %>");
 			var test = localStorage.getItem('Thetoken');
 			socket = io.connect('http://localhost:8080');
 			socket.on('connect', () => {

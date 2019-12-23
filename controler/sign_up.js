@@ -5,8 +5,11 @@ const saltRounds = 2;
 
 router.route('/').get((req, res) => {
 	res.locals.title = "Sign Up";
-	res.render('main_view/sign-up.ejs', {session: req.session});
+	res.render('main_view/sign-up.ejs');
 });
+
+
+
 
 router.route('/').post(async (req, res) => {
 	field = {};

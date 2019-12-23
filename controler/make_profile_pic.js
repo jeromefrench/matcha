@@ -19,7 +19,7 @@ router.route('/:login/:num/profile').get((req, res) => {
 			// console.log(path);
 			bdd_about.profileToOne(path, () => {
 				// console.log("la photo sera mis en profile");
-				res.redirect('back');
+				res.redirect('/about-you');
 			});
 		})
 	});

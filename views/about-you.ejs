@@ -1,30 +1,273 @@
-
-<% include elements/header %>
+<%- include('elements/header.ejs') %>
 <div class="ui container" style="margin-top: 30px">
 	<h1>About you</h1>
-	</br>
 	<form id="form" method="POST" action="about-you" encType="multipart/form-data" class="ui fluid form">
 		<div class="ui two column centered stackable grid">
-  			<div class="column">
-				<%- include('elements/preferences', {locals: locals});  %>
+			<div class="column">
+
+				<!-- ***********************************preference completed *********************************************** -->
+				<h4 class="ui dividing header">Preferences
+					<% if (locals.ans['preference_completed'] == false){ %>
+						<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
+					<% }else{ %>
+						<span style="margin-left:20px;" class="ui green tag label"> Completed</span>
+					<% } %>
+				</h4>
+
+				<!-- ***********************************gender ********************************************************** -->
+				<div style="display:inline-block;">
+					<div class="field"> <label>Gender</label> </div>
+					<div class="ui input">
+						<select name="gender" class="ui dropdown">
+							<option hidden disabled selected value> -- select an option -- </option>
+							<option <% if (locals.ans['user'].gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>
+							<option <% if (locals.ans['user'].gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
+							<option <% if (locals.ans['user'].gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- ***********************************show_me ********************************************************** -->
+				<div style="display:inline-block;">
+					<div class="field"> <label>Show Me</label> </div>
+					<div class="ui input">
+						<select name="orientation" class="ui dropdown">
+							<option <% if (locals.ans['user'].orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
+							<option <% if (locals.ans['user'].orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
+							<option <% if (locals.ans['user'].orientation == "everyone" || locals.ans['user'].orientation == false) {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- ***********************************birthday ********************************************************** -->
+				<div style="display:inline-block;">
+					<div class="field"> <label>Birthday date</label> </div>
+					<div class="ui input">
+						<input type="text" id="datepicker" name="birthday" <%if (locals.ans['user'].birthday) { %>  value="<%= locals.ans['user'].birthday  %>"<%}%> >
+					</div>
+				</div>
+
+				<script>
+					$( function() {
+						$( "#datepicker" ).datepicker({
+							changeMonth: true,
+							changeYear: true,
+							yearRange: '1900:2019'
+						});
+					} );
+				</script>
+
+
+				<!-- ***********************************Biographie ********************************************************** -->
+				<div class="field"> <label>Biographie</label> </div>
+				<textarea style="height:80px;" name="bio"><% if (locals.ans['user'].bio) {%><%= locals.ans['user'].bio %><%} %></textarea>
+
+				<!-- ***********************************Interrest ********************************************************** -->
+
+				<div class="field"> <label>Interests</label> </div>
+				<select multiple  name="interests" class="ui">
+					<option  hidden disabled selected value> -- select an option -- </option>
+					<option <%- include('elements/interest.ejs', {value: "voyage"});  %>  value="voyage">Voyage</option>
+					<option <%- include('elements/interest.ejs', {value: "cuisine"});  %> value="cuisine">Cuisine</option>
+					<option <%- include('elements/interest.ejs', {value: "escalade"});  %> value="escalade">Escalade</option>
+					<option <%- include('elements/interest.ejs', {value: "equitation"});  %> value="equitation">Equitation</option>
+					<option <%- include('elements/interest.ejs', {value: "soleil"});  %> value="soleil">Soleil</option>
+					<option <%- include('elements/interest.ejs', {value: "sieste"});  %> value="sieste">Sieste</option>
+				</select>
+				<p> Hold command to select multiple</p>
+
+				<!-- ************************************************************************************************************ -->
 			</div>
-    		<div class="column" style="padding-left: 70px">
-				<%- include('elements/localisation', {locals: locals});  %>
+			<div class="column" style="padding-left: 70px">
+				<!-- ************************************************************************************************************ -->
+
+
+				<!-- ***********************************Localisation_completed ****************************************************** -->
+				<h4 class="ui dividing header">Localisation
+					<% if (locals.ans['localisation_completed'] == false){ %>
+						<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
+					<% }else{ %>
+						<span style="margin-left:20px;" class="ui green tag label"> Completed</span>
+					<% } %>
+				</h4>
+
+				<!-- ***********************************Localisation_localise_me ****************************************************** -->
+				<input id="monid" type="submit" class="ui button" value="Localise Me" name="submit_button">
+
+				<!-- ***********************************Country ****************************************************** -->
+				<div class="field"> <label>Country</label> </div>
+				<div class="ui input"> <input type="text" id="country" name="country" placeholder="First Name" <% if (locals.ans['user'].country) { %> value ="<%= locals.ans['user'].country  %>" <% } %> > </div>
+				</br>
+				</br>
+				<!-- ***********************************City ****************************************************** -->
+				<div class="field"> <label>City</label> </div>
+				<div class="ui input"> <input type="text" id="city" name="city" placeholder="First Name" <% if (locals.ans['user'].city) { %> value ="<%= locals.ans['user'].city %>" <% } %> > </div>
+				</br>
+				</br>
+				<!-- ***********************************Zip_code ****************************************************** -->
+				<div class="field"> <label>Zip Code</label> </div>
+				<div class="ui input"> <input type="text" id="zipcode" name="zipcode" placeholder="First Name" <% if (locals.ans['user'].zip_code) { %> value ="<%= locals.ans['user'].zip_code %>" <% } %> > </div>
+				</br>
+				</br>
+
+				<!-- ************************************************************************************************************ -->
+				<script>
+					elemCountry = document.getElementById("country");
+					elemCity = document.getElementById("city");
+					elemZipcode = document.getElementById("zipcode");
+					elem = document.getElementById("monid");
+					elem.addEventListener("click", (event) => {
+						event.preventDefault();
+						navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {maximumAge:Infinity, timeout:1000});
+
+						function successCallback(position) {
+							console.log("l'utilisateur a accepter");
+							console.log(position.coords.latitude);
+							console.log(position.coords.longitude);
+							query = position.coords.latitude + ", " + position.coords.longitude;
+							//geocode('50.97751,11.32858');
+							geocode(query);
+
+							function geocode(query){
+								$.ajax({
+									url: 'https://api.opencagedata.com/geocode/v1/json',
+									method: 'GET',
+									data: {
+											'key': '18c7ee45c71045ae9c843d8cc377a0d7',
+											'q': query,
+											'no_annotations': 1
+										// see other optional params:
+										// https://opencagedata.com/api#forward-opt
+									},
+									dataType: 'json',
+									statusCode: {
+										200: function(place){  // success
+											//console.log(response.results[0]);
+											elemCountry.value = place.results[0].components.country;
+											elemCity.value = place.results[0].components.city;
+											elemZipcode.value = place.results[0].components.postcode;
+										},
+										402: function(){
+											console.log('hit free-trial daily limit');
+											console.log('become a customer: https://opencagedata.com/pricing');
+											elemCountry.value = "error";
+											elemCity.value = "error";
+											elemZipcode.value = "error";
+										}
+										// other possible response codes:
+										// https://opencagedata.com/api#codes
+									}
+								});
+							}
+						}
+
+						function errorCallback(error) {
+							console.log("l'utilisateur a refuser");
+							console.log(error);
+							$.getJSON('http://ip-api.com/json?callback=?', function(data) {
+								//console.log(data);
+								if (data.status == "success"){
+									elemCountry.value = data.country;
+									elemCity.value = data.city;
+									elemZipcode.value = data.zip;
+								}
+								else{
+									elemCountry.value = "error";
+									elemCity.value = "error";
+									elemZipcode.value = "error";
+								}
+								//console.log(JSON.stringify(data, null, 2));
+							});	
+						}
+					});
+				</script>
+
 			</div>
 		</div>
 		<div class="ui container" style="margin-top: 30px">
-			<%- include('elements/photo_about');  %>
-		</div>
+			<div class="ui container" style="margin-top: 30px">
+				<!-- ************************************************************************************************************ -->
+
+		<!-- ***********************************submit ****************************************************** -->
 		</br>
-			<h4 class="ui dividing header"></h4>
 		<div class="ui middle aligned center aligned grid container" style="margin-top:10px;">
-    		<input type="submit" class="ui button" name="submit_button" value="Valider">
+			<input type="submit" class="ui button" name="submit_button" value="Valider">
 		</div>
+		<!-- ***********************************submit ****************************************************** -->
+
+				<!-- ***********************************photo ****************************************************** -->
+				<h4 class="ui dividing header">Photos
+					<% if (locals.ans['pic_completed'] == false){ %>
+						<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
+					<% }else{ %>
+						<span style="margin-left:20px;" class="ui green tag label"> Completed</span>
+					<% } %>
+
+				</h4>
+				<div class="ui middle aligned center aligned">
+					<input type="file" class="inputfile" id="file" name="photo" />
+					<label for="file" class="ui left floated button">
+						<i class="ui upload icon"></i>
+						Upload image
+					</label>
+				</div>
+				</br>
+				</br>
+				</br>
+				<% if (locals.ans['user']['pic']) {%>
+
+					<% locals.ans['user']['pic'].forEach(function(pic) {
+						//regex pour savoir si c'est un lien ou une image sur le disk
+						var str = pic.path_photo;
+						var patt = /^http/;
+						var res = patt.test(str)
+
+						if (res){
+							//c'est un lien
+							pic_link = pic.path_photo;
+						}else {
+							//c'est pas un lien
+							pic_link = pic.path_photo.replace('public/', '');
+							pic_link = "/assets"+pic_link;
+						}
+					%>
+				<div style="display:inline-block; margin-left:20px; vertical-align:top;">
+					<% if (pic.profile == 1) {%>
+						<a href="<%= pic.path_photo %>/profile"> <img class="ui medium circular image" src="<%= pic_link %>"/>  </a>
+					<% }else{%>
+						<a href="<%= pic.path_photo %>/profile"><img class="ui medium rounded image" src="<%= pic_link %>"/>  </a>
+					<%}%>
+					<a href="<%= pic.path_photo %>"><i class="red x icon"></i></a>
+				</div>
+			<% });  %>
+		<%}%>
+
+
+		</br>
+		<script>
+			document.getElementById("file").onchange = function() {
+				document.getElementById("form").submit();
+			};
+		</script>
+
+		<style>
+.grid.container {
+	margin-top: 5em;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+		</style>
+
+			</div>
+		</div>
+
+
 	</form>
 </div>
-<% include elements/footer %>
-<script>
-	document.getElementById("file").onchange = function() {
-    	document.getElementById("form").submit();
-    };
-</script>
+<%- include('elements/footer.ejs') %>

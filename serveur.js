@@ -48,24 +48,6 @@ bell = 0;
 app.use(function (req, res, next) {
 	console.log("middle ware");
 	console.log(req.session.ans);
-	if (req.session && req.session.token){
-		res.locals.token = req.session.token;
-	}
-	if (req.session && req.session.first_log == true){
-		req.session.first_log = false;
-		res.locals.first_log = true;
-	}
-	else{
-		res.locals.first_log = false;
-	}
-	if (req.session && req.session.login && req.session.logon == true){
-		res.locals.log_in = req.session.login;
-	}
-	if (req.session.complete_message == true){
-		req.session.complete_message = false;
-		res.locals.complete_message = true;
-	}
-	req.io = io;
 	if (req.session.ans != undefined){
 		res.locals.ans = req.session.ans;
 		req.session.ans = undefined;
@@ -75,6 +57,33 @@ app.use(function (req, res, next) {
 		res.locals.ans = {};
 		req.session.ans = {};
 	}
+
+	if (req.session && req.session.token){
+		res.locals.token = req.session.token;
+	}
+
+	if (req.session && req.session.first_log == true){
+		req.session.first_log = false;
+		res.locals.first_log = true;
+	}
+	else{
+		res.locals.first_log = false;
+	}
+
+
+	if (req.session && req.session.login && req.session.logon == true){
+		res.locals.login = req.session.login;
+		res.locals.logon = true;
+	}
+
+
+	if (req.session.complete_message == true){
+		req.session.complete_message = false;
+		res.locals.complete_message = true;
+	}
+	req.io = io;
+
+
 	res.locals.jwtToken = req.session.jwtToken;
 	req.session.jwtToken = undefined;
 	next();

@@ -23,7 +23,7 @@ router.route('/:login/:num').get((req, res) => {
 		// console.log("result");
 		// console.log(result);
 			bdd_about.delPic(path);
-			res.redirect('back');
+	res.redirect('/about-you');
 		}
 	})
 });

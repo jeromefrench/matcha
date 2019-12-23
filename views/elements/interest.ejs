@@ -1,12 +1,9 @@
+<% if ( locals.ans['user'].interests) {%>
 
+	<% locals.ans['user'].interests.forEach(function(inter) {  %>
+		<% if (inter  == value) {%>
+			<%= selected="selected"%>
+		<%}%> 
+	<% });  %>
 
-<% if ( locals.infos && locals.infos.interArray) {%>
-<% locals.infos.interArray.forEach(function(inter) {  %>
-<% if (inter  == value) {%>
-	<%= selected="selected"%>
-	<%}%> 
-<% });  %>
-	<%}%> 
-
-
-
+<%}%> 
