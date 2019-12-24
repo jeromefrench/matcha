@@ -5,30 +5,30 @@ const jwt = require('jsonwebtoken');
 
 
 //**********************connection**********************************************
-const util = require( 'util' );
-const mysql = require( 'mysql' );
+// const util = require( 'util' );
+// const mysql = require( 'mysql' );
 
-config = { host     : '192.168.99.100',
-			user     : 'root',
-			password : 'tiger',
-			port	: '3306',
-			database : 'docker' };
+// config = { host     : 'localhost',
+// 			user     : 'newuser',
+// 			password : 'rootpasswd',
+// 			port	: '3306',
+// 			database : 'docker' };
 
-function makeConn(config){
-  const connection = mysql.createConnection( config );
-  return {
-    query( sql, args ) {
-      return util.promisify( connection.query )
-        .call( connection, sql, args );
-    },
-    close() {
-      return util.promisify( connection.end ).call( connection );
-    }
-  };
-}
+// function makeConn(config){
+//   const connection = mysql.createConnection( config );
+//   return {
+//     query( sql, args ) {
+//       return util.promisify( connection.query )
+//         .call( connection, sql, args );
+//     },
+//     close() {
+//       return util.promisify( connection.end ).call( connection );
+//     }
+//   };
+// }
 
 
-db = makeConn(config);
+// db = makeConn(config);
 
 //**********************sign-in************************************************
 exports.checkLoginSignIn = async function (login){
@@ -54,7 +54,9 @@ try {
 		}
 	}
 }
-catch{
+catch (err){
+	console.log("erreur ici");
+	console.log(err);
 		return (err);
 	}
 }
@@ -77,7 +79,7 @@ exports.isLoginPasswdMatch = async function isMatch (login, passwd){
 			}
 		}
 	}
-	catch {
+	catch (err){
 		return err;
 	}
 }
@@ -437,6 +439,15 @@ async function get_id_user (login){
 	result = await db.query(sql, todo);
 	return(result[0].id);
 }
+
+async function hellog(){
+	mon_login = await get_id_user("blabli");
+	console.log("hellog");
+	console.log(mon_login);
+}
+
+//console.log("hellog you");
+//hellog();
 
 async function check_mail_function(mail, check_mail){
 	if (check_mail == "empty"){

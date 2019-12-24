@@ -1,3 +1,4 @@
+<% if ( locals.ans['user']) {%>
 <% if ( locals.ans['user'].interests) {%>
 
 	<% locals.ans['user'].interests.forEach(function(inter) {  %>
@@ -6,4 +7,5 @@
 		<%}%> 
 	<% });  %>
 
+<%}%> 
 <%}%> 

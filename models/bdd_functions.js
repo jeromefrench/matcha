@@ -1,5 +1,19 @@
 var conn = require('./connection_bdd.js');
 
+function get_id (login, callback){
+	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	conn.connection.query(sql, todo, (error, result) => {
+		if (error) throw error;
+		callback(result);
+	});
+}
+
+// get_id("blabli", (answer) =>{
+// 	console.log(answer);
+// 	console.log(answer[0]);
+// })
+
 
 exports.get_id_user = function (login, callback){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";

@@ -2,27 +2,27 @@
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
-config = { host     : '192.168.99.100',
-	user     : 'root',
-	password : 'tiger',
-	port	: '3306',
-	database : 'docker' };
+// config = { host     : '192.168.99.100',
+// 	user     : 'root',
+// 	password : 'tiger',
+// 	port	: '3306',
+// 	database : 'docker' };
 
-function makeConn(config){
-	const connection = mysql.createConnection( config );
-	return {
-		query( sql, args ) {
-			return util.promisify( connection.query )
-				.call( connection, sql, args );
-		},
-		close() {
-			return util.promisify( connection.end ).call( connection );
-		}
-	};
-}
+// function makeConn(config){
+// 	const connection = mysql.createConnection( config );
+// 	return {
+// 		query( sql, args ) {
+// 			return util.promisify( connection.query )
+// 				.call( connection, sql, args );
+// 		},
+// 		close() {
+// 			return util.promisify( connection.end ).call( connection );
+// 		}
+// 	};
+// }
 
 
-db = makeConn(config);
+// db = makeConn(config);
 
 exports.get_id_user = async function (login){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";

@@ -1,5 +1,5 @@
 var bdd = require('../models/bdd_functions.js');
-var bdd_message = require('../models/message.js');
+var bdd_message = require('../models/Message.js');
 var bdd_notif = require('../models/notifications.js');
 const router = require('express').Router();
 

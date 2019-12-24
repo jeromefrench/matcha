@@ -70,6 +70,8 @@ app.use(function (req, res, next) {
 		res.locals.first_log = false;
 	}
 
+	console.log("test");
+	console.log(req.session.logon);
 
 	if (req.session && req.session.login && req.session.logon == true){
 		res.locals.login = req.session.login;
@@ -88,6 +90,35 @@ app.use(function (req, res, next) {
 	req.session.jwtToken = undefined;
 	next();
 })
+
+
+const util = require( 'util' );
+const mysql = require( 'mysql' );
+
+config = { host     : 'localhost',
+			user     : 'newuser',
+			password : 'rootpasswd',
+			port	: '3306',
+			database : 'docker' };
+
+function makeConn(config){
+  const connection = mysql.createConnection( config );
+  return {
+    query( sql, args ) {
+      return util.promisify( connection.query )
+        .call( connection, sql, args );
+    },
+    close() {
+      return util.promisify( connection.end ).call( connection );
+    }
+  };
+}
+
+
+db = makeConn(config);
+
+
+
 app.use('/confirm', confirm);
 app.use('/forgotten-passwd', sendpass);
 app.use('/change-passwd', changepass);

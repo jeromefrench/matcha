@@ -44,7 +44,11 @@ router.route('/').post(async (req, res) => {
 	//faire une regex pour tester le format
 
 	////*****************************************************************bio
-	check_field['bio'] = help_noempty(field['bio']);
+	//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
+	if (field['bio'] != undefined && field['bio'] != ""){
+		check_field['bio'] = "ok";
+	}
+
 
 	////*****************************************************************interests
 	check_field['interests'] = help_noempty(field['interests']);
@@ -126,14 +130,13 @@ router.route('/').post(async (req, res) => {
 
 	req.session.ans = {};
 	req.session.ans['user'] = field;
-	//console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-	//console.log(req.session.ans['user']);
+	console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	console.log(req.session.ans['user']);
 	res.redirect('/about-you');
 });
 
 
 async function get_info_user(res, login){
-	user = {};
 	user = await bdd.get_info_user(login);
 	user = user[0];
 	for (const property in user){
@@ -145,16 +148,18 @@ async function get_info_user(res, login){
 		}
 	}
 
-	user.birthday = user.birth;
-	if (user.birthday != false)
+	if (user != undefined && user.birth != undefined && user.birth != false)
 	{
+		console.log("le user birth");
+		console.log(user.birth);
+		user.birthday = user.birth;
 		user.birthday = user.birthday.replace("\\", "/");
 		user.birthday = user.birthday.replace("\\", "/");
 		user.birthday = user.birthday.replace("\\", "/");
 		user.birthday = user.birthday.split("/");
 		user.birthday = user.birthday[1]+ "/"+ user.birthday[2]+"/"+user.birthday[0];
 	}
-	if (user.interests != false){
+	if (user != undefined && user.interests != false){
 		user.interests = user.interests.split(",");
 	}
 	pic = await bdd.getPic(id_user);

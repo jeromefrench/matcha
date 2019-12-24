@@ -20,9 +20,9 @@
 					<div class="ui input">
 						<select name="gender" class="ui dropdown">
 							<option hidden disabled selected value> -- select an option -- </option>
-							<option <% if (locals.ans['user'].gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>
-							<option <% if (locals.ans['user'].gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
-							<option <% if (locals.ans['user'].gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].gender == "male") {%> <%= selected="selected"%> <%}%> value="male">Male</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
 						</select>
 					</div>
 				</div>
@@ -32,9 +32,9 @@
 					<div class="field"> <label>Show Me</label> </div>
 					<div class="ui input">
 						<select name="orientation" class="ui dropdown">
-							<option <% if (locals.ans['user'].orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
-							<option <% if (locals.ans['user'].orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
-							<option <% if (locals.ans['user'].orientation == "everyone" || locals.ans['user'].orientation == false) {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
+							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "everyone" || locals.ans['user'] == undefined)  {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
 						</select>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 				<div style="display:inline-block;">
 					<div class="field"> <label>Birthday date</label> </div>
 					<div class="ui input">
-						<input type="text" id="datepicker" name="birthday" <%if (locals.ans['user'].birthday) { %>  value="<%= locals.ans['user'].birthday  %>"<%}%> >
+						<input type="text" id="datepicker" name="birthday" <%if (locals.ans['user'] && locals.ans['user'].birthday) { %>  value="<%= locals.ans['user'].birthday  %>"<%}%> >
 					</div>
 				</div>
 
@@ -60,7 +60,7 @@
 
 				<!-- ***********************************Biographie ********************************************************** -->
 				<div class="field"> <label>Biographie</label> </div>
-				<textarea style="height:80px;" name="bio"><% if (locals.ans['user'].bio) {%><%= locals.ans['user'].bio %><%} %></textarea>
+				<textarea style="height:80px;" name="bio"><% if (locals.ans['user'] && locals.ans['user'].bio) {%><%= locals.ans['user'].bio %><%} %></textarea>
 
 				<!-- ***********************************Interrest ********************************************************** -->
 
@@ -96,17 +96,17 @@
 
 				<!-- ***********************************Country ****************************************************** -->
 				<div class="field"> <label>Country</label> </div>
-				<div class="ui input"> <input type="text" id="country" name="country" placeholder="First Name" <% if (locals.ans['user'].country) { %> value ="<%= locals.ans['user'].country  %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="country" name="country" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].country) { %> value ="<%= locals.ans['user'].country  %>" <% } %> > </div>
 				</br>
 				</br>
 				<!-- ***********************************City ****************************************************** -->
 				<div class="field"> <label>City</label> </div>
-				<div class="ui input"> <input type="text" id="city" name="city" placeholder="First Name" <% if (locals.ans['user'].city) { %> value ="<%= locals.ans['user'].city %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="city" name="city" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].city) { %> value ="<%= locals.ans['user'].city %>" <% } %> > </div>
 				</br>
 				</br>
 				<!-- ***********************************Zip_code ****************************************************** -->
 				<div class="field"> <label>Zip Code</label> </div>
-				<div class="ui input"> <input type="text" id="zipcode" name="zipcode" placeholder="First Name" <% if (locals.ans['user'].zip_code) { %> value ="<%= locals.ans['user'].zip_code %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="zipcode" name="zipcode" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].zip_code) { %> value ="<%= locals.ans['user'].zip_code %>" <% } %> > </div>
 				</br>
 				</br>
 
@@ -214,7 +214,7 @@
 				</br>
 				</br>
 				</br>
-				<% if (locals.ans['user']['pic']) {%>
+				<% if (locals.ans['user'] && locals.ans['user']['pic']) {%>
 
 					<% locals.ans['user']['pic'].forEach(function(pic) {
 						//regex pour savoir si c'est un lien ou une image sur le disk
