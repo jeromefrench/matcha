@@ -1,4 +1,4 @@
-var bl = require('../models/block.js');
+var bl = require('../models/interractions.js');
 const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {

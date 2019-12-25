@@ -1,6 +1,6 @@
-let bdd = require('./models/confirm');
+let bdd = require('./models/account.js');
 let bdd_pic = require('./models/about_you');
-let bdd2 = require('./models/bdd_functions.js');
+let bdd2 = require('./models/interractions.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
 

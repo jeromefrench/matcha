@@ -181,34 +181,34 @@ app.use('/notifications', notifications);
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************
-const test_erreur = require('./test_tchat.js');
-app.use('/test_erreur', test_erreur);
-app.get('/test', (req, res) => {
-	console.log(req.session.flash);
-	if (req.session.test){
-		res.locals.error = req.session.test;
-		req.session.test = undefined;
-	}
-	// res.send("salut");
-	res.render('index', {test : 'Salut'});
-});
-app.post('/test', (req, res) => {
-	// console.log(req.body);
-	if (req.body.message == undefined || req.body.message == ""){
-		req.flash('error', "Vous n'avez pas poste de message");
-		req.session.test = "Il y a une erreur";
-		res.redirect('/test');  // pour rediriger vers une url
-		// res.render('index', {error: "Vous n'avez pas entrez de message",
-		// 					test: "salut"});
-	}
-	else {
-		var Message = require('./models/Message');
-		Message.create(req.body.message, function (){
-			req.flash('success', "Merci petit chat!");
-			res.redirect('/test');  // pour rediriger vers une url
-		})
-	}
-});
+// const test_erreur = require('./test_tchat.js');
+// app.use('/test_erreur', test_erreur);
+// app.get('/test', (req, res) => {
+// 	console.log(req.session.flash);
+// 	if (req.session.test){
+// 		res.locals.error = req.session.test;
+// 		req.session.test = undefined;
+// 	}
+// 	// res.send("salut");
+// 	res.render('index', {test : 'Salut'});
+// });
+// app.post('/test', (req, res) => {
+// 	// console.log(req.body);
+// 	if (req.body.message == undefined || req.body.message == ""){
+// 		req.flash('error', "Vous n'avez pas poste de message");
+// 		req.session.test = "Il y a une erreur";
+// 		res.redirect('/test');  // pour rediriger vers une url
+// 		// res.render('index', {error: "Vous n'avez pas entrez de message",
+// 		// 					test: "salut"});
+// 	}
+// 	else {
+// 		var Message = require('./models/Message');
+// 		Message.create(req.body.message, function (){
+// 			req.flash('success', "Merci petit chat!");
+// 			res.redirect('/test');  // pour rediriger vers une url
+// 		})
+// 	}
+// });
 //**************404************************************************************
 app.use(function(req, res, next){
 	res.setHeader('Content-Type', 'text/plain');

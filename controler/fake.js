@@ -1,4 +1,4 @@
-var fk = require('../models/fake.js');
+var fk = require('../models/interractions.js');
 const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {
