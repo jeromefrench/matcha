@@ -132,7 +132,7 @@ exports.recover_user_ = async function (login){
 exports.check_field_my_account = async function (old_login, field){
 	check_field = check_noempty(field);
 	check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
-	check_field['mail'] = check_mail_function(mail, check_mail);
+	check_field['mail'] = check_mail_function(field['mail'], "check_mail");
 	check_field['passwd'] = check_passwd_function(passwd, verif);
 	return (check_field);
 }

@@ -20,7 +20,7 @@ router.route('/').get(async (req, res) => {
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
 		user = await bdd1.recover_user(req.session.login);
 		result = await bdd.search(user[0], req.session.search);
-		if (result[0] == undefined){
+		if (result == undefined || result[0] == undefined){
 			res.render('research.ejs', {session: req.session});
 		}
 		else{

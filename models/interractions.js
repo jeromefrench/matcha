@@ -148,7 +148,11 @@ exports.addLikeVue = async function(id_user, countLike, nbVue){
 		sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 		todo = [id_user];
 		result = await db.query(sql, todo);
-		return (result[0].pop);
+		if (result && result[0]){
+			return (result[0].pop);
+		}
+		else
+			return null;
 	}
 }
 
@@ -199,6 +203,12 @@ exports.IdBlocked = async function(tab, id_user, id_block){
     }
 }
 
+exports.recover_user = async function  (login){
+	var sql = "SELECT *, `user`.`id` AS 'id_user' FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
+	var todo = [login];
+	results = await db.query(sql, todo);
+	return (results);
+}
 exports.IsBlocked = async function(user_log, user_block){
     id_log = await get_id_user(user_log);
     id_block = await get_id_user(user_block);
@@ -235,12 +245,6 @@ async function insert_message (content, date){
 	console.log("1 record inserted");
 }
 
-async function recover_user (login){
-	var sql = "SELECT *, `user`.`id` AS 'id_user' FROM `user` INNER JOIN `user_info` ON `user`.`id` = `user_info`.`id_user` WHERE `login` LIKE ?";
-	var todo = [login];
-	results = await db.query(sql, todo);
-	return (results);
-}
 
 async function insert_log (id_user){
 	var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
