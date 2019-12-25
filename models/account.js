@@ -440,6 +440,16 @@ async function get_id_user (login){
 	return(result[0].id);
 }
 
+exports.get_id_user = async function (login){
+	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+	var todo = [login];
+	result = await db.query(sql, todo);
+	return(result[0].id);
+}
+
+
+
+
 async function hellog(){
 	mon_login = await get_id_user("blabli");
 	console.log("hellog");
