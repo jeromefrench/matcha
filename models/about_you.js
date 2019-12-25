@@ -2,28 +2,6 @@
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
-// config = { host     : '192.168.99.100',
-// 	user     : 'root',
-// 	password : 'tiger',
-// 	port	: '3306',
-// 	database : 'docker' };
-
-// function makeConn(config){
-// 	const connection = mysql.createConnection( config );
-// 	return {
-// 		query( sql, args ) {
-// 			return util.promisify( connection.query )
-// 				.call( connection, sql, args );
-// 		},
-// 		close() {
-// 			return util.promisify( connection.end ).call( connection );
-// 		}
-// 	};
-// }
-
-
-// db = makeConn(config);
-
 exports.get_id_user = async function (login){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
@@ -38,17 +16,7 @@ async function get_id_user (login){
 	return (result[0].id);
 }
 
-
-
-
 //******************************GET about you***********************************
-// exports.get_info_user = async function (login){
-// 	id_login = await get_id_user(login);
-// 	var sql = "SELECT *, DATE_FORMAT(`birthday`, '%Y\\%m\\%d') as birth FROM `user_info` WHERE `id_user` = ?";
-// 	var todo = [id_login];
-// 	result = await db.query(sql, todo);
-// }
-
 exports.get_photo = async function (login){
 	id_login = await get_id_user(login);
 	var sql = "SELECT * FROM `photos` WHERE `id_user` = ?";
@@ -219,7 +187,7 @@ exports.delPic = async function (path){
 	var sql = "	DELETE FROM `photo` WHERE `path_photo` LIKE ?";
 	var todo = [path];
 	result = await db.query(sql, todo);
-	if (error) throw error;
+	return "done";
 }
 
 exports.profileToZero = async function (id_user){
@@ -227,17 +195,13 @@ exports.profileToZero = async function (id_user){
 	var sql = "UPDATE `photo` SET `profile`= 0 WHERE `id_user` = ?";
 	var todo = [id_user];
 	result = await db.query(sql, todo);
-	if (error) throw error;
 	return ("done");
 }
 
 exports.profileToOne = async function (path){
 	var sql = "UPDATE `photo` SET `profile`= 1 WHERE `path_photo` LIKE ?";
-	// console.log("finale path");
-	// console.log(path);
 	var todo = [path];
 	result = await db.query(sql, todo);
-	if (error) throw error;
 	return ("done");
 }
 
@@ -245,6 +209,13 @@ exports.isProfile = async function (path){
 	var sql = "SELECT `profile` FROM `photo` WHERE `path_photo` LIKE ?";
 	var todo = [path];
 	result = await db.query(sql, todo);
-	if (error) throw error;
 	return (result);
+}
+
+exports.get_completed = async function (login){
+	id_user = await get_id_user(login);
+	var sql = "SELECT `completed` FROM `user_info` WHERE `id_user` = ?";
+	var todo = [id_user];
+	result = await db.query(sql, todo);
+	return (result[0]);
 }

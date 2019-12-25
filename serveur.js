@@ -1,4 +1,4 @@
-const bdd1 = require('./models/bdd_functions.js')
+let bdd = require('./models/about_you.js');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 let session = require("express-session");
@@ -34,8 +34,7 @@ const research = require('./controler/research.js');
 const confirm = require('./controler/confirm.js');
 const sendpass = require('./controler/forgotten-passwd.js');
 const changepass = require('./controler/change-passwd.js');
-const delpic = require('./controler/delPic.js');
-const makeProfilePic = require('./controler/make_profile_pic.js');
+const photo = require('./controler/photo.js');
 const faker = require('./faker.js');
 const dashboard = require('./controler/dashboard.js');
 const chat = require('./controler/chat.js');
@@ -95,9 +94,9 @@ app.use(function (req, res, next) {
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
-config = { host     : 'localhost',
-			user     : 'newuser',
-			password : 'rootpasswd',
+config = { host     : '192.168.99.100',
+			user     : 'root',
+			password : 'tiger',
 			port	: '3306',
 			database : 'docker' };
 
@@ -131,20 +130,26 @@ app.use(function (req, res, next) {
 	}
 })
 
-app.use(function (req, res, next) {
+app.use(async function (req, res, next) {
 	console.log("URL");
 	console.log(req.url);
-	if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" ){
-		bdd1.get_completed(req.session.login,  (result) => {
-			console.log("RESULT");
-			console.log(result);
-			if (result && result['completed'] == 1){
-				next();
-			}else{
-				req.session.complete_message = true;
-				res.redirect('/about-you');
-			}
-		});
+	if (req.url != "/sign-in" &&
+		req.url != "/sign-up" &&
+		req.url != "/my-account" &&
+		req.url != "/about-you" &&
+		req.url != "/" &&
+		req.url != "/sign-out" &&
+		req.url.match(/^\/photo/)){
+
+		result = await bdd.get_completed(req.session.login);
+		console.log("RESULT");
+		console.log(result);
+		if (result && result['completed'] == 1){
+			next();
+		}else{
+			req.session.complete_message = true;
+			res.redirect('/about-you');
+		}
 	}
 	else {
 		next();
@@ -166,8 +171,8 @@ app.use('/about-you', aboutyou);
 app.use('/profile/', profile);
 app.use('/like-this-user', like);
 app.use('/research', research);
-app.use('/public/photo', delpic);
-app.use('/public/photo', makeProfilePic);
+app.use('/public/photo', photo);
+//app.use('/public/photo', makeProfilePic);
 app.use('/chat', chat);
 app.use('/dashboard', dashboard);
 app.use('/fake', fake);

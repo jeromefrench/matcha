@@ -1,4 +1,4 @@
-var mysql      = require('mysql');
+// var mysql      = require('mysql');
 
 // module.exports.connection = mysql.createConnection(
 // 	{
@@ -11,12 +11,12 @@ var mysql      = require('mysql');
 // );
 
 
-module.exports.connection = mysql.createConnection(
-	{
-	host     : 'localhost',
-	user     : 'newuser',
-	password : 'rootpasswd',
-	port	: '3306',
-	database : 'docker'
-	}
-);
+// module.exports.connection = mysql.createConnection(
+// 	{
+// 	host     : 'localhost',
+// 	user     : 'newuser',
+// 	password : 'rootpasswd',
+// 	port	: '3306',
+// 	database : 'docker'
+// 	}
+// );

@@ -25,16 +25,6 @@ exports.get_id_user = function (login, callback){
 }
 
 
-exports.get_completed = function (login, callback){
-	get_id_user(login, (id_user) => {
-		var sql = "SELECT `completed` FROM `user_info` WHERE `id_user` = ?";
-		var todo = [id_user];
-		conn.connection.query(sql, todo, (error, result) => {
-			if (error) throw error;
-			callback(result[0]);
-		});
-	})
-}
 
 exports.insert_message = function (content, date){
 	var sql = "INSERT INTO messages (content, createat) VALUES (?, ?)";
