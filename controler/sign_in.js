@@ -7,35 +7,32 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post( async (req, res) => {
-	console.log("hellog sign in");
 try {
-	var login = req.body.login;
-	var passwd = req.body.passwd;
-	check_login = await bdd.checkLoginSignIn(login);
-	console.log("1");
-	passwd_match = await bdd.isLoginPasswdMatch(login, passwd);
-	console.log("2");
-	req.session.ans['login'] = login;
-	console.log("3");
-	if (check_login != "ok"){
-	console.log("4");
-		req.session.ans['check_login'] = check_login;
+	var field = {};
+	var check_field = {};
+
+	field['login'] = req.body.login;
+	field['passwd'] = req.body.passwd;
+	check_field['login'] = await bdd.checkLoginSignIn(login);
+	check_field['passwd'] = await bdd.isLoginPasswdMatch(login, passwd);
+
+	if (check_field['login'] != "ok"){
+		req.session.field = field;
+		req.session.check_field = check_field;
 		res.redirect('/sign-in');
 	}
-	else if (passwd_match != "match"){
-	console.log("5");
-		req.session.ans['check_passwd'] = passwd_match;
+	else if (check_field['passwd'] != "match"){
+		req.session.field = field;
+		req.session.check_field = check_field;
 		res.redirect('/sign-in');
 	}
 	else{
-	console.log("6");
-		done = await bdd.connect_user(login, req);
+		var done = await bdd.connect_user(login, req);
 		req.session.ans['notification_general'] = "Successfully login"
 		res.redirect('/about-you');
 	}
 }
 catch (err){
-	console.log("une erreur");
 	console.log(err);
 }
 });

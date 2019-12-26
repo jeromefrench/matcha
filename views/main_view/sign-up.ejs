@@ -12,26 +12,26 @@
 					<label>Last name</label>
 				</div>
 				<div class="inline field">
-					<input type="text" name="lname" placeholder="Last name" <%- include('../check_field/val.ejs', {val: locals.ans['lname']}); %>required>
-					<% if (locals.ans['check_lname']) { %>
-						<%- include('../check_field/empty.ejs', {empty: locals.ans['check_lname']}); %>
+					<input type="text" name="lname" placeholder="Last name" <%- include('../check_field/val.ejs', {val: locals.field['lname']}); %>required>
+					<% if (locals.check_field['lname']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['lname']}); %>
 					<% } %>
 				</div>
 				<div class="field">
 					<label>First name</label>
 				</div>
 				<div class="inline field">
-					<input type="text" name="fname" placeholder="First name" <%- include('../check_field/val.ejs', {val: locals.ans['fname']}); %>required>
-					<% if (locals.ans['check_fname']) { %>
-						<%- include('../check_field/empty.ejs', {empty: locals.ans['check_fname']}); %>
+					<input type="text" name="fname" placeholder="First name" <%- include('../check_field/val.ejs', {val: locals.field['fname']}); %>required>
+					<% if (locals.check_field['fname']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['fname']}); %>
 					<% } %>
 				</div>
 				<div class="field">
 					<label>Email</label>
 				</div>
 				<div class="inline field">
-					<input type="email" name="mail" placeholder="Email" <%- include('../check_field/val.ejs', {val: locals.ans['mail']}); %>required>
-					<% if (locals.ans['check_mail']) { %>
+					<input type="email" name="mail" placeholder="Email" <%- include('../check_field/val.ejs', {val: locals.field['mail']}); %>required>
+					<% if (locals.check_field['mail']) { %>
 						<%- include('../check_field/check_mail.ejs', {mailexist: session.mailexist, empty: session.emailwrong}); %>
 					<% } %>
 				</div>
@@ -39,9 +39,9 @@
 					<label>Login</label>
 				</div>
 				<div class="inline field">
-					<input type="text" name="login" placeholder="Login" <%- include('../check_field/val.ejs', {val: locals.ans['login']}); %>required>
-					<% if (locals.ans['check_login']) { %>
-						<%- include('../check_field/check_login.ejs', {check_login: locals.ans['check_login']}); %>
+					<input type="text" name="login" placeholder="Login" <%- include('../check_field/val.ejs', {val: locals.field['login']}); %>required>
+					<% if (locals.check_field['login']) { %>
+						<%- include('../check_field/check_login.ejs', {check_login: locals.check_field['login']}); %>
 					<% } %>
 				</div>
 				<div class="field">
@@ -49,8 +49,8 @@
 				</div>
 				<div class="inline field">
 					<input type="password" name="passwd" placeholder="Password" required>
-						<% if (locals.ans['check_passwd']) { %>
-					<%- include('../check_field/check_passwd.ejs', {check_passwd: locals.ans['check_passwd']}); %>
+						<% if (locals.check_field['passwd']) { %>
+					<%- include('../check_field/check_passwd.ejs', {check_passwd: locals.check_field['passwd']}); %>
 						<% } %>
 				</div>
 				<div class="field">

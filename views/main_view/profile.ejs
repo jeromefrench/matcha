@@ -1,4 +1,4 @@
-<%- include('elements/header'); %>
+<%- include('../elements/header.ejs'); %>
 
 <div class="ui container">
 
@@ -8,12 +8,12 @@
 			<!-- #############################################################################3 -->
     		<div class="column">
 				<div class="ui raised  segment">
-					<%- include('elements/profile_pic', {pic: user.path_photo}); %>
+					<%- include('../elements/profile_pic', {pic: user.path_photo}); %>
 				</div>
 			</div>
 			<div class="ui raised segment">
       			<h3 class="ui header"></h3>
-				<%- include('elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like, does_it_like_me: user.does_it_like_me, match: user.match}); %>
+				<%- include('../elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like, does_it_like_me: user.does_it_like_me, match: user.match}); %>
 			</div>
 
 			<div class="ui raised segment">
@@ -35,7 +35,7 @@
 					<strong>Firstname:</strong> <%= user.fname %>   </br>
 					<strong>Lastname: </strong><%= user.lname %>   </br>
 					<strong>Location: </strong><%= user.city %>, <%= user.country %></br>
-					<strong>Popularity score: </strong><%- include('elements/popularite.ejs', {pop: session.pop}); %></br>
+					<strong>Popularity score: </strong><%- include('../elements/popularite.ejs', {pop: session.pop}); %></br>
 					<strong>Age: </strong><%= user.age %></br>
 				</p>
 			</div>
@@ -57,9 +57,9 @@
     	</div>
 	</div>
 	<div style="text-align: center; margin:20px;">
-	<%- include('elements/fake.ejs', {login: locals.login_profil, report: report}) %>
-	<%- include('elements/block.ejs', {login: locals.login_profil, block: user.block}) %>
+	<%- include('../elements/fake.ejs', {login: locals.login_profil, report: report}) %>
+	<%- include('../elements/block.ejs', {login: locals.login_profil, block: user.block}) %>
 	</div>
 </div>
 
-<%- include('elements/footer'); %>
+<%- include('../elements/footer.ejs'); %>

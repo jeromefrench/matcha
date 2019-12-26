@@ -1,4 +1,4 @@
-<% include elements/header %>
+<%- include('../elements/header.ejs'); %>
 
 <div class="ui container">
 
@@ -17,7 +17,7 @@
 	<div class="ui special cards centered">
 		<% if (locals.users && locals.users[0]){
 			locals.users.forEach(function(user) {  %>
-			<%- include('elements/profile_card', {user: user}) %>
+			<%- include('../elements/profile_card', {user: user}) %>
 		<% }); } else { console.log("pas de user"); }%>
 	</div>
 
@@ -42,4 +42,4 @@
 
 </script>
 
-<% include elements/footer %>
+<%- include('../elements/footer.ejs'); %>

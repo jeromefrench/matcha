@@ -1,20 +1,19 @@
 let bdd = require('../models/about_you.js');
 const router = require('express').Router();
 const opencage = require('opencage-api-client');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
 
 router.route('/').get(async (req, res) => {
 	res.locals.title = "About You";
 	res.locals.ans['user'] = await get_info_user(res, req.session.login);
-	console.log("suer GEEET");
-	console.log(res.locals.ans['user']);
-	res.render('about-you.ejs');
+	res.render('main_view/about-you.ejs');
 });
 
 router.route('/').post(async (req, res) => {
-	field = {};
-	check_field = {};
+try {
+	var field = {};
+	var check_field = {};
+	var done;
+
 	field['gender'] = req.body.gender;
 	field['orientation'] = req.body.orientation;
 	field['birthday'] = req.body.birthday;
@@ -24,46 +23,11 @@ router.route('/').post(async (req, res) => {
 	field['city'] = req.body.city;
 	field['zip_code'] = req.body.zipcode;
 
-	//console.log("req body");
-	//console.log(req.body);
-
-	////*****************************************************************gender
-	check_field['gender'] = help_noempty(field['gender']);
-	if (check_field == "ok" && field['gender'] != "male" && field['gender'] != "female" && field['gender'] != "other"){
-		check_field['gender'] = "wrong";
-	}
-	////*****************************************************************orientation
-	check_field['orientation'] = help_noempty(field['orientation']);
-	if (check_field == "ok" && field['orientation'] != "everyone" && field['orientation'] != "women" && field['orientation'] != "men"){
-		check_field['orientation'] = "wrong";
-	}
-	////*****************************************************************birthday
-	check_field['birthday'] = help_noempty(field['birthday']);
-	field['birthday'] = field['birthday'].split("/");
-	field['birthday'] = field['birthday'][2]+ "-"+ field['birthday'][0]+"-"+field['birthday'][1];
-	//faire une regex pour tester le format
-
-	////*****************************************************************bio
-	//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
-	if (field['bio'] != undefined && field['bio'] != ""){
-		check_field['bio'] = "ok";
-	}
-
-
-	////*****************************************************************interests
-	check_field['interests'] = help_noempty(field['interests']);
-	if (check_field == "ok" &&
-		field['interests'] != "voyage" &&
-		field['interests'] != "cuisine" &&
-		field['interests'] != "escalade" &&
-		field['interests'] != "equitation" &&
-		field['interests'] != "soleil" &&
-		field['interests'] != "sieste"){
-		check_field['interests'] = "wrong";
-	}
-	//*****************************************************************
-	//Localisation
-	//*****************************************************************
+	check_field['gender'] = check_gender(field['gender']);
+	check_field['orientation'] = check_orientaiton(field['orientation']);
+	check_field['birthday'] = check_birthday(field['birthday']);
+	check_field['bio'] = check_bio(field['bio']);
+	check_field['interests'] = check_interests(field['interests']);
 	if (req.body.submit_button == "Localise Me") {
 		req.session.ans['localise_me'] = true;
 	}
@@ -71,70 +35,130 @@ router.route('/').post(async (req, res) => {
 		check_field['country'] = help_noempty(field['country']);
 		check_field['city'] = help_noempty(field['city']);
 		check_field['zip_code'] = help_noempty(field['zip_code']);
-		if (check_field['country'] == "ok" && check_field['city'] == "ok" && check_field['zip_code'] == "ok"){
-			field = await searchAdresse(field);
-			if (field['localisation'] == "error"){
-				check_field['country'] = "wrong";
-				check_field['city'] = "wrong";
-				check_field['zip_code'] = "wrong";
-				check_field['latitude'] = "wrong";
-				check_field['longitude'] = "wrong";
-			}
-			else
-			{
-				check_field['country'] = "ok";
-				check_field['city'] = "ok";
-				check_field['zip_code'] = "ok";
-				check_field['latitude'] = "ok";
-				check_field['longitude'] = "ok";
-			}
-		}
+		check_field['localisation'] = check_localisation(check_field);
+	}
+	if (check_field['localisation'] == "ok"){
+		field = await searchAdresse(field);
+	}
+	if (field['localisation'] == "ok"){
+		check_field['longitude'] = "ok";
+		check_field['latitude'] = "ok";
+	}
+	else{
+		check_field['localisation'] == "error"
 	}
 	for (const property in check_field){
-		if(check_field[property] == "ok"){
+		if(check_field[property] == "ok" && property != localisation){
 			done = await bdd.InfoUser(req.session.login, property, field[property]);
 		}
 	}
-
-	//*****************************************************************
-	//PICTURE
-	//*****************************************************************
-	number = await bdd.count_photo(id_user);
-	if (req.files == undefined || req.files.photo == undefined || req.files.photo.size == 0){
-		check_field['pic'] = "no_pic_uploaded";
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("no pic uploaded");
+	var number = await bdd.count_photo(id_user);
+	check_field['picture'] = check_picture(req.files, req.session.login, number);
+	if (check_field['picture'] == "ok"){
+		done = await savePic(req.files, req.session.login, number);
 	}
-	else if (req.files.photo.mimetype != "image/jpeg"){
-		check_field['pic'] = "wrong_format";
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("wrong format");
-	}
-	else if (number > 5){
-		check_field['pic'] = "photo_exed_5";
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("plus than 5 ");
-	}
-	else{
-		console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		console.log("all good");
-		name = rootPath+"/public/photo/"+req.session.login+"/"+number;
-		req.files.photo.mv(name);
-		profile = 0;
-		if (number == 0){
-			profile = 1;
-		}
-		done = await bdd.savePic(id_user, "/public/photo/"+req.session.login+"/"+number, profile)
-		number++;
-	}
-
-	req.session.ans = {};
-	req.session.ans['user'] = field;
-	console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-	console.log(req.session.ans['user']);
+	req.sessions.check_field = check_field;
+	req.sessions.field = field;
 	res.redirect('/about-you');
+}
+catch (err){
+	console.log(err);
+}
 });
 
+
+
+function check_localisation(check_field){
+	if (check_field['country'] == "ok" &&
+		check_field['city'] == "ok" &&
+		check_field['zip_cod']e == "ok"){
+	}
+	return "ok";
+}
+
+
+//*****************************************************************
+//FUNCTION
+//*****************************************************************
+
+function check_gender(gender){
+	check_field = help_noempty(gender);
+	if (check_field == "ok" && gender != "male" && gender != "female" && gender != "other"){
+		check_field = "wrong";
+	}
+	return check_field;
+}
+
+function check_orientation(orientation){
+	check_field = help_noempty(orientation);
+	if (check_field == "ok" && orientation != "everyone" && orientation != "women" && orientation != "men"){
+		check_field = "wrong";
+	}
+	return check_field;
+}
+
+function check_birthday(birthday){
+	check_field = help_noempty(birthday);
+	birthday = birthday.split("/");
+	birthday = birthday[2]+ "-"+ birthday[0]+"-"+birthday[1];
+	//faire une regex pour tester le format
+	return check_field;
+}
+
+function check_bio(bio){
+	//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
+	if (bio != undefined && bio != ""){
+		check_field = "ok";
+	}
+	else{
+		check_field = "empty";
+	}
+	return check_field;
+}
+
+function check_interests(interests){
+	check_field = help_noempty(interests);
+	if (check_field == "ok" &&
+		interests != "voyage" &&
+		interests != "cuisine" &&
+		interests != "escalade" &&
+		interests != "equitation" &&
+		interests != "soleil" &&
+		interests != "sieste"){
+		check_field = "wrong";
+	}
+	return check_field;
+}
+
+
+
+
+
+
+
+async function savePic(files, login, number){
+	number++;
+	var profile = 0;
+	if (number == 0){
+		profile = 1;
+	}
+	name = rootPath+"/public/photo/"+login+"/"+number;
+	files.photo.mv(name);
+	done = await bdd.savePic(id_user, "/public/photo/"+login+"/"+number, profile)
+	return done;
+}
+
+function check_picture(files, login, number){
+	if (files == undefined || files.photo == undefined || files.photo.size == 0){
+		check_pic = "no_pic_uploaded";
+	}
+	else if (files.photo.mimetype != "image/jpeg"){
+		check_pic = "wrong_format";
+	}
+	else if (number > 5){
+		check_pic = "photo_exed_5";
+	}
+}
 
 async function get_info_user(res, login){
 	user = await bdd.get_info_user(login);
@@ -147,7 +171,6 @@ async function get_info_user(res, login){
 			user[property] = false;
 		}
 	}
-
 	if (user != undefined && user.birth != undefined && user.birth != false)
 	{
 		console.log("le user birth");
@@ -179,12 +202,12 @@ async function searchAdresse(field){
 		field['zip_code'] = place.components.postcode;
 		field['latitude'] = place.geometry.lat;
 		field['longitude'] = place.geometry.lng;
-		field['localisation'] = "ok";
+		check_field['localisation'] = "ok";
 	}
 	else {
-		field['localisation'] = "error";
+		check_field['localisation'] = "error";
 	}
-	return field;
+	return check_field;
 }
 
 function help_noempty(champs){
@@ -192,15 +215,5 @@ function help_noempty(champs){
 		return "empty";
 	return "ok";
 }
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

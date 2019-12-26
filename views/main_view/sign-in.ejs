@@ -12,9 +12,9 @@
 				<div class="inline field">
 					<div class="ui left icon input">
 						<i class="user icon"></i>
-						<input type="text" name="login" placeholder="Login" <%- include('../check_field/val.ejs', {val: locals.ans['login']}); %> required>
-						<% if (locals.ans['check_login']) { %>
-							<%- include('../check_field/check_login.ejs', {check_login: locals.ans['check_login']}); %>
+						<input type="text" name="login" placeholder="Login" <%- include('../check_field/val.ejs', {val: locals.field['login']}); %> required>
+						<% if (locals.check_field['login']) { %>
+							<%- include('../check_field/check_login.ejs', {check_login: locals.check_field['login']}); %>
 						<% } %>
 					</div>
 				</div>
@@ -25,8 +25,8 @@
 					<div class="ui left icon input">
 						<i class="lock icon"></i>
 						<input type="password" name="passwd" placeholder="Password" required>
-						<% if (locals.ans['check_passwd']) { %>
-							<%- include('../check_field/check_passwd.ejs', {check_passwd: locals.ans['check_passwd']}); %>
+						<% if (locals.check_field['passwd']) { %>
+							<%- include('../check_field/check_passwd.ejs', {check_passwd: locals.check_field['passwd']}); %>
 						<% } %>
 					</div>
 				</div>

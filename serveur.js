@@ -61,6 +61,16 @@ app.use(function (req, res, next) {
 		res.locals.token = req.session.token;
 	}
 
+
+	if (req.session && req.session.field){
+		res.locals.field = req.session.field;
+	}
+	if (req.session && req.session.check_field){
+		res.locals.check_field = req.session.check_field;
+	}
+
+
+
 	if (req.session && req.session.first_log == true){
 		req.session.first_log = false;
 		res.locals.first_log = true;

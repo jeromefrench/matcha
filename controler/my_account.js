@@ -14,39 +14,48 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-	field = {};
+try{
+	var field = {};
+	var check_field = {};
+
 	field['lname']  = req.body.lname;
 	field['fname']  = req.body.fname;
 	field['mail']  = req.body.mail;
 	field['login']  = req.body.login;
 	field['npasswd'] = req.body.passwd;
 	field['verif']  = req.body.verif;
+
 	check_field = await bdd.check_field_my_account(req.session.login, field);
-	check = "ok";
+
+	var check = "ok";
 	for (const property in check_field){
 		if(check_field[property] != "ok" && check_field[property] != "change passwd"){
 			check = "error";
 		}
 	}
 	if (check == "error"){
-		req.sessions.ans.check_field = check_field;
-		req.sessions.ans.field = field;
+		req.sessions.check_field = check_field;
+		req.sessions.field = field;
 		res.redirect('/my-account');
 	}
-	else if (check_passwd == "ok"){
-		done = await bdd.update_user(lname, fname, email, login, req.session.login);
+	else if (check_field['passwd'] == "ok"){
+		var done = await bdd.update_user(lname, fname, email, login, req.session.login);
 		req.session.login = login;
 		req.session.ans['notification_general'] = "Account information succesfully update";
 		res.redirect('/my-account');
 	}
-	else if (check_passwd == "change passwd"){
-		salt = await bcrypt.genSalt(saltRounds);
-		hash = await bcrypt.hash(passwd, salt);
+	else if (check_field['passwd'] == "change passwd"){
+		var salt = await bcrypt.genSalt(saltRounds);
+		var hash = await bcrypt.hash(passwd, salt);
 		update_user_and_passwd(field, hash, req.session.login);
 		req.session.login = login;
 		req.session.ans['notification_general'] = "Account information succesfully update";
 		res.redirect('/my-account');
 	}
+}
+catch (err){
+	console.log(err);
+}
 });
 
 module.exports = router;

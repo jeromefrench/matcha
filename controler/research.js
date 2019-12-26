@@ -15,13 +15,11 @@ router.route('/').get(async (req, res) => {
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 
-	itemsProcessed = 0;
-
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
-		user = await bdd1.recover_user(req.session.login);
+	 	user = await bdd1.recover_user(req.session.login);
 		result = await bdd.search(user[0], req.session.search);
 		if (result == undefined || result[0] == undefined){
-			res.render('research.ejs', {session: req.session});
+			res.render('main_view/research.ejs', {session: req.session});
 		}
 		else{
 			if (req.session.sortby == 'sortage'){
@@ -58,7 +56,7 @@ router.route('/').get(async (req, res) => {
 				req.session.previous = undefined;
 			}
 			res.locals.users = res.locals.users.slice(startIndex, endIndex);
-			res.render('research.ejs', {session: req.session});
+			res.render('main_view/research.ejs', {session: req.session});
 		}
 	}
 	else {
@@ -66,7 +64,7 @@ router.route('/').get(async (req, res) => {
 		req.session.page = page;
 		req.session.totalpage = page;
 		if (all_user == undefined || all_user[0] == undefined){
-			res.render('research.ejs', {session: req.session});
+			res.render('main_view/research.ejs', {session: req.session});
 		}else{
 			res.locals.users = all_user;
 			req.session.page = page;
@@ -95,7 +93,7 @@ router.route('/').get(async (req, res) => {
 				res.locals.users[i].age = -(birthdate.diff(moment(), 'years'));
 				i++;
 			});
-			res.render('research.ejs', {session: req.session});
+			res.render('main_view/research.ejs', {session: req.session});
 		}
 	}
 });
@@ -105,10 +103,14 @@ router.route('/').post((req, res) => {
 	var tab = req.body.age.match(/[0-9]{2}/g);  //regular expression pour bebe chat
 	age_debut = tab[0];
 	age_fin = tab[1];  //regular expression
+
 	tab = req.body.distance.match(/^[0-9]*/g);
 	distance = tab[0];  //regular expression
+
 	tab = req.body.inter.match(/^[0-9]*/g);
 	interet = tab[0];  //regular expression
+
+
 	tab = req.body.popularite.match(/^[0-5]/g);
 	popularite = tab[0];  //regular expression
 
@@ -124,9 +126,5 @@ router.route('/').post((req, res) => {
 	}
 	res.redirect('/research/?page=1');
 });
-
-
-
-
 
 module.exports = router;

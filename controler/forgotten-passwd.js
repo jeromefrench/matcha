@@ -7,25 +7,40 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-	var mail = req.body.mail;
-	result = await bdd.send_passwd(mail);
-	console.log("ici");
-	console.log(result);
-	if (result == 0){
-		req.session.ans['notification_general'] = "The email adresse is wrong";
+try {
+	var field = {};
+	var check_field = {};
+
+
+	field['mail'] = req.body.mail;
+	check_field['mail'] = await bdd.send_passwd(mail);
+
+
+	if (check_field['mail'] == 0){
+		req.sessions.check_field = check_field;
+		req.sessions.field = field;
+		//req.session.ans['notification_general'] = "The email adresse is wrong";
 		res.redirect('/forgotten-passwd');
 	}
-	else if (result == 2){
-		req.session.ans['notification_general'] = "You need to confirm your account first";
+	else if (check_field['mail'] == 2){
+		req.sessions.check_field = check_field;
+		req.sessions.field = field;
+		//req.session.ans['notification_general'] = "You need to confirm your account first";
 		res.redirect('/forgotten-passwd');
 	}
-	else if (result == "change_ok"){
-		req.session.ans['notification_general'] = "An email with a link has been sent";
+	else if (check_field['mail'] == "change_ok"){
+		req.sessions.check_field = check_field;
+		req.sessions.field = field;
+		//req.session.ans['notification_general'] = "An email with a link has been sent";
 		res.redirect('/forgotten-passwd');
 	}
 	else{
 		res.redirect('/forgotten-passwd');
 	}
+}
+catch (err){
+	console.log(err);
+}
 });
 
 module.exports = router;

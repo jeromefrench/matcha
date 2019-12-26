@@ -5,7 +5,6 @@ const router = require('express').Router();
 
 router.route('/:login').get((req, res) => {
 
-
 	console.log("chat part");
 
 

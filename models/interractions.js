@@ -1,40 +1,32 @@
 var dash = require('../models/dashboard.js');
 
 exports.add_visited_profile = async function (my_login, login_i_visit){
-	my_id = await get_id_user(my_login);
-	id_i_visit = await get_id_user(login_i_visit);
+	var my_id = await get_id_user(my_login);
+	var id_i_visit = await get_id_user(login_i_visit);
 	var sql = "SELECT * FROM `visited` WHERE `id_user` = ? AND `id_visited` = ? ";
 	var todo = [my_id, id_i_visit];
-	result = await db.query(sql, todo);
-	console.log("Result visited");
-	console.log(result);
+	var result = await db.query(sql, todo);
 	if (result[0] == undefined) {//on ajoute dans la base la visit
-		console.log(my_id);
-		console.log(id_i_visit);
-		var sql = "INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES (NULL, ?, ?)";
-		var todo = [my_id, id_i_visit];
+		sql = "INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES (NULL, ?, ?)";
+		todo = [my_id, id_i_visit];
 		result = await db.query(sql, todo);
 		return ("done");
 	}else {
-		//pas besoin
 		return ("done");
 	}
 }
 
 exports.get_user = async function (a){
-	results = await db.query('SELECT * FROM `user` ');
+	var results = await db.query('SELECT * FROM `user` ');
 	return (results);
 }
 
 exports.doesItLikeMe = async function (my_login, the_login_i_search){
-	my_id = await get_id_user(my_login);
-	id_i_like = await get_id_user(the_login_i_search);
-	//verifier si on a pas deja liker cette personne
-	// console.log("my id " + my_id);
-	// console.log("the id i like" + id_i_like);
+	var my_id = await get_id_user(my_login);
+	var id_i_like = await get_id_user(the_login_i_search);
 	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [id_i_like, my_id];
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 	if (result[0] == undefined) {
 		return (false);
 	}
@@ -44,14 +36,11 @@ exports.doesItLikeMe = async function (my_login, the_login_i_search){
 }
 
 exports.doILike = async function (my_login, the_login_i_search){
-	my_id = await get_id_user(my_login);
-	id_i_like = await get_id_user(the_login_i_search);
-	//verifier si on a pas deja liker cette personne
-	// console.log("my id " + my_id);
-	// console.log("the id i like" + id_i_like);
+	var my_id = await get_id_user(my_login);
+	var id_i_like = await get_id_user(the_login_i_search);
 	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [my_id, id_i_like];
-	result = db.query(sql, todo);
+	var result = db.query(sql, todo);
 	if (result[0] == undefined) {
 		return (false);
 	}
@@ -61,37 +50,36 @@ exports.doILike = async function (my_login, the_login_i_search){
 }
 
 exports.addLike = async function (my_login, the_login_i_like){
-	my_id = await get_id_user(my_login);
-	id_i_like = await get_id_user(the_login_i_like);
+	var my_id = await get_id_user(my_login);
+	var id_i_like = await get_id_user(the_login_i_like);
 	var sql = "INSERT INTO `like_table` (id_user, id_i_like) VALUES (?, ?)";
 	var todo = [my_id, id_i_like];
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 };
 
 exports.unLike = async function (my_login, the_login_i_like){
-	my_id = await get_id_user(my_login);
-	id_i_like = await get_id_user(the_login_i_like);
+	var my_id = await get_id_user(my_login);
+	var id_i_like = await get_id_user(the_login_i_like);
 	var sql = "DELETE FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [my_id, id_i_like];
-	result = await db.query(sql, todo);
-	console.log("infos removed");
+	var result = await db.query(sql, todo);
 };
 
 async function getVue (id_user){
 	var sql = "SELECT * FROM `vue_profile` WHERE `id_user` = ?";
 	var todo = [id_user];
-	profile = await db.query(sql, todo);
+	var profile = await db.query(sql, todo);
 	return (profile[0].vue);
 }
 
 exports.countVue = async function (login){
 	var sql = "SELECT * FROM `user` WHERE `login` = ?";
 	var todo = [login];
-	user = await db.query(sql, todo);
+	var user = await db.query(sql, todo);
 	var id_user = user[0].id;
-	sql = "SELECT COUNT(*) AS 'count' FROM `vue_profile` WHERE `id_user` = ?";
+	var sql = "SELECT COUNT(*) AS 'count' FROM `vue_profile` WHERE `id_user` = ?";
 	todo = [id_user];
-	countId = await db.query(sql, todo);
+	var countId = await db.query(sql, todo);
 	if (countId[0].count == 0){
 		sql = "INSERT INTO `vue_profile` (`id_user`) VALUES (?)";
 		todo = [id_user];
@@ -131,19 +119,14 @@ exports.countLike = async function (login){
 }
 
 exports.addLikeVue = async function(id_user, countLike, nbVue){
-		console.log("ici ci ic");
-		console.log(id_user);
 	var sql = "SELECT COUNT(*) AS 'count' FROM `popularite` WHERE `id_user` = ?";
 	var todo = [id_user];
 	var pop = Math.round((countLike / nbVue) * 5);
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 	if (result[0].count == 0){
 		sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
-		console.log("ici ci ic");
-		console.log(id_user);
 		todo = [id_user, countLike, nbVue, pop];
 		done = await db.query(sql, todo);
-		console.log("pop inserted");
 		sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 		todo = [id_user];
 		result = await db.query(sql, todo);
@@ -153,7 +136,6 @@ exports.addLikeVue = async function(id_user, countLike, nbVue){
 		sql = "UPDATE `popularite` SET `nb_like` = ? AND `nb_vue` = ? AND `pop` = ? WHERE `id_user` = ?";
 		todo = [countLike, nbVue, pop, id_user];
 		done = await db.query(sql, todo);
-		console.log('pop updated');
 		sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 		todo = [id_user];
 		result = await db.query(sql, todo);
@@ -166,9 +148,9 @@ exports.addLikeVue = async function(id_user, countLike, nbVue){
 }
 
 exports.updateMatch = async function(userLog, ismatchLog){
-	userId = await get_id_user(userLog);
-	ismatchId = await get_id_user(ismatchLog);
-	matches = await dash.get_user_my_match(userLog);
+	var userId = await get_id_user(userLog);
+	var ismatchId = await get_id_user(ismatchLog);
+	var matches = await dash.get_user_my_match(userLog);
 	var sql = "UPDATE `like_table` SET `match` = ? WHERE `id_user` = ? AND `id_i_like` = ?";
 	var find = matches.find(element => element.id == ismatchId);
 	if (find != undefined){
@@ -182,19 +164,19 @@ exports.updateMatch = async function(userLog, ismatchLog){
 }
 
 exports.wasMatch = async function(userLog, wasmatchLog){
-	userId = await get_id_user(userLog);
-	wasmatchId = await get_id_user(wasmatchLog);
+	var userId = await get_id_user(userLog);
+	var wasmatchId = await get_id_user(wasmatchLog);
 	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [userId, wasmatchId];
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 	return (result[0]);
 }
 
 //block
 
 exports.block_user = async function(user_log, user_block){
-	id_log = await get_id_user(user_log);
-	id_block = await get_id_user(user_block);
+	var id_log = await get_id_user(user_log);
+	var id_block = await get_id_user(user_block);
 	var sql = "INSERT INTO `block` (`id_user`, `id_block`) VALUES (?, ?)";
 	var todo = [id_log, id_block];
 	done = await db.query(sql, todo);
@@ -204,7 +186,7 @@ exports.block_user = async function(user_log, user_block){
 exports.IdBlocked = async function(tab, id_user, id_block){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `block` WHERE `id_user` = ? AND `id_block` = ?";
 	var todo = [id_user, id_block];
-	result = await db.query(sql, todoJ);
+	var result = await db.query(sql, todoJ);
 	if (result[0].count > 0){
 		tab = tab.filter(u => u.id_user !== id_block);
 		console.log("apres");
@@ -274,28 +256,25 @@ async function add_fakeVueLike (id_user){
 	var sql = "INSERT INTO `vue_profile` (`id_user`, `vue`) VALUES (?, ?)";
 	var todo = [id_user, vue];
 	done = await db.query(sql, todo);
-	console.log("fake vue inserted");
 	sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
 	todo = [id_user, like, vue, pop];
 	done = await db.query(sql, todo);
-	console.log("fake pop inserted");
 }
 
 exports.add_faker = async function(user_log, user_fake){
-	id_log = await get_id_user(user_log);
-	id_fake = await get_id_user(user_fake);
+	var id_log = await get_id_user(user_log);
+	var id_fake = await get_id_user(user_fake);
 	var sql = "INSERT INTO `report_fake` (`id_user`, `id_faker`) VALUES (?, ?)";
 	var todo = [id_log, id_fake];
 	done = db.query(sql, todo);
-	console.log('faker signalé');
 }
 
 exports.IsReport = async function(user_log, user_fake){
-	id_log = await get_id_user(user_log);
-	id_fake = await get_id_user(user_fake);
+	var id_log = await get_id_user(user_log);
+	var id_fake = await get_id_user(user_fake);
 	var sql = "SELECT COUNT(*) AS 'count' FROM `report_fake` WHERE `id_user` = ? AND `id_faker` = ?";
 	var todo = [id_log, id_fake];
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 	if (result[0].count > 0){
 		return (true);
 	}

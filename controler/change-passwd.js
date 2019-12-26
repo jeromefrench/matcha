@@ -4,36 +4,46 @@ const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/:login/:num').get((req, res) => {
-	res.locals.login = req.params.login;
-	res.locals.num = req.params.num;
+	res.locals.title = "Change Password";
 	res.render('main_view/change-passwd.ejs');
 });
 
 router.route('/:login/:num').post(async (req, res) => {
-	var login = req.params.login;
-	var num = req.params.num;
-	var npass = req.body.npass;
-	var verif = req.body.verif;
+try{
+	var field = {};
+	var check_field = {};
 
-	suspense = await bdd.IsLoginNumMatch(req.params.login, req.params.num, "user");
-	if (suspense == false){
-		req.session.ans['notification_general'] = "The login and num dont match";
+	field['login'] = req.params.login;
+	field['num'] = req.params.num;
+	field['npass'] = req.body.npass;
+	field['verif'] = req.body.verif;
+
+	check_field['passwd'] = await bdd.IsLoginNumMatch(field['login'], field['num'], "user");
+	if (check_field['passwd'] == false){
+		//req.session.ans['notification_general'] = "The login and num dont match";
+		req.sessions.check_field = check_field;
+		req.sessions.field = field;
 		res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
 	}
 	else{
-		check_passwd = bdd.IsFieldOk(npass, verif);
-		if (check_passwd != "ok"){
-			req.session.ans['check_passwd'] = check_passwd;
+		check_field['passwd'] = bdd.IsFieldOk(npass, verif);
+		if (check_fiel['passwd'] != "ok"){
+			req.sessions.check_field = check_field;
+			req.sessions.field = field;
 			res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
 		}
 		else{
-			salt = await bcrypt.genSalt(saltRounds);
-			hash = await bcrypt.hash(npass, salt);
+			var salt = await bcrypt.genSalt(saltRounds);
+			var hash = await bcrypt.hash(npass, salt);
 			bdd.changePass(login, hash);
 			req.session.ans['notification_general'] = "Your password has been change you can log in";
 			res.redirect('/sign-in');
-			}
 		}
+	}
+}
+catch (err){
+	console.log(err);
+}
 });
 
 module.exports = router;

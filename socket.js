@@ -3,26 +3,25 @@ var bdd = require('./models/account.js');
 var like = require('./models/interractions.js');
 
 async function isBlock(userLog, isblockLog){
-	userId = await bdd.get_id_user(userLog);
-	isblockId = await bdd.get_id_user(isblockLog);
+	var userId = await bdd.get_id_user(userLog);
+	var isblockId = await bdd.get_id_user(isblockLog);
 	var sql = "SELECT COUNT(*) AS 'count' FROM `block` WHERE `id_user` = ? AND `id_block` = ?";
 	var todo = [userId, isblockId];
-	result = await db.query(sql, todo);
+	var result = await db.query(sql, todo);
 	return (result[0].count);
 }
 
 async function isMatch(userLog, ismatchLog){
-	userId = await bdd.get_id_user(userLog);
-	ismatchId  = await bdd.get_id_user(ismatchLog);
+	var userId = await bdd.get_id_user(userLog);
+	var ismatchId  = await bdd.get_id_user(ismatchLog);
 	var sql = "SELECT * FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
 	var todo = [userId, userId];
-	result = await conn.connection.query(sql, todo);
+	var result = await db.query(sql, todo);
 	var find = result.find(element => element.id_user == ismatchId);
 	if (find == undefined){
 		return (false);
 	}
 	else{
-		console.log("find = " + find);
 		return (true);
 	}
 	// var sql = "SELECT COUNT(*) AS 'count' FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
