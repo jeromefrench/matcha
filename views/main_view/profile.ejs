@@ -2,64 +2,64 @@
 
 <div class="ui container">
 
-	<h1 class="ui header">You're on <%= user.login %>'s profile</h1>
-	<div class="ui two column centered grid">
-  		<div class="column right aligned">
-			<!-- #############################################################################3 -->
-    		<div class="column">
-				<div class="ui raised  segment">
-					<%- include('../elements/profile_pic', {pic: user.path_photo}); %>
-				</div>
-			</div>
-			<div class="ui raised segment">
-      			<h3 class="ui header"></h3>
-				<%- include('../elements/like_unlike_button', {login: locals.login_profil, like: user.do_i_like, does_it_like_me: user.does_it_like_me, match: user.match}); %>
-			</div>
-
-			<div class="ui raised segment">
-				<h3 class="ui header">Connection log</h3>
-				<% if (user.last_visit == 'online') {%>
-					<p><i class="circle icon" style="color:green"></i> <%= user.login%> is online</p>
-				<%}else{%>
-				<p><i class="circle icon" style="color:red"></i> Last seen : <%= user.last_visit %></p>
-				<%}%>
-			</div>
-
-  		</div>
-    	<div class="column">
-			<!-- #############################################################################3 -->
-			<div class="ui raised segment">
-      			<h3 class="ui header">Information</h3>
-				<p>
-					<strong>Gender:</strong> <i <% if (user.gender == 'female') {%>class="venus icon" style="width:15px; height:15px; color:#db12a9;"<% }else if (user.gender == 'male'){ %>class="mars icon" style="width:15px; height: 15px; color:blue;"<%} else {%>class="transgender icon" style="width:15px; height:15px; color: purple;"<%}%>></i></br>
-					<strong>Firstname:</strong> <%= user.fname %>   </br>
-					<strong>Lastname: </strong><%= user.lname %>   </br>
-					<strong>Location: </strong><%= user.city %>, <%= user.country %></br>
-					<strong>Popularity score: </strong><%- include('../elements/popularite.ejs', {pop: session.pop}); %></br>
-					<strong>Age: </strong><%= user.age %></br>
-				</p>
-			</div>
-			<div class="ui raised segment">
-      			<h3 class="ui header">Biographie</h3>
-				<p>
-					<%= user.bio %>
-				</p>
-			</div>
-			<div class="ui raised segment">
-      			<h3 class="ui header">Interest tag</h3>
-					<% arrayInter = user.interests.split(",");
-						arrayInter.forEach(function(inter){ %>
-				<p style="display: inline-block;">
-								<label class="ui tag label"><%= inter %></label>
-				</p>
-					<% }) %>
-			</div>
-    	</div>
-	</div>
-	<div style="text-align: center; margin:20px;">
-	<%- include('../elements/fake.ejs', {login: locals.login_profil, report: report}) %>
-	<%- include('../elements/block.ejs', {login: locals.login_profil, block: user.block}) %>
-	</div>
+<h1 class="ui header">You're on <%= user.login %>'s profile</h1>
+<div class="ui two column centered grid">
+<div class="column right aligned">
+<!-- #############################################################################3 -->
+<div class="column">
+<div class="ui raised  segment">
+<%- include('../elements/profile_pic', {pic: locals.user.path_photo}); %>
+</div>
+</div>
+<div class="ui raised segment">
+<h3 class="ui header"></h3>
+<%- include('../elements/like_unlike_button', {login: locals.field['profil'], like: locals.field['do_i_like'], does_it_like_me: locals.field['does_it_like_me'], match: locals.field['match']}); %>
 </div>
 
-<%- include('../elements/footer.ejs'); %>
+<div class="ui raised segment">
+<h3 class="ui header">Connection log</h3>
+<% if (user.last_visit == 'online') {%>
+	<p><i class="circle icon" style="color:green"></i> <%= user.login%> is online</p>
+		<%}else{%>
+			<p><i class="circle icon" style="color:red"></i> Last seen : <%= user.last_visit %></p>
+				<%}%>
+				</div>
+
+				</div>
+				<div class="column">
+				<!-- #############################################################################3 -->
+				<div class="ui raised segment">
+				<h3 class="ui header">Information</h3>
+				<p>
+				<strong>Gender:</strong> <i <% if (user.gender == 'female') {%>class="venus icon" style="width:15px; height:15px; color:#db12a9;"<% }else if (user.gender == 'male'){ %>class="mars icon" style="width:15px; height: 15px; color:blue;"<%} else {%>class="transgender icon" style="width:15px; height:15px; color: purple;"<%}%>></i></br>
+				<strong>Firstname:</strong> <%= user.fname %>   </br>
+				<strong>Lastname: </strong><%= user.lname %>   </br>
+				<strong>Location: </strong><%= user.city %>, <%= user.country %></br>
+				<strong>Popularity score: </strong><%- include('../elements/popularite.ejs', {pop: locals.field['pop']}); %></br>
+				<strong>Age: </strong><%= user.age %></br>
+				</p>
+				</div>
+				<div class="ui raised segment">
+				<h3 class="ui header">Biographie</h3>
+				<p>
+				<%= user.bio %>
+				</p>
+				</div>
+				<div class="ui raised segment">
+				<h3 class="ui header">Interest tag</h3>
+				<% arrayInter = user.interests.split(",");
+				arrayInter.forEach(function(inter){ %>
+						<p style="display: inline-block;">
+						<label class="ui tag label"><%= inter %></label>
+						</p>
+						<% }) %>
+				</div>
+				</div>
+				</div>
+				<div style="text-align: center; margin:20px;">
+				<%- include('../elements/fake.ejs', {login: locals.field['profil'], report: locals.field['report']}) %>
+				<%- include('../elements/block.ejs', {login: locals.field['profil'], block: locals.field['block']}) %>
+				</div>
+				</div>
+
+				<%- include('../elements/footer.ejs'); %>

@@ -71,7 +71,7 @@ catch (err){
 function check_localisation(check_field){
 	if (check_field['country'] == "ok" &&
 		check_field['city'] == "ok" &&
-		check_field['zip_cod']e == "ok"){
+		check_field['zip_code'] == "ok"){
 	}
 	return "ok";
 }

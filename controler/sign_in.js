@@ -13,13 +13,13 @@ try {
 
 	field['login'] = req.body.login;
 	field['passwd'] = req.body.passwd;
-	check_field['login'] = await bdd.checkLoginSignIn(login);
-	check_field['passwd'] = await bdd.isLoginPasswdMatch(login, passwd);
+	check_field['login'] = await bdd.checkLoginSignIn(field['login']);
+	check_field['passwd'] = await bdd.isLoginPasswdMatch(field['login'], field['passwd']);
 
 	if (check_field['login'] != "ok"){
 		req.session.field = field;
 		req.session.check_field = check_field;
-		res.redirect('/sign-in');
+		res .redirect('/sign-in');
 	}
 	else if (check_field['passwd'] != "match"){
 		req.session.field = field;
@@ -27,7 +27,7 @@ try {
 		res.redirect('/sign-in');
 	}
 	else{
-		var done = await bdd.connect_user(login, req);
+		var done = await bdd.connect_user(field['login'], req);
 		req.session.ans['notification_general'] = "Successfully login"
 		res.redirect('/about-you');
 	}

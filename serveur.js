@@ -65,8 +65,15 @@ app.use(function (req, res, next) {
 	if (req.session && req.session.field){
 		res.locals.field = req.session.field;
 	}
+	else {
+		res.locals.field = {};
+	}
+
 	if (req.session && req.session.check_field){
 		res.locals.check_field = req.session.check_field;
+	}
+	else {
+		res.locals.check_field = { };
 	}
 
 
@@ -104,9 +111,16 @@ app.use(function (req, res, next) {
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
-config = { host     : '192.168.99.100',
-			user     : 'root',
-			password : 'tiger',
+// config = { host     : '192.168.99.100',
+// 			user     : 'root',
+// 			password : 'tiger',
+// 			port	: '3306',
+// 			database : 'docker' };
+//
+
+config = { host     : 'localhost',
+			user     : 'newuser',
+			password : 'rootpasswd',
 			port	: '3306',
 			database : 'docker' };
 
