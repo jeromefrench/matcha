@@ -40,7 +40,11 @@ exports.doILike = async function (my_login, the_login_i_search){
 	var id_i_like = await get_id_user(the_login_i_search);
 	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [my_id, id_i_like];
-	var result = db.query(sql, todo);
+	var result = await db.query(sql, todo);
+	console.log("dans la bdd")
+	console.log(my_id);
+	console.log(id_i_like);
+	console.log(result);
 	if (result[0] == undefined) {
 		return (false);
 	}
@@ -147,30 +151,7 @@ exports.addLikeVue = async function(id_user, countLike, nbVue){
 	}
 }
 
-exports.updateMatch = async function(userLog, ismatchLog){
-	var userId = await get_id_user(userLog);
-	var ismatchId = await get_id_user(ismatchLog);
-	var matches = await dash.get_user_my_match(userLog);
-	var sql = "UPDATE `like_table` SET `match` = ? WHERE `id_user` = ? AND `id_i_like` = ?";
-	var find = matches.find(element => element.id == ismatchId);
-	if (find != undefined){
-		var todo = [1, userId, ismatchId];
-	}
-	else {
-		var todo = [0, userId, ismatchId];
-	}
-	done = await db.query(sql, todo);
-	console.log("match on like table UPDATED");
-}
 
-exports.wasMatch = async function(userLog, wasmatchLog){
-	var userId = await get_id_user(userLog);
-	var wasmatchId = await get_id_user(wasmatchLog);
-	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
-	var todo = [userId, wasmatchId];
-	var result = await db.query(sql, todo);
-	return (result[0]);
-}
 
 //block
 
@@ -282,3 +263,22 @@ exports.IsReport = async function(user_log, user_fake){
 		return (false);
 	}
 }
+
+
+
+exports.updateMatch = async function(userLog, ismatchLog){
+	var userId = await get_id_user(userLog);
+	var ismatchId = await get_id_user(ismatchLog);
+	var matches = await dash.get_user_my_match(userLog);
+	var sql = "UPDATE `like_table` SET `match` = ? WHERE `id_user` = ? AND `id_i_like` = ?";
+	var find = matches.find(element => element.id == ismatchId);
+	if (find != undefined){
+		var todo = [1, userId, ismatchId];
+	}
+	else {
+		var todo = [0, userId, ismatchId];
+	}
+	done = await db.query(sql, todo);
+	console.log("match on like table UPDATED");
+}
+

@@ -2,7 +2,6 @@ let bdd = require('../models/interractions.js');
 const router = require('express').Router();
 var bdd_notif = require('../models/notifications.js');
 
-//router.route('/:login').get((req, res) => {
 router.route('/:login').post(async (req, res) => {
 	my_login = req.session.login;
 	the_login_i_like = req.params.login;

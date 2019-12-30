@@ -86,7 +86,7 @@
 				});
 				<% if (locals.title == "Profile"){ %>
 					socket.emit('vue_profile', {
-						room: '<%= locals.login_profil %>'
+						room: '<%= locals.field['profil'] %>'
 					});
 				<%}%>
 			});

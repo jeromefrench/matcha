@@ -76,7 +76,7 @@
 																				console.log(answer);
 																				socket.emit('like', {
 like: 0,
-room: '<%= locals.login_profil %>'
+room: '<%= login %>'
 });
 																				})
 } else {
@@ -98,7 +98,7 @@ room: '<%= locals.login_profil %>'
 				console.log(answer);
 				socket.emit('like', {
 like: 1,
-room: '<%= locals.login_profil %>'
+room: '<%= login %>'
 });
 				})
 }
