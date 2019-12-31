@@ -7,7 +7,6 @@ router.route('/').get(async (req, res) => {
 	if (res.locals.ans.check_field == undefined){
 		res.locals.ans.check_field = false;
 	}
-
 	res.locals.title = "My Account";
 	res.locals.user = await bdd.recover_user_(req.session.login);
 	res.render('main_view/my-account.ejs');
@@ -17,16 +16,13 @@ router.route('/').post(async (req, res) => {
 try{
 	var field = {};
 	var check_field = {};
-
 	field['lname']  = req.body.lname;
 	field['fname']  = req.body.fname;
 	field['mail']  = req.body.mail;
 	field['login']  = req.body.login;
 	field['npasswd'] = req.body.passwd;
 	field['verif']  = req.body.verif;
-
 	check_field = await bdd.check_field_my_account(req.session.login, field);
-
 	var check = "ok";
 	for (const property in check_field){
 		if(check_field[property] != "ok" && check_field[property] != "change passwd"){

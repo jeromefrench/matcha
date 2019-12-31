@@ -12,14 +12,12 @@ router.route('/').post(async (req, res) => {
 try {
 	var field = {};
 	var check_field = {};
-
 	field['lname']  = req.body.lname;
 	field['fname']  = req.body.fname;
 	field['mail']  = req.body.mail;
 	field['login']  = req.body.login;
 	field['passwd'] = req.body.passwd;
 	field['verif']  = req.body.verif;
-
 	check_field = await bdd.check_field_sign_up(field);
 	var check = "ok";
 	for (const property in check_field){

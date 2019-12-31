@@ -10,12 +10,8 @@ router.route('/').post(async (req, res) => {
 try {
 	var field = {};
 	var check_field = {};
-
-
 	field['mail'] = req.body.mail;
 	check_field['mail'] = await bdd.send_passwd(mail);
-
-
 	if (check_field['mail'] == 0){
 		req.sessions.check_field = check_field;
 		req.sessions.field = field;

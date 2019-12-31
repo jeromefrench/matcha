@@ -13,7 +13,6 @@ try {
 	var field = {};
 	var check_field = {};
 	var done;
-
 	field['gender'] = req.body.gender;
 	field['orientation'] = req.body.orientation;
 	field['birthday'] = req.body.birthday;
@@ -22,7 +21,6 @@ try {
 	field['country'] = req.body.country;
 	field['city'] = req.body.city;
 	field['zip_code'] = req.body.zipcode;
-
 	check_field['gender'] = check_gender(field['gender']);
 	check_field['orientation'] = check_orientaiton(field['orientation']);
 	check_field['birthday'] = check_birthday(field['birthday']);
@@ -39,13 +37,13 @@ try {
 	}
 	if (check_field['localisation'] == "ok"){
 		field = await searchAdresse(field);
-	}
-	if (field['localisation'] == "ok"){
-		check_field['longitude'] = "ok";
-		check_field['latitude'] = "ok";
-	}
-	else{
-		check_field['localisation'] == "error"
+		if (field['localisation'] == "ok"){
+			check_field['longitude'] = "ok";
+			check_field['latitude'] = "ok";
+		}
+		else{
+			check_field['localisation'] == "error"
+		}
 	}
 	for (const property in check_field){
 		if(check_field[property] == "ok" && property != localisation){
@@ -67,7 +65,6 @@ catch (err){
 });
 
 
-
 function check_localisation(check_field){
 	if (check_field['country'] == "ok" &&
 		check_field['city'] == "ok" &&
@@ -75,11 +72,6 @@ function check_localisation(check_field){
 	}
 	return "ok";
 }
-
-
-//*****************************************************************
-//FUNCTION
-//*****************************************************************
 
 function check_gender(gender){
 	check_field = help_noempty(gender);
@@ -129,12 +121,6 @@ function check_interests(interests){
 	}
 	return check_field;
 }
-
-
-
-
-
-
 
 async function savePic(files, login, number){
 	number++;

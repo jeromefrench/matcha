@@ -12,12 +12,10 @@ router.route('/:login/:num').post(async (req, res) => {
 try{
 	var field = {};
 	var check_field = {};
-
 	field['login'] = req.params.login;
 	field['num'] = req.params.num;
 	field['npass'] = req.body.npass;
 	field['verif'] = req.body.verif;
-
 	check_field['passwd'] = await bdd.IsLoginNumMatch(field['login'], field['num'], "user");
 	if (check_field['passwd'] == false){
 		//req.session.ans['notification_general'] = "The login and num dont match";
@@ -36,7 +34,7 @@ try{
 			var salt = await bcrypt.genSalt(saltRounds);
 			var hash = await bcrypt.hash(npass, salt);
 			bdd.changePass(login, hash);
-			req.session.ans['notification_general'] = "Your password has been change you can log in";
+			req.session.ans['notification_general'] = "Your password has been change you can sign in";
 			res.redirect('/sign-in');
 		}
 	}
