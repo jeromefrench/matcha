@@ -1,22 +1,11 @@
-<% if (mailexist == 1){ %>
+<% if (mail == "mail_already_taken"){ %>
     <div class="ui left pointing red basic label">
-        Mail already exists, please <a href="/sign-in">sign in</a>.
+        Mail already exists</a>.
     </div>
 <% } %>
 
-<% if (mailexist == 2){ %>
-    <div class="ui left pointing red basic label">
-        You need to confirm your account. Please check your mailbox.
-    </div>
-<% } %>
 
-<% if (mailexist == 3){ %>
-    <div class="ui left pointing red basic label">
-        This email address doesn't exist.
-    </div>
-<% } %>
-
-<% if (empty == 1){ %>
+<% if (mail == "empty"){ %>
     <div class="ui left pointing red basic label">
         Please fill in this field correctly.
     </div>

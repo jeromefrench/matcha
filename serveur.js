@@ -41,6 +41,14 @@ const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
 const notifications = require('./controler/notifications.js');
+
+//****************************************************
+//*************test***********************************
+//****************************************************
+const test = require('./views/test_dir/test.js');
+
+
+
 users = [];
 bell = 0;
 
@@ -111,18 +119,18 @@ app.use(function (req, res, next) {
 const util = require( 'util' );
 const mysql = require( 'mysql' );
 
-// config = { host     : '192.168.99.100',
-// 			user     : 'root',
-// 			password : 'tiger',
+ config = { host     : '192.168.99.100',
+ 			user     : 'root',
+ 			password : 'tiger',
+ 			port	: '3306',
+ 			database : 'docker' };
+
+
+// config = { host     : 'localhost',
+// 			user     : 'newuser',
+// 			password : 'rootpasswd',
 // 			port	: '3306',
 // 			database : 'docker' };
-//
-
-config = { host     : 'localhost',
-			user     : 'newuser',
-			password : 'rootpasswd',
-			port	: '3306',
-			database : 'docker' };
 
 function makeConn(config){
   const connection = mysql.createConnection( config );
@@ -202,6 +210,20 @@ app.use('/dashboard', dashboard);
 app.use('/fake', fake);
 app.use('/block', block);
 app.use('/notifications', notifications);
+
+
+
+
+
+
+
+
+app.use('/test', test);
+
+
+
+
+
 //*****************************************************************************
 //****************************ROUTES*******************************************
 //*****************************************************************************

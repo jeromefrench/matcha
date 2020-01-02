@@ -35,7 +35,7 @@ try {
 		var hash = await bcrypt.hash(field['passwd'], salt);
 		bdd.insert_user(field, hash);
 		req.session.ans['notification_general'] = "Please confirm your account on your email"
-		res.redirect('/sign-up');
+		res.redirect('/sign-in');
 	}
 }
 catch (err){

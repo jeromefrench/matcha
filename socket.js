@@ -2,13 +2,24 @@ const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 
 
+// var connection = mysql.createConnection({
+// 	host     : 'localhost',
+// 	user     : 'newuser',
+// 	password : 'rootpasswd',
+// 	port	: '3306',
+// 	database : 'docker'
+// });
+
+
 var connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'newuser',
-	password : 'rootpasswd',
+	host     : '192.168.99.100',
+	user     : 'root',
+	password : 'tiger',
 	port	: '3306',
 	database : 'docker'
 });
+
+
 
 
 function get_id_user (login, callback){

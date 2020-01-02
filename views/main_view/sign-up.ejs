@@ -32,7 +32,7 @@
 				<div class="inline field">
 					<input type="email" name="mail" placeholder="Email" <%- include('../check_field/val.ejs', {val: locals.field['mail']}); %>required>
 					<% if (locals.check_field['mail']) { %>
-						<%- include('../check_field/check_mail.ejs', {mailexist: session.mailexist, empty: session.emailwrong}); %>
+						<%- include('../check_field/check_mail.ejs', {mail: locals.check_field['mail']}); %>
 					<% } %>
 				</div>
 				<div class="field">

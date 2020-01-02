@@ -3,3 +3,35 @@
         Please fill in this field correctly.
     </div>
 <% } %>
+
+
+<% if (empty == "wrong"){ %>
+    <div class="ui left pointing red basic label">
+        Wrong value, Please fill in this field correctly.
+    </div>
+<% } %>
+
+
+
+
+
+
+<% if (empty == "no_pic_uploaded"){ %>
+    <div class="ui left pointing red basic label">
+        Please upload at least one picture.
+    </div>
+<% } %>
+
+
+
+<% if (empty == "wrong_format"){ %>
+    <div class="ui left pointing red basic label">
+        Please upload a JPG file.
+    </div>
+<% } %>
+
+<% if (empty == "photo_exed_5"){ %>
+    <div class="ui left pointing red basic label">
+        5 pictures maximum allowed.
+    </div>
+<% } %>

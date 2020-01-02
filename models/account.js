@@ -294,9 +294,6 @@ async function check_login_function(login, check_login, callback){
 async function check_mail(mail){
 	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 	var todo = [mail];
-	result = await db.query(sql, todo);
-	sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
-	todo = [mail];
 	result1 = await db.query(sql, todo);
 	if (result[0].count == 0){
 		return (0);
@@ -460,11 +457,23 @@ async function hellog(){
 //hellog();
 
 async function check_mail_function(mail, check_mail){
+	console.log("on check le mail");
 	if (check_mail == "empty"){
 		return ("empty");
 	}
 	else{
-		return ("ok");
+			console.log("mail already");
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+		var todo = [mail];
+		result1 = await db.query(sql, todo);
+		console.log(result1);
+		if (result1[0].count != 0){
+			console.log("mail already");
+			return ("mail_already_taken");
+		}
+		else{
+			return ("ok");
+		}
 	}
 }
 

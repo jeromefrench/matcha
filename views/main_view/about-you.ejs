@@ -25,6 +25,9 @@
 							<option <% if (locals.ans['user'] && locals.ans['user'].gender == "female") {%> <%= selected="selected"%> <%}%> value="female">Female</option>
 							<option <% if (locals.ans['user'] && locals.ans['user'].gender == "other") {%> <%= selected="selected"%> <%}%> value="other">Other</option>
 						</select>
+						<% if (locals.check_field['gender']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['gender']}); %>
+						<% } %>
 					</div>
 				</div>
 
@@ -37,6 +40,9 @@
 							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
 							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "everyone" || locals.ans['user'] == undefined)  {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
 						</select>
+						<% if (locals.check_field['orientation']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['orientation']}); %>
+						<% } %>
 					</div>
 				</div>
 
@@ -45,6 +51,9 @@
 					<div class="field"> <label>Birthday date</label> </div>
 					<div class="ui input">
 						<input type="text" id="datepicker" name="birthday" <%if (locals.ans['user'] && locals.ans['user'].birthday) { %>  value="<%= locals.ans['user'].birthday  %>"<%}%> >
+						<% if (locals.check_field['birthday']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['birthday']}); %>
+						<% } %>
 					</div>
 				</div>
 
@@ -62,6 +71,9 @@
 				<!-- ***********************************Biographie ********************************************************** -->
 				<div class="field"> <label>Biographie</label> </div>
 				<textarea style="height:80px;" name="bio"><% if (locals.ans['user'] && locals.ans['user'].bio) {%><%= locals.ans['user'].bio %><%} %></textarea>
+				<% if (locals.check_field['bio']) { %>
+				<%- include('../check_field/empty.ejs', {empty: locals.check_field['bio']}); %>
+				<% } %>
 
 				<!-- ***********************************Interrest ********************************************************** -->
 
@@ -75,13 +87,15 @@
 					<option <%- include('../elements/interest.ejs', {value: "soleil"});  %> value="soleil">Soleil</option>
 					<option <%- include('../elements/interest.ejs', {value: "sieste"});  %> value="sieste">Sieste</option>
 				</select>
+				<% if (locals.check_field['interests']) { %>
+				<%- include('../check_field/empty.ejs', {empty: locals.check_field['interests']}); %>
+				<% } %>
 				<p> Hold command to select multiple</p>
 
 				<!-- ************************************************************************************************************ -->
 			</div>
 			<div class="column" style="padding-left: 70px">
 				<!-- ************************************************************************************************************ -->
-
 
 				<!-- ***********************************Localisation_completed ****************************************************** -->
 				<h4 class="ui dividing header">Localisation
@@ -94,6 +108,9 @@
 
 				<!-- ***********************************Localisation_localise_me ****************************************************** -->
 				<input id="monid" type="submit" class="ui button" value="Localise Me" name="submit_button">
+				<% if (locals.check_field['localisation']) { %>
+				<%- include('../check_field/empty.ejs', {empty: locals.check_field['localisation']}); %>
+				<% } %>
 
 				<!-- ***********************************Country ****************************************************** -->
 				<div class="field"> <label>Country</label> </div>
@@ -198,6 +215,9 @@
 
 				<!-- ***********************************photo ****************************************************** -->
 				<h4 class="ui dividing header">Photos
+				<% if (locals.check_field['picture']) { %>
+				<%- include('../check_field/empty.ejs', {empty: locals.check_field['picture']}); %>
+				<% } %>
 					<% if (locals.ans['pic_completed'] == false){ %>
 						<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
 					<% }else{ %>
