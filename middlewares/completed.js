@@ -1,4 +1,4 @@
-var bdd = require('./models/about_you.js');
+var bdd = require('../models/about_you.js');
 
 module.exports = function(){
 	return async function (req, res, next) {

@@ -25,9 +25,9 @@ const chat = require('./controler/chat.js');
 const fake = require('./controler/fake.js');
 const block = require('./controler/block.js');
 const notifications = require('./controler/notifications.js');
-const  middleware = require('./middleware.js');
-const  completed = require('./completed.js');
-const  restricted_logon = require('./restricted_logon.js');
+const middleware = require('./middlewares/middleware.js');
+const completed = require('./middlewares/completed.js');
+const restricted_logon = require('./middlewares/restricted_logon.js');
 const database = require('./connection_database.js');
 const test = require('./views/test_dir/test.js');
 
