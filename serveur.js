@@ -1,5 +1,7 @@
 const bdd = require('./models/about_you.js');
 const express = require('express');
+const app = express();
+var server = app.listen(8080);
 const fileUpload = require('express-fileupload');
 const session = require("express-session");
 const bodyParser = require("body-parser");
@@ -29,8 +31,6 @@ const  completed = require('./completed.js');
 const  restricted_logon = require('./restricted_logon.js');
 const database = require('./connection_database.js');
 const test = require('./views/test_dir/test.js');
-const app = express();
-var server = app.listen(8080);
 //rootPath = __dirname;
 app.set('view engine', 'ejs');
 app.set('trust proxy', true) //ip

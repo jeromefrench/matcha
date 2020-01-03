@@ -1,8 +1,16 @@
 
 
 module.exports = function(){
-
 	return function(req, res, next) {
+		var myRe = new RegExp('socket', 'g');
+		var bool = myRe.test(req.url);
+		if (bool == true) {
+			console.log("hello");
+			next();
+		}
+		else {
+			console.log("URL");
+		}
 
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
@@ -78,9 +86,6 @@ module.exports = function(){
 			req.session.complete_message = false;
 			res.locals.complete_message = true;
 		}
-
-		console.log(req.session.field);
-		console.log(req.session.check_field);
 
 
 		res.locals.jwtToken = req.session.jwtToken;
