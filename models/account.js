@@ -3,65 +3,52 @@ var mailer = require("nodemailer");
 var emoji = require('node-emoji');
 const jwt = require('jsonwebtoken');
 
+module.exports.checkLoginSignIn = checkLoginSignIn;
+module.exports.isLoginPasswdMatch = isLoginPasswdMatch;
+module.exports.connect_user = connect_user;
+module.exports.IsFieldOk = IsFieldOk;
+module.exports.changePass = changePass;
+module.exports.recover_user_data = recover_user_data;
+module.exports.valide_user = valide_user;
+module.exports.insert_user = insert_user;
+module.exports.check_field_sign_up = check_field_sign_up;
+module.exports.recover_user_ = recover_user_;
+module.exports.check_field_my_account = check_field_my_account;
+module.exports.send_passwd = send_passwd;
+module.exports.update_user = update_user;
+module.exports.IsLoginNumMatch = IsLoginNumMatch;
+module.exports.get_id_user = get_id_user;
 
-//**********************connection**********************************************
-// const util = require( 'util' );
-// const mysql = require( 'mysql' );
-
-// config = { host     : 'localhost',
-// 			user     : 'newuser',
-// 			password : 'rootpasswd',
-// 			port	: '3306',
-// 			database : 'docker' };
-
-// function makeConn(config){
-//   const connection = mysql.createConnection( config );
-//   return {
-//     query( sql, args ) {
-//       return util.promisify( connection.query )
-//         .call( connection, sql, args );
-//     },
-//     close() {
-//       return util.promisify( connection.end ).call( connection );
-//     }
-//   };
-// }
-
-
-// db = makeConn(config);
-
-//**********************sign-in************************************************
-exports.checkLoginSignIn = async function (login){
-try {
-	if (login == undefined || login == "" || login.indexOf(" ") > -1){
-		return ("empty");
-	}
-	else{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-		var todo = [login];
-		count_user = await db.query(sql, todo);
-		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-		todo = [login];
-		count_user_sub = await db.query(sql, todo);
-		if (count_user[0].count > 0){
-			return "ok";
-		}
-		else if (count_user_sub[0].count > 0){
-			return "need_confirm";
+async function checkLoginSignIn (login){
+	try {
+		if (login == undefined || login == "" || login.indexOf(" ") > -1){
+			return ("empty");
 		}
 		else{
-			return "login_no_exist";
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+			var todo = [login];
+			count_user = await db.query(sql, todo);
+			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+			todo = [login];
+			count_user_sub = await db.query(sql, todo);
+			if (count_user[0].count > 0){
+				return "ok";
+			}
+			else if (count_user_sub[0].count > 0){
+				return "need_confirm";
+			}
+			else{
+				return "login_no_exist";
+			}
 		}
 	}
-}
-catch (err){
-	console.log("erreur ici");
-	console.log(err);
+	catch (err){
+		console.log(err);
 		return (err);
 	}
 }
 
-exports.isLoginPasswdMatch = async function isMatch (login, passwd){
+async function isLoginPasswdMatch (login, passwd){
 	try {
 		if (passwd == undefined || passwd == "" || passwd.indexOf(" ") > -1){
 			return "empty";
@@ -70,7 +57,6 @@ exports.isLoginPasswdMatch = async function isMatch (login, passwd){
 			var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
 			var todo = [login];
 			results = await db.query(sql, todo);
-
 			res = await bcrypt.compare(passwd, results[0].passwd);
 			if(res) {
 				return "match";
@@ -85,20 +71,24 @@ exports.isLoginPasswdMatch = async function isMatch (login, passwd){
 	}
 }
 
-exports.connect_user = async function (login, req){
-	req.session.first_log = true;
-	req.session.logon = true;
-	req.session.login = login;
-	done = await save_connection_log(login);
-	user_id = await notification(login);
-	const user = { id: user_id, username: login};
-	let jwtToken = jwt.sign(user, 'secretkey');
-	req.session.token = jwtToken;
-	return "done";
+async function connect_user(login, req){
+	try {
+		req.session.first_log = true;
+		req.session.logon = true;
+		req.session.login = login;
+		done = await save_connection_log(login);
+		user_id = await notification(login);
+		const user = { id: user_id, username: login};
+		let jwtToken = jwt.sign(user, 'secretkey');
+		req.session.token = jwtToken;
+		return "done";
+	}
+	catch (err){
+		return err;
+	}
 }
 
-//**********************sign-up************************************************
-exports.check_field_sign_up = async function (field){
+async  function check_field_sign_up (field){
 	try{
 		check_field = check_noempty(field);
 		check_field['login'] = await check_login_function(field['login'], check_field['login']);
@@ -110,80 +100,106 @@ exports.check_field_sign_up = async function (field){
 	}
 }
 
-exports.insert_user = async function (field, passwd){
-	var num = getRandomInt(10000);
-	var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
-	var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail'], num];
-	result = await db.query(sql, todo);
-	sendmail(field['mail'], "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ field['login'] + '/' + num + "\">Confirmer</a>");
-	return "done";
-}
-
-//**********************sign-up************************************************
-//**********************my-account************************************************
-
-exports.recover_user_ = async function (login){
-	var sql = "SELECT * FROM `user`  WHERE `login` LIKE ?";
-	var todo = [login];
-	results = await db.query(sql, todo);
-	return (results[0]);
-}
-
-exports.check_field_my_account = async function (old_login, field){
-	check_field = check_noempty(field);
-	check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
-	check_field['mail'] = check_mail_function(field['mail'], "check_mail");
-	check_field['passwd'] = check_passwd_function(passwd, verif);
-	return (check_field);
-}
-
-exports.update_user = async function (lname, fname, mail, login, old_login){
-    var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? WHERE `login` = ?";
-	var todo = [lname, fname, mail, login, old_login];
-	result = await db.query(sql, todo);
-	return "done";
-}
-
-//**********************my-account************************************************
-//*****************forgotten passwd*******************************************
-
-exports.send_passwd = async function (mail){
-	answer = await check_mail(mail);
-	if (answer == "change_ok"){
-		user = await recoveruser_wmail(mail);
-		login = user.login;
-		num = getRandomInt(10000);
-		var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
-		var todo = [num, login];
-		res = await db.query(sql, todo);
-		sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
-		return (answer);
-	}
-	else{
-		return (answer);
+async function insert_user(field, passwd){
+	try{
+		var num = getRandomInt(10000);
+		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
+		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail'], num];
+		result = await db.query(sql, todo);
+		sendmail(field['mail'], "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ field['login'] + '/' + num + "\">Confirmer</a>");
+		return "done";
+	}catch (err){
+		return err;
 	}
 }
 
-//*****************forgotten passwd*******************************************
-//************change-passwd****************************************************
-exports.IsLoginNumMatch = async function (login, num, cat){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
-	var todo = [login, num];
-	result = await db.query(sql, todo);
-	if (result[0].count == 0){
-		return (false);
+async function recover_user_ (login){
+	try{
+		var sql = "SELECT * FROM `user`  WHERE `login` LIKE ?";
+		var todo = [login];
+		results = await db.query(sql, todo);
+		return (results[0]);
 	}
-	else{
-		return (true);
+	catch (err){
+		console.log(err);
+		return (err);
 	}
 }
 
-exports.IsFieldOk = function (npass, verif){
+async function check_field_my_account (old_login, field){
+	try{
+		check_field = check_noempty(field);
+		check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
+		check_field['mail'] = check_mail_function(field['mail'], "check_mail");
+		check_field['passwd'] = check_passwd_function(passwd, verif);
+		return (check_field);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
+
+async function update_user(lname, fname, mail, login, old_login){
+	try{
+		var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? WHERE `login` = ?";
+		var todo = [lname, fname, mail, login, old_login];
+		result = await db.query(sql, todo);
+		return "done";
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
+
+async function send_passwd (mail){
+	try{
+		answer = await check_mail(mail);
+		if (answer == "change_ok"){
+			user = await recoveruser_wmail(mail);
+			login = user.login;
+			num = getRandomInt(10000);
+			var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
+			var todo = [num, login];
+			res = await db.query(sql, todo);
+			sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
+			return (answer);
+		}
+		else{
+			return (answer);
+		}
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
+
+async function IsLoginNumMatch (login, num, cat){
+	try{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
+		var todo = [login, num];
+		result = await db.query(sql, todo);
+		if (result[0].count == 0){
+			return (false);
+		}
+		else{
+			return (true);
+		}
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
+
+function IsFieldOk(npass, verif){
 	check_passwd = check_passwd_sign_up(npass, verif);
 	return (check_passwd);
 }
 
-exports.changePass = function (login, npass){
+function changePass(login, npass){
 	var sql = "UPDATE `user` SET `passwd` = ? WHERE `login` LIKE ?";
 	var todo = [npass, login];
 	conn.connection.query(sql, todo, (err, result) => {
@@ -191,31 +207,34 @@ exports.changePass = function (login, npass){
 	});
 }
 
-//************change-passwd****************************************************
-//**********************confirm************************************************
-//IsLoginNumMatch
-//save_connection_log
-//notification
-
-exports.recover_user_data = async function (num, callback){
-	var sql = "SELECT * FROM `user_sub` WHERE `num` LIKE ?";
-	var todo = [num];
-	res = await db.query(sql, todo);
-	return (res[0]);
+async function recover_user_data (num, callback){
+	try{
+		var sql = "SELECT * FROM `user_sub` WHERE `num` LIKE ?";
+		var todo = [num];
+		res = await db.query(sql, todo);
+		return (res[0]);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
 
-exports.valide_user = async function (login, passwd, lname, fname, mail, num){
-	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-	var todo = [login, passwd, fname, lname, mail];
-	res = await db.query(sql, todo);
-	sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
-	todo = [login];
-	res = await db.query(sql, todo);
-	return("");
+async function valide_user(login, passwd, lname, fname, mail, num){
+	try{
+		var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+		var todo = [login, passwd, fname, lname, mail];
+		res = await db.query(sql, todo);
+		sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+		todo = [login];
+		res = await db.query(sql, todo);
+		return("");
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
-
-//**********************confirm************************************************
-//*****************************************************************************
 
 function check_passwd_function(passwd, verif){
 	if (passwd == verif && verif == ""){
@@ -236,26 +255,32 @@ function check_passwd_function(passwd, verif){
 }
 
 async function check_login_function_my_account(old_login, login, check_login){
-	if (check_login == "empty"){
-		return ("empty")
-	}
-	else{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-		var todo = [login];
-		result = await db.query(sql, todo)
-		//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-		//		todo = [login];
-		//conn.connection.query(sql, todo, function (err1, result1){
-		//	if (err1) throw err1;
-		if (old_login == login){
-			return ("ok");
-		}
-		else if (result[0].count == 0){// && result1[0].count == 0){
-			return ("ok");
+	try{
+		if (check_login == "empty"){
+			return ("empty")
 		}
 		else{
-			return ("login_already_taken");
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
+			var todo = [login];
+			result = await db.query(sql, todo)
+			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
+			//		todo = [login];
+			//conn.connection.query(sql, todo, function (err1, result1){
+			//	if (err1) throw err1;
+			if (old_login == login){
+				return ("ok");
+			}
+			else if (result[0].count == 0){// && result1[0].count == 0){
+				return ("ok");
+			}
+			else{
+				return ("login_already_taken");
+			}
 		}
+	}
+	catch (err){
+		console.log(err);
+		return (err);
 	}
 }
 
@@ -281,25 +306,31 @@ async function check_login_function(login, check_login, callback){
 			//});
 		}
 	} catch (err) {
-	 	return (err);
+		return (err);
 	}
 }
 
 async function check_mail(mail){
-	var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-	var todo = [mail];
-	result1 = await db.query(sql, todo);
-	if (result[0].count == 0){
-		return (0);
+	try{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+		var todo = [mail];
+		result1 = await db.query(sql, todo);
+		if (result[0].count == 0){
+			return (0);
+		}
+		else if (result1[0].count != 0){
+			return (2);
+		}
+		else if (result[0].count == 1){
+			return ('change_ok');
+		}
+		else{
+			return (1);
+		}
 	}
-	else if (result1[0].count != 0){
-		return (2);
-	}
-	else if (result[0].count == 1){
-		return ('change_ok');
-	}
-	else{
-		return (1);
+	catch (err){
+		console.log(err);
+		return (err);
 	}
 }
 
@@ -365,7 +396,7 @@ function sendmail(mail, subject, text){
 			console.log(err);
 		}
 		else
-		transporter.close();
+			transporter.close();
 	});
 }
 
@@ -374,10 +405,16 @@ function getRandomInt(max){
 }
 
 async function recoveruser_wmail(email){
-	var sql = "SELECT * FROM `user` WHERE `mail` LIKE ?";
-	var todo = [email];
-	results = await db.query(sql, todo);
-	return (results[0]);
+	try{
+		var sql = "SELECT * FROM `user` WHERE `mail` LIKE ?";
+		var todo = [email];
+		results = await db.query(sql, todo);
+		return (results[0]);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
 
 async function notification (login){
@@ -400,64 +437,94 @@ async function notification (login){
 }
 
 async function save_connection_log (login){
-	id_user = await get_id_user(login);
-	var  sql = 'SELECT * FROM `connection_log` WHERE `id_user` = ? ';
-	var todo = [id_user];
-	var stop = false;
-	results = await db.query(sql, todo);
-	if (!results[0]) {
-		var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
-		date = new Date();
-		var todo = [id_user, date];
+	try{
+		id_user = await get_id_user(login);
+		var  sql = 'SELECT * FROM `connection_log` WHERE `id_user` = ? ';
+		var todo = [id_user];
+		var stop = false;
 		results = await db.query(sql, todo);
-		return "done";
+		if (!results[0]) {
+			var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
+			date = new Date();
+			var todo = [id_user, date];
+			results = await db.query(sql, todo);
+			return "done";
+		}
+		else {
+			var sql = 'UPDATE `connection_log` SET `last_visit` = ? WHERE `connection_log`.`id` = ?';
+			date = new Date();
+			var todo = [date, id_user];
+			results = await db.query(sql, todo);
+			return "done";
+		}
 	}
-	else {
-		var sql = 'UPDATE `connection_log` SET `last_visit` = ? WHERE `connection_log`.`id` = ?';
-		date = new Date();
-		var todo = [date, id_user];
-		results = await db.query(sql, todo);
-		return "done";
+	catch (err){
+		console.log(err);
+		return (err);
 	}
 }
 
 
 async function get_id_user (login){
-	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
-	var todo = [login];
-	result = await db.query(sql, todo);
-	return(result[0].id);
+	try{
+		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		result = await db.query(sql, todo);
+		return(result[0].id);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
 
-exports.get_id_user = async function (login){
-	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
-	var todo = [login];
-	result = await db.query(sql, todo);
-	return(result[0].id);
+async function get_id_user(login){
+	try{
+		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
+		var todo = [login];
+		result = await db.query(sql, todo);
+		return(result[0].id);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
 
 
 
 
 async function hellog(){
-	mon_login = await get_id_user("blabli");
+	try{
+		mon_login = await get_id_user("blabli");
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
 }
 
 
 async function check_mail_function(mail, check_mail){
-	if (check_mail == "empty"){
-		return ("empty");
-	}
-	else{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-		var todo = [mail];
-		result1 = await db.query(sql, todo);
-		if (result1[0].count != 0){
-			return ("mail_already_taken");
+	try{
+		if (check_mail == "empty"){
+			return ("empty");
 		}
 		else{
-			return ("ok");
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+			var todo = [mail];
+			result1 = await db.query(sql, todo);
+			if (result1[0].count != 0){
+				return ("mail_already_taken");
+			}
+			else{
+				return ("ok");
+			}
 		}
+	}
+	catch (err){
+		console.log(err);
+		return (err);
 	}
 }
 
