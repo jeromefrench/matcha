@@ -70,6 +70,7 @@ exports.isLoginPasswdMatch = async function isMatch (login, passwd){
 			var  sql = 'SELECT * FROM `user` WHERE `login` LIKE ? ';
 			var todo = [login];
 			results = await db.query(sql, todo);
+
 			res = await bcrypt.compare(passwd, results[0].passwd);
 			if(res) {
 				return "match";
