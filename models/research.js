@@ -3,9 +3,9 @@ var moment = require('moment');
 var geodist = require('geodist');
 
 exports.get_user = async function (login){
-	info_user = await bdd.get_info_user(login);
+	var info_user = await bdd.get_info_user(login);
+	info_user[0] = info_user;
 	id_user = await bdd.get_id_user(login);
-	console.log('genre = ' + info_user[0].gender + '; orient = ' + info_user[0].orientation + '; id = ' + id_user);
 	if (info_user[0].orientation == 'women'){
 		if (info_user[0].gender == 'male'){
 			var sql = "SELECT * FROM `docker`.`user_info` LEFT OUTER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` LEFT OUTER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` LEFT OUTER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`gender` = 'female' AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = ?)";
@@ -41,7 +41,6 @@ exports.get_user = async function (login){
 	}
 	var todo = [id_user, id_user];
 	result = await db.query(sql, todo);
-	console.log(result);
 	return (result);
 }
 
@@ -187,7 +186,6 @@ exports.search = async function (user, search){
 				var filter_result = result.filter(distance_function);
 				var filter_res = filter_result.filter(inter_function);
 				filter_result = filter_res.filter(pop_function);
-				console.log(filter_result);
 				return (filter_result);
 			}
 		});

@@ -126,7 +126,6 @@ exports.recover_user_ = async function (login){
 	var sql = "SELECT * FROM `user`  WHERE `login` LIKE ?";
 	var todo = [login];
 	results = await db.query(sql, todo);
-	console.log(results);
 	return (results[0]);
 }
 
@@ -157,9 +156,6 @@ exports.send_passwd = async function (mail){
 		var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
 		var todo = [num, login];
 		res = await db.query(sql, todo);
-		console.log("AAA");
-		console.log(mail);
-		console.log(login);
 		sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
 		return (answer);
 	}
@@ -176,11 +172,9 @@ exports.IsLoginNumMatch = async function (login, num, cat){
 	result = await db.query(sql, todo);
 	if (result[0].count == 0){
 		return (false);
-		console.log("login num pas ok");
 	}
 	else{
 		return (true);
-		console.log("login num ok");
 	}
 }
 
@@ -194,7 +188,6 @@ exports.changePass = function (login, npass){
 	var todo = [npass, login];
 	conn.connection.query(sql, todo, (err, result) => {
 		if (err) throw err;
-		console.log("pass changé !");
 	});
 }
 
@@ -369,11 +362,9 @@ function sendmail(mail, subject, text){
 	}
 	transporter.sendMail(letter, (err, res) => {
 		if (err){
-			console.log("Erreur lors de l'envoi du mail");
 			console.log(err);
 		}
 		else
-			console.log("Mail envoyé avec succès !");
 		transporter.close();
 	});
 }
@@ -450,26 +441,18 @@ exports.get_id_user = async function (login){
 
 async function hellog(){
 	mon_login = await get_id_user("blabli");
-	console.log("hellog");
-	console.log(mon_login);
 }
 
-//console.log("hellog you");
-//hellog();
 
 async function check_mail_function(mail, check_mail){
-	console.log("on check le mail");
 	if (check_mail == "empty"){
 		return ("empty");
 	}
 	else{
-			console.log("mail already");
 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 		var todo = [mail];
 		result1 = await db.query(sql, todo);
-		console.log(result1);
 		if (result1[0].count != 0){
-			console.log("mail already");
 			return ("mail_already_taken");
 		}
 		else{

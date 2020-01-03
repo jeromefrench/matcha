@@ -1,4 +1,3 @@
-const bdd = require('./models/about_you.js');
 const express = require('express');
 const app = express();
 var server = app.listen(8080);
@@ -31,12 +30,14 @@ const  completed = require('./completed.js');
 const  restricted_logon = require('./restricted_logon.js');
 const database = require('./connection_database.js');
 const test = require('./views/test_dir/test.js');
-//rootPath = __dirname;
-app.set('view engine', 'ejs');
-app.set('trust proxy', true) //ip
+
+rootPath = __dirname;
 db = database.makeConn(config);
 users = [];
 bell = 0;
+
+app.set('view engine', 'ejs');
+app.set('trust proxy', true) //ip
 //----------middle ware
 app.use(function(req,res,next){ req.io = io; next(); })
 app.use('/assets', express.static('public'));
@@ -46,21 +47,22 @@ app.use(session({ secret: 'sdjfkl', resave: false, saveUninitialized: true, cook
 app.use(require('./middlewares/flash'));
 app.use(fileUpload({ useTempFiles : true, tempFileDir : __dirname+'/public/tmp', createParentPath : true }));
 app.use(requestIp.mw())
-//-----------------ans check_field field
+
 app.use(middleware());
+app.use(restricted_logon());
+app.use(completed());
+//-----------------ans check_field field
 app.use('/confirm', confirm);
 app.use('/forgotten-passwd', sendpass);
 app.use('/change-passwd', changepass);
 app.use('/faker', faker);
-//---------------------------------restricted to logon-------------------------
-app.use(restricted_logon());
-app.use('/sign-out', signout);
 app.use('/sign-up', signup);
 app.use('/sign-in', signin);
+//---------------------------------restricted to logon-------------------------
+app.use('/sign-out', signout);
 app.use('/my-account', myaccount);
-//---------------------------------restricted to completed-------------------------
-app.use(completed());
 app.use('/about-you', aboutyou);
+//---------------------------------restricted to completed-------------------------
 app.use('/profile/', profile);
 app.use('/like-this-user', like);
 app.use('/research', research);

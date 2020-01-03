@@ -24,7 +24,6 @@ try {
 		res .redirect('/sign-in');
 	}
 	else if (check_field['passwd'] != "match"){
-		console.log(check_field);
 		req.session.field = field;
 		req.session.check_fikld = check_field;
 		res.redirect('/sign-in');

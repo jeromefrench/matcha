@@ -2,23 +2,14 @@
 
 module.exports = function(){
 	return function(req, res, next) {
-		var myRe = new RegExp('socket', 'g');
-		var bool = myRe.test(req.url);
-		if (bool == true) {
-			console.log("hello");
-			next();
-		}
-		else {
-			console.log("URL");
-		}
-
+console.log("11111111");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
-		console.log("middle ware");
+		console.log("*************middle ware*********************");
 		console.log("--------Ans---------------");
 		console.log(req.session.ans);
 		console.log("----------URL--------------------");
@@ -97,6 +88,7 @@ module.exports = function(){
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
 		console.log("-------------------------------------------------------");
+console.log("2222222222");
 	}
 }
 

@@ -2,14 +2,47 @@ let bdd = require('../models/about_you.js');
 const router = require('express').Router();
 const opencage = require('opencage-api-client');
 
+
+
 router.route('/').get(async (req, res) => {
 	res.locals.title = "About You";
-	res.locals.ans['user'] = await bdd.get_info_user(res, req.session.login);
+	res.locals.ans['user'] = await bdd.get_info_user(req.session.login);
+
+
+	var user = res.locals.ans['user'];
+
+	var etiquette_preferences = false;
+	if (user.gender != undefined && user.gender != false &&
+		user.orientation != undefined && user.orientation != false &&
+		user.bio != undefined && user.bio != false &&
+		user.birthday != undefined && user.birthday != false &&
+		user.interests != undefined && user.interests != false)
+	{
+		etiquette_preferences = true;
+	}
+
+	var etiquette_localisation = false;
+	if (user.country != undefined && user.country != false &&
+		user.zip_code != undefined && user.zip_code != false &&
+		user.city != undefined && user.city != false &&
+		user.longitude != undefined && user.longitude != false &&
+		user.latitude != undefined && user.latitude != false)
+	{
+		etiquette_localisation = true;
+	}
+	var etiquette_photo = false;
+	if (user.pic != undefined){
+		etiquette_photo = true;
+	}
+
+	res.locals.ans['preference_completed'] = etiquette_preferences;
+	res.locals.ans['localisation_completed'] = etiquette_localisation;
+	res.locals.ans['pic_completed'] = etiquette_photo;
+
 	res.render('main_view/about-you.ejs');
 });
 
 router.route('/').post(async (req, res) => {
-	console.log("on est dans post");
 try {
 	var field = {};
 	var check_field = {};
@@ -23,6 +56,7 @@ try {
 	field['city'] = req.body.city;
 	field['zip_code'] = req.body.zipcode;
 	check_field = bdd.check_field_about_you(field);
+
 	if (req.body.submit_button == "Localise Me") {
 		req.session.ans['localise_me'] = true;
 	}
@@ -30,16 +64,8 @@ try {
 		check_field = bdd.check_field_localisation(field, check_field)
 	}
 
-
-	console.log("field :==>");
-	console.log(field);
-
 	if (check_field['localisation'] == "ok"){
-		console.log("field :==>");
-		console.log(field);
 		field = await searchAdresse(field);
-		console.log("field :==>");
-		console.log(field);
 		if (field['localisation'] == "ok"){
 			check_field['longitude'] = "ok";
 			check_field['latitude'] = "ok";
@@ -52,12 +78,6 @@ try {
 		}
 	}
 
-
-
-	console.log("field :==>");
-	console.log(field);
-	console.log("check field :==>");
-	console.log(check_field);
 	for (const property in check_field){
 		if(check_field[property] == "ok" && property != 'localisation'){
 			if (property == 'birthday'){
@@ -66,20 +86,46 @@ try {
 			 	birthday = birthday[2]+ "-"+ birthday[0]+"-"+birthday[1];
 			 	field['birthday'] = birthday;
 			}
-			console.log("AAAAAAAAAAAAAAAAAAAAA");
-			console.log(property);
-			console.log(field[property]);
 			done = await bdd.InfoUser(req.session.login, property, field[property]);
 		}
 	}
 	var id_user = await bdd.get_id_user(req.session.login);
 	var number = await bdd.count_photo(id_user);
 	check_field['picture'] = bdd.check_picture(req.files, req.session.login, number);
-	console.log(check_field['picture']);
-	console.log("hellot you");
-	console.log(number);
 	if (check_field['picture'] == "ok"){
 		done = await bdd.savethePic(req.files, req.session.login, number);
+	}
+
+
+
+	var user = await bdd.get_info_user(req.session.login);
+
+	var etiquette_preferences = false;
+	if (user.gender != undefined && user.gender != false &&
+		user.orientation != undefined && user.orientation != false &&
+		user.bio != undefined && user.bio != false &&
+		user.birthday != undefined && user.birthday != false &&
+		user.interests != undefined && user.interests != false)
+	{
+		etiquette_preferences = true;
+	}
+
+	var etiquette_localisation = false;
+	if (user.country != undefined && user.country != false &&
+		user.zip_code != undefined && user.zip_code != false &&
+		user.city != undefined && user.city != false &&
+		user.longitude != undefined && user.longitude != false &&
+		user.latitude != undefined && user.latitude != false)
+	{
+		etiquette_localisation = true;
+	}
+	var etiquette_photo = false;
+	if (user.pic != undefined){
+		etiquette_photo = true;
+	}
+
+	if (etiquette_preferences && etiquette_localisation && etiquette_photo){
+		done = await bdd.isCompleted(req.session.login);
 	}
 	req.session.check_field = check_field;
 	req.session.field = field;
@@ -92,13 +138,12 @@ catch (err){
 
 async function searchAdresse(field){
 
-	console.log("on cherche");
 	loc = field['country'] + "  " + field['city'] + "  " + field['zip_code'];
 	data = await opencage.geocode({q: '' + loc});
 	if (data.status.code == 200 && data.results.length > 0) {
 		var place = data.results[0];
 		field['country'] = place.components.country;
-		field['city' ] = place.components.city;
+		field['city'] = place.components.county;
 		field['zip_code'] = place.components.postcode;
 		field['latitude'] = place.geometry.lat;
 		field['longitude'] = place.geometry.lng;

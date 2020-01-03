@@ -41,10 +41,6 @@ exports.doILike = async function (my_login, the_login_i_search){
 	var sql = "SELECT * FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 	var todo = [my_id, id_i_like];
 	var result = await db.query(sql, todo);
-	console.log("dans la bdd")
-	console.log(my_id);
-	console.log(id_i_like);
-	console.log(result);
 	if (result[0] == undefined) {
 		return (false);
 	}
@@ -88,11 +84,9 @@ exports.countVue = async function (login){
 		sql = "INSERT INTO `vue_profile` (`id_user`) VALUES (?)";
 		todo = [id_user];
 		done = await db.query(sql, todo);
-		console.log("id added !");
 		sql = "UPDATE `vue_profile` SET `vue` = `vue` + 1 WHERE `id_user` = ?";
 		todo = [id_user];
 		done = await db.query(sql, todo);
-		console.log("vue UPDATED for" + id_user);
 		nbVue = await getVue(id_user);
 		return (nbVue);
 	}
@@ -100,7 +94,6 @@ exports.countVue = async function (login){
 		sql = "UPDATE `vue_profile` SET `vue` = `vue` + 1 WHERE `id_user` = ?";
 		todo = [id_user];
 		done = db.query(sql, todo);
-		console.log("vue updated for" + id_user);
 		nbVue = await getVue(id_user);
 		return (nbVue);
 	}
@@ -161,7 +154,6 @@ exports.block_user = async function(user_log, user_block){
 	var sql = "INSERT INTO `block` (`id_user`, `id_block`) VALUES (?, ?)";
 	var todo = [id_log, id_block];
 	done = await db.query(sql, todo);
-	console.log('UTILISATEUR BLOQUE');
 }
 
 exports.IdBlocked = async function(tab, id_user, id_block){
@@ -170,8 +162,6 @@ exports.IdBlocked = async function(tab, id_user, id_block){
 	var result = await db.query(sql, todoJ);
 	if (result[0].count > 0){
 		tab = tab.filter(u => u.id_user !== id_block);
-		console.log("apres");
-		console.log(tab);
 	}
 }
 
@@ -214,7 +204,6 @@ async function insert_message (content, date){
 	var sql = "INSERT INTO messages (content, createat) VALUES (?, ?)";
 	var todo = [content, date];
 	result = await db.query(sql, todo);
-	console.log("1 record inserted");
 }
 
 
@@ -279,6 +268,5 @@ exports.updateMatch = async function(userLog, ismatchLog){
 		var todo = [0, userId, ismatchId];
 	}
 	done = await db.query(sql, todo);
-	console.log("match on like table UPDATED");
 }
 

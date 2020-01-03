@@ -9,6 +9,10 @@ const router = require('express').Router();
 
 
 router.route('/').get(async (req, res) => {
+
+
+
+
 	const page = parseInt(req.query.page);
 	const limit = 9;
 
@@ -84,6 +88,7 @@ router.route('/').get(async (req, res) => {
 			res.locals.users = all_user.slice(startIndex, endIndex);
 			i = 0;
 			info = await about.get_info_user(req.session.login);
+			info[0] = info;
 			loc = {lat: info[0].latitude, lon: info[0].longitude};
 			res.locals.users.forEach(() => {
 				var dist_user = {lat: res.locals.users[i].latitude, lon: res.locals.users[i].longitude};

@@ -39,8 +39,6 @@ router.route('/:login').get(async (req, res) => {
 	res.locals.title = "Profile";
 	res.locals.field = field;
 	res.locals.user = user;
-	console.log(user);
-	console.log(field);
 	res.render('main_view/profile.ejs');
 
 	//res.locals.login_profil = req.params.login;

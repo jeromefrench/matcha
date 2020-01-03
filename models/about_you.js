@@ -53,7 +53,6 @@ exports.get_id_user = async function (login){
 }
 
 exports.profileToZero = async function (id_user){
-	// console.log("Profile to zero");
 	var sql = "UPDATE `photo` SET `profile`= 0 WHERE `id_user` = ?";
 	var todo = [id_user];
 	result = await db.query(sql, todo);
@@ -143,11 +142,7 @@ function check_birthday(birthday){
 		return check_field
 	}
 	else{
-		console.log("the birth")
-		console.log(birthday);
-
 		var myRe = new RegExp('[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]', 'g');
-		console.log(myRe);
 		var bool = myRe.test(birthday);
 		if (bool == true){
 			return "ok"
@@ -171,15 +166,34 @@ function check_bio(bio){
 }
 
 function check_interests(interests){
-	check_field = help_noempty(interests);
-	if (check_field == "ok" &&
-		interests != "voyage" &&
-		interests != "cuisine" &&
-		interests != "escalade" &&
-		interests != "equitation" &&
-		interests != "soleil" &&
-		interests != "sieste"){
-		check_field = "wrong";
+	var array = Array.isArray(interests);
+	var check_field = "ok";
+	var check_inter;
+	if (array == true) {
+		interests.forEach((inter) => {
+			check_inter = help_noempty(inter);
+			if (check_field == "ok" && check_inter == "ok" &&
+				inter != "voyage" &&
+				inter != "cuisine" &&
+				inter != "escalade" &&
+				inter != "equitation" &&
+				inter != "soleil" &&
+				inter != "sieste"){
+				check_field = "wrong";
+			}
+		});
+	}
+	else{
+		check_field = help_noempty(interests);
+		if (check_field == "ok" &&
+			interests != "voyage" &&
+			interests != "cuisine" &&
+			interests != "escalade" &&
+			interests != "equitation" &&
+			interests != "soleil" &&
+			interests != "sieste"){
+			check_field = "wrong";
+		}
 	}
 	return check_field;
 }
@@ -200,9 +214,6 @@ exports.get_photo = async function (login){
 }
 
 exports.check_picture = function (files, login, number){
-
-	console.log("test PICTURE");
-	console.log(files.photo.mimetype);
 	var check_pic = "ok";
 	if ((files == undefined || files.photo == undefined || files.photo.size == 0) && number == 0){
 		check_pic = "no_pic_uploaded";
@@ -219,11 +230,23 @@ exports.check_picture = function (files, login, number){
 	return check_pic;
 }
 
-exports.isCompleted = async function (id_user){
-	var sql = "UPDATE `user_info` SET `completed` = 1 WHERE `id_user` = ?";
-	var todo = [id_user];
-	result = await db.query(sql, todo);
-	if (error) throw error;
+exports.isCompleted = async function (login){
+
+	var userExist = await is_info_user_exist(login);
+	var id_user = await get_id_user(login);
+
+
+	if (userExist == true) {
+		var sql = "UPDATE `user_info` SET `completed` = 1 WHERE `id_user` = ?";
+		var todo = [id_user];
+		result = await db.query(sql, todo);
+	}
+	else{
+		var sql = "INSERT INTO `user_info` ( `completed`,  `id_user`) VALUES (?, ?)";
+		var todo = [id_user];
+		result = await db.query(sql, todo);
+	}
+
 }
 
 async function update_info_user (login, property, field){
@@ -331,7 +354,7 @@ exports.savethePic = async function (files, login, number){
 	return done;
 }
 
-exports.get_info_user = async function (res, login){
+exports.get_info_user = async function (login){
 	var user = await get_info_user(login);
 	user = user[0];
 	for (const property in user){
@@ -344,8 +367,6 @@ exports.get_info_user = async function (res, login){
 	}
 	if (user != undefined && user.birth != undefined && user.birth != false)
 	{
-		console.log("le user birth");
-		console.log(user.birth);
 		user.birthday = user.birth;
 		user.birthday = user.birthday.replace("\\", "/");
 		user.birthday = user.birthday.replace("\\", "/");

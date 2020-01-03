@@ -78,7 +78,7 @@ function fakeUser()
 					bdd2.insert_log(id_user);
 					bdd2.add_fakeVueLike(id_user);
 					bdd_pic.savePic(id_user, image, profile);
-					bdd_pic.isCompleted(id_user);
+					bdd_pic.isCompleted(login);
 					}
 					catch{
 						console.log("petit probleme");
