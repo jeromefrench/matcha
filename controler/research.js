@@ -10,9 +10,6 @@ const router = require('express').Router();
 
 router.route('/').get(async (req, res) => {
 
-
-
-
 	const page = parseInt(req.query.page);
 	const limit = 9;
 
