@@ -20,7 +20,6 @@ module.exports.IsLoginNumMatch = IsLoginNumMatch;
 module.exports.get_id_user = get_id_user;
 module.exports.update_user_and_passwd = update_user_and_passwd;
 
-
 async function update_user_and_passwd (field,  passwd, old_login){
 	try {
 		var lname = field['lname'];
@@ -174,14 +173,14 @@ async function update_user(lname, fname, mail, login, old_login){
 
 async function send_passwd (mail){
 	try{
-		answer = await check_mail(mail);
+		var answer = await check_mail(mail);
 		if (answer == "change_ok"){
-			user = await recoveruser_wmail(mail);
-			login = user.login;
-			num = getRandomInt(10000);
+			var user = await recoveruser_wmail(mail);
+			var login = user.login;
+			var num = getRandomInt(10000);
 			var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
 			var todo = [num, login];
-			res = await db.query(sql, todo);
+			var res = await db.query(sql, todo);
 			sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
 			return (answer);
 		}
@@ -328,17 +327,13 @@ async function check_login_function(login, check_login, callback){
 }
 
 async function check_mail(mail){
+	console.log("MSIL");
+	console.log(mail);
 	try{
 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 		var todo = [mail];
-		result1 = await db.query(sql, todo);
-		if (result[0].count == 0){
-			return (0);
-		}
-		else if (result1[0].count != 0){
-			return (2);
-		}
-		else if (result[0].count == 1){
+		var result1 = await db.query(sql, todo);
+		if (result1[0].count == 1){
 			return ('change_ok');
 		}
 		else{
@@ -481,7 +476,6 @@ async function save_connection_log (login){
 	}
 }
 
-
 async function get_id_user (login){
 	try{
 		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
@@ -598,8 +592,6 @@ function check_passwd(passwd){
 
 
 
-
-
 // exports.check_log = function (login, callback){
 // 	if (help_noempty(login) == false){
 // 		callback('vide','vide');
@@ -651,8 +643,3 @@ function check_passwd(passwd){
 // 		// console.log(login + "deleted from user_sub");
 // 	// });
 // }
-
-
-
-
-
