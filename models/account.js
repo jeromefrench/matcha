@@ -18,6 +18,25 @@ module.exports.send_passwd = send_passwd;
 module.exports.update_user = update_user;
 module.exports.IsLoginNumMatch = IsLoginNumMatch;
 module.exports.get_id_user = get_id_user;
+module.exports.update_user_and_passwd = update_user_and_passwd;
+
+
+async function update_user_and_passwd (field,  passwd, old_login){
+	try {
+		var lname = field['lname'];
+		var fname = field['fname'];
+		var mail = field['mail'];
+		var login = field['login'];
+
+    	var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
+		var todo = [lname, fname, mail, login, passwd, old_login];
+		var result = await db.query(sql, todo);
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
 
 async function checkLoginSignIn (login){
 	try {
@@ -130,8 +149,8 @@ async function check_field_my_account (old_login, field){
 	try{
 		check_field = check_noempty(field);
 		check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
-		check_field['mail'] = check_mail_function(field['mail'], "check_mail");
-		check_field['passwd'] = check_passwd_function(passwd, verif);
+		check_field['mail'] = await check_mail_function(field['mail'], check_field['mail']);
+		check_field['passwd'] = check_passwd_function(field['npasswd'], field['verif']);
 		return (check_field);
 	}
 	catch (err){
@@ -262,15 +281,13 @@ async function check_login_function_my_account(old_login, login, check_login){
 		else{
 			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
 			var todo = [login];
-			result = await db.query(sql, todo)
-			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-			//		todo = [login];
-			//conn.connection.query(sql, todo, function (err1, result1){
-			//	if (err1) throw err1;
+			var result = await db.query(sql, todo)
+			console.log("count");
+			console.log(result);
 			if (old_login == login){
 				return ("ok");
 			}
-			else if (result[0].count == 0){// && result1[0].count == 0){
+			else if (result[0].count == 0){
 				return ("ok");
 			}
 			else{
@@ -491,9 +508,6 @@ async function get_id_user(login){
 	}
 }
 
-
-
-
 async function hellog(){
 	try{
 		mon_login = await get_id_user("blabli");
@@ -504,7 +518,6 @@ async function hellog(){
 	}
 }
 
-
 async function check_mail_function(mail, check_mail){
 	try{
 		if (check_mail == "empty"){
@@ -513,8 +526,8 @@ async function check_mail_function(mail, check_mail){
 		else{
 			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 			var todo = [mail];
-			result1 = await db.query(sql, todo);
-			if (result1[0].count != 0){
+			var result1 = await db.query(sql, todo);
+			if (result1[0].count != 1){
 				return ("mail_already_taken");
 			}
 			else{
@@ -622,13 +635,6 @@ function check_passwd(passwd){
 // }
 
 
-// exports.update_user_and_passwd = function (lname, fname, email, login, passwd,  old_login){
-//     var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `email` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
-// 	var todo = [lname, fname, email, login, passwd, old_login];
-// 	conn.connection.query(sql, todo, function (err, result) {
-// 		if (err) throw err;
-// 	});
-// }
 
 // exports.valide_user_fake = function (login, passwd, lname, fname, mail, callback){
 // 	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";

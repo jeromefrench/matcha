@@ -4,11 +4,13 @@ const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/').get(async (req, res) => {
-	if (res.locals.ans.check_field == undefined){
-		res.locals.ans.check_field = false;
+	if (res.locals.check_field == undefined){
+		res.locals.check_field = false;
 	}
+	console.log(res.locals.check_field);
 	res.locals.title = "My Account";
 	res.locals.user = await bdd.recover_user_(req.session.login);
+	console.log(res.locals.user);
 	res.render('main_view/my-account.ejs');
 });
 
@@ -20,31 +22,35 @@ try{
 	field['fname']  = req.body.fname;
 	field['mail']  = req.body.mail;
 	field['login']  = req.body.login;
-	field['npasswd'] = req.body.passwd;
+	field['npasswd'] = req.body.npass;
 	field['verif']  = req.body.verif;
 	check_field = await bdd.check_field_my_account(req.session.login, field);
 	var check = "ok";
 	for (const property in check_field){
-		if(check_field[property] != "ok" && check_field[property] != "change passwd"){
+		if(check_field[property] != "ok" && check_field[property] != "change_passwd"){
 			check = "error";
 		}
 	}
+		console.log(field);
+		console.log(check_field);
+		console.log(check);
 	if (check == "error"){
-		req.sessions.check_field = check_field;
-		req.sessions.field = field;
+		req.session.check_field = check_field;
+		req.session.field = field;
 		res.redirect('/my-account');
 	}
 	else if (check_field['passwd'] == "ok"){
-		var done = await bdd.update_user(lname, fname, email, login, req.session.login);
-		req.session.login = login;
+		var done = await bdd.update_user(field['lname'], field['fname'], field['mail'], field['login'], req.session.login);
+		req.session.login = field['login'];
 		req.session.ans['notification_general'] = "Account information succesfully update";
 		res.redirect('/my-account');
 	}
-	else if (check_field['passwd'] == "change passwd"){
+	else if (check_field['passwd'] == "change_passwd"){
+		console.log("hello ici bas");
 		var salt = await bcrypt.genSalt(saltRounds);
-		var hash = await bcrypt.hash(passwd, salt);
-		update_user_and_passwd(field, hash, req.session.login);
-		req.session.login = login;
+		var hash = await bcrypt.hash(field['npasswd'], salt);
+		bdd.update_user_and_passwd(field, hash, req.session.login);
+		req.session.login = field['login'];
 		req.session.ans['notification_general'] = "Account information succesfully update";
 		res.redirect('/my-account');
 	}
