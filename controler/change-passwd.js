@@ -18,22 +18,22 @@ try{
 	field['verif'] = req.body.verif;
 	check_field['passwd'] = await bdd.IsLoginNumMatch(field['login'], field['num'], "user");
 	if (check_field['passwd'] == false){
-		//req.session.ans['notification_general'] = "The login and num dont match";
-		req.sessions.check_field = check_field;
-		req.sessions.field = field;
+		req.session.ans['notification_general'] = "The login and num dont match";
+		req.session.check_field = check_field;
+		req.session.field = field;
 		res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
 	}
 	else{
-		check_field['passwd'] = bdd.IsFieldOk(npass, verif);
+		check_field['passwd'] = bdd.IsFieldOk(field['npass'], field['verif']);
 		if (check_fiel['passwd'] != "ok"){
-			req.sessions.check_field = check_field;
-			req.sessions.field = field;
+			req.session.check_field = check_field;
+			req.session.field = field;
 			res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
 		}
 		else{
 			var salt = await bcrypt.genSalt(saltRounds);
-			var hash = await bcrypt.hash(npass, salt);
-			bdd.changePass(login, hash);
+			var hash = await bcrypt.hash(field['npass'], salt);
+			bdd.changePass(field['login'], hash);
 			req.session.ans['notification_general'] = "Your password has been change you can sign in";
 			res.redirect('/sign-in');
 		}

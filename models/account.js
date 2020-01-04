@@ -281,8 +281,6 @@ async function check_login_function_my_account(old_login, login, check_login){
 			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
 			var todo = [login];
 			var result = await db.query(sql, todo)
-			console.log("count");
-			console.log(result);
 			if (old_login == login){
 				return ("ok");
 			}
@@ -327,8 +325,6 @@ async function check_login_function(login, check_login, callback){
 }
 
 async function check_mail(mail){
-	console.log("MSIL");
-	console.log(mail);
 	try{
 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
 		var todo = [mail];

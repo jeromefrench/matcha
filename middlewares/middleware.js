@@ -2,13 +2,6 @@
 
 module.exports = function(){
 	return function(req, res, next) {
-		console.log("-------------------------------------------------------");
-		console.log("-------------------------------------------------------");
-		console.log("*************middle ware*********************");
-		console.log("--------Ans---------------");
-		console.log(req.session.ans);
-		console.log("----------URL--------------------");
-		console.log(req.url);
 		if (req.session && req.session.ans){
 			res.locals.ans = req.session.ans;
 			req.session.ans = undefined;
@@ -20,8 +13,6 @@ module.exports = function(){
 		}
 
 		if (req.session && req.session.field){
-			console.log("--------field---------------");
-			console.log(req.session.field);
 			res.locals.field = req.session.field;
 			req.session.field = undefined;
 			req.session.field = {};
@@ -33,8 +24,6 @@ module.exports = function(){
 
 
 		if (req.session && req.session.check_field){
-			console.log("--------check field---------------");
-			console.log(req.session.check_field);
 			res.locals.check_field = req.session.check_field;
 			req.session.check_field = undefined;
 			req.session.check_field = {};
@@ -77,8 +66,6 @@ module.exports = function(){
 		res.locals.jwtToken = req.session.jwtToken;
 		req.session.jwtToken = undefined;
 		next();
-		console.log("-------------------------------------------------------");
-		console.log("-------------------------------------------------------");
 	}
 }
 

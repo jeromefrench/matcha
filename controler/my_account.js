@@ -7,10 +7,8 @@ router.route('/').get(async (req, res) => {
 	if (res.locals.check_field == undefined){
 		res.locals.check_field = false;
 	}
-	console.log(res.locals.check_field);
 	res.locals.title = "My Account";
 	res.locals.user = await bdd.recover_user_(req.session.login);
-	console.log(res.locals.user);
 	res.render('main_view/my-account.ejs');
 });
 
@@ -31,9 +29,6 @@ try{
 			check = "error";
 		}
 	}
-		console.log(field);
-		console.log(check_field);
-		console.log(check);
 	if (check == "error"){
 		req.session.check_field = check_field;
 		req.session.field = field;
@@ -46,7 +41,6 @@ try{
 		res.redirect('/my-account');
 	}
 	else if (check_field['passwd'] == "change_passwd"){
-		console.log("hello ici bas");
 		var salt = await bcrypt.genSalt(saltRounds);
 		var hash = await bcrypt.hash(field['npasswd'], salt);
 		bdd.update_user_and_passwd(field, hash, req.session.login);

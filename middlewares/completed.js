@@ -11,8 +11,6 @@ module.exports = function(){
 
 
 		if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" && !bool && !boolbool && req.url != "/forgotten-passwd" ){
-			console.log("ici");
-			console.log(req.session.login);
 			var result = await bdd.get_completed(req.session.login);
 			if (result && result['completed'] == 1){
 				next();
