@@ -2,7 +2,13 @@ var bdd = require('../models/about_you.js');
 
 module.exports = function(){
 	return async function (req, res, next) {
-		if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" ){
+
+		var myRe = new RegExp('^/confirm', 'g');
+		var bool = myRe.test(req.url);
+
+		if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" && !bool){
+			console.log("ici");
+			console.log(req.session.login);
 			var result = await bdd.get_completed(req.session.login);
 			if (result && result['completed'] == 1){
 				next();
