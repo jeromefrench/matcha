@@ -4,6 +4,11 @@ var bdd_notif = require('../models/notifications.js');
 const router = require('express').Router();
 
 router.route('/:login').get(async (req, res) => {
+
+
+	//verifier si le profile existe
+
+
 	var field = {};
 	field['profil'] = req.params.login;
 	var done = await bdd.add_visited_profile(req.session.login, field['profil']);
@@ -13,7 +18,7 @@ router.route('/:login').get(async (req, res) => {
 	field['nbVue'] = await bdd.countVue(field['profil']);
 	field['report'] = await bdd.IsReport(req.session.login, field['profil']);
 	field['block'] = await bdd.IsBlocked(req.session.login, field['profil']);
-	if (field['do_i_like'] && field['does_it_like_me']){
+	if (field['do_i_like'] && field['doesItLikeMe']){
 		field['match'] = true;
 	}
 	else {
@@ -24,7 +29,6 @@ router.route('/:login').get(async (req, res) => {
 	if (find != undefined){
 		user.last_visit = 'online';
 	}
-
 	var result = await bdd_re.get_user_profile(field['profil']);
 	var user = result[0];
 	if (user.birthday){

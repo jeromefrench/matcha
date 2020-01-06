@@ -1,18 +1,18 @@
-<% include elements/header %>
+<%- include('../elements/header.ejs'); %>
 <h1>Chat</h1>
 <div class="ui comments">
 	<h3 class="ui dividing header">Chat - <%= locals.my_login  %> with <%= locals.the_login_i_chat %></h3>
 
 	<% if (locals.messages){ %>
 	<% locals.messages.forEach(function(message) {  %>
-		<%- include('elements/chat_message', {message: message});  %>
+		<%- include('../elements/chat_message', {message: message});  %>
 	<% });  %>
 <% } %>
 
 <div id="new_message">
 </div>
 
-<% include elements/chat_send_form %>
+<%- include('../elements/chat_send_form.ejs'); %>
 </div>
 
 
@@ -62,4 +62,4 @@ document.getElementById("myTextarea").value = "";
 
 </script>
 
-<% include elements/footer %>
+<%- include('../elements/footer.ejs'); %>
