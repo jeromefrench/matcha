@@ -4,10 +4,8 @@ var bdd_notif = require('../models/notifications.js');
 const router = require('express').Router();
 
 router.route('/:login').get(async (req, res) => {
-
-	field = {};
+	var field = {};
 	field['profil'] = req.params.login;
-
 	var done = await bdd.add_visited_profile(req.session.login, field['profil']);
 	field['do_i_like'] = await bdd.doILike(req.session.login, field['profil']);
 	field['doesItLikeMe'] = await bdd.doesItLikeMe(req.session.login, field['profil']);
@@ -15,7 +13,6 @@ router.route('/:login').get(async (req, res) => {
 	field['nbVue'] = await bdd.countVue(field['profil']);
 	field['report'] = await bdd.IsReport(req.session.login, field['profil']);
 	field['block'] = await bdd.IsBlocked(req.session.login, field['profil']);
-
 	if (field['do_i_like'] && field['does_it_like_me']){
 		field['match'] = true;
 	}
@@ -23,6 +20,7 @@ router.route('/:login').get(async (req, res) => {
 		field['match'] = false;
 	}
 	var find = users.find(element => element.login == req.params.login);
+
 	if (find != undefined){
 		user.last_visit = 'online';
 	}
@@ -40,6 +38,10 @@ router.route('/:login').get(async (req, res) => {
 	res.locals.field = field;
 	res.locals.user = user;
 	res.render('main_view/profile.ejs');
+});
+
+module.exports = router;
+
 
 	//res.locals.login_profil = req.params.login;
 	//res.locals.session = req.session;
@@ -77,6 +79,3 @@ router.route('/:login').get(async (req, res) => {
 	//	user.last_visit = 'online';
 	//}
 	//res.render('main_view/profile.ejs', {session: req.session, user: user, report: result});
-});
-
-module.exports = router;

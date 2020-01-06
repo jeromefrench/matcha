@@ -63,7 +63,7 @@ app.use('/sign-out', signout);
 app.use('/my-account', myaccount);
 app.use('/about-you', aboutyou);
 //---------------------------------restricted to completed-------------------------
-app.use('/profile/', profile);
+app.use('/profile', profile);
 app.use('/like-this-user', like);
 app.use('/research', research);
 app.use('/public/photo', photo);
