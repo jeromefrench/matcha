@@ -110,7 +110,7 @@ async  function check_field_sign_up (field){
 	try{
 		check_field = check_noempty(field);
 		check_field['login'] = await check_login_function(field['login'], check_field['login']);
-		check_field['mail'] = await check_mail_function(field['mail'], check_field['mail']);
+		check_field['mail'] = await check_mail(field['mail'], check_field['mail']);
 		check_field['passwd'] = check_passwd_sign_up(field['passwd'], field['verif']);
 		return (check_field);
 	}catch (err){
@@ -173,8 +173,8 @@ async function update_user(lname, fname, mail, login, old_login){
 
 async function send_passwd (mail){
 	try{
-		var answer = await check_mail(mail);
-		if (answer == "change_ok"){
+		var answer = await check_mail(mail, undefined);
+		if (answer == "ok"){
 			var user = await recoveruser_wmail(mail);
 			var login = user.login;
 			var num = getRandomInt(10000);
@@ -324,23 +324,6 @@ async function check_login_function(login, check_login, callback){
 	}
 }
 
-async function check_mail(mail){
-	try{
-		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-		var todo = [mail];
-		var result1 = await db.query(sql, todo);
-		if (result1[0].count == 1){
-			return ('change_ok');
-		}
-		else{
-			return (1);
-		}
-	}
-	catch (err){
-		console.log(err);
-		return (err);
-	}
-}
 
 function check_passwd_sign_up(passwd, verif){
 	if (passwd != verif){
@@ -501,6 +484,29 @@ async function get_id_user(login){
 async function hellog(){
 	try{
 		mon_login = await get_id_user("blabli");
+	}
+	catch (err){
+		console.log(err);
+		return (err);
+	}
+}
+
+async function check_mail(mail, check_mail){
+	try{
+		if (check_mail == "empty"){
+			return ("empty");
+		}
+		else{
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
+			var todo = [mail];
+			var result1 = await db.query(sql, todo);
+			if (result1[0].count >= 1){
+				return ("mail_already_taken");
+			}
+			else{
+				return ("ok");
+			}
+		}
 	}
 	catch (err){
 		console.log(err);
