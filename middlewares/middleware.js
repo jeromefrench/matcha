@@ -2,6 +2,7 @@
 
 module.exports = function(){
 	return function(req, res, next) {
+		console.log(req.url);
 		if (req.session && req.session.ans){
 			res.locals.ans = req.session.ans;
 			req.session.ans = undefined;

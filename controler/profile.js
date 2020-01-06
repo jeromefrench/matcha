@@ -26,9 +26,9 @@ router.route('/:login').get(async (req, res) => {
 	}
 	var find = users.find(element => element.login == req.params.login);
 
-	if (find != undefined){
-		user.last_visit = 'online';
-	}
+	//if (find != undefined){
+	//user.last_visit = 'online';
+	//}
 	var result = await bdd_re.get_user_profile(field['profil']);
 	var user = result[0];
 	if (user.birthday){

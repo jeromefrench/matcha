@@ -10,7 +10,7 @@ router.route('/').get(async (req, res) => {
 	var todo = [userId];
 	var done = await db.query(sql, todo);
 	res.locals.notifs = result;
-	res.render('main_view/notification.ejs');
+	res.render('main_view/notifications.ejs');
 });
 
 module.exports = router;

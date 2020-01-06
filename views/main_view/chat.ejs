@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script>
-	function addMessage(message_){
+	function addMessage(message_, post){
 		var div = document.createElement('div');
 		div.innerHTML = '<a class="avatar">'+
 			'<img src="/assets/avatar/jenny.jpg">'+
@@ -33,17 +33,20 @@
 		div.className = "comment";
 		var myElement = document.getElementById("new_message");
 		myElement.append(div);
-document.getElementById("myTextarea").value = "";
-
+		document.getElementById("myTextarea").value = "";
 
 
 		const Url = 'http://localhost:8080/chat/<%= locals.the_login_i_chat %>'
 		const data = {
 			message_hello: message_
 		};
-		$.post(Url, data, function(){
-			console.log("message post")
-		})
+		console.log("le post")
+		console.log(post)
+		if (post == true){
+			$.post(Url, data, function(){
+				console.log("message post")
+			})
+		}
 	}
 
 	var $chat = $('#chat');
@@ -55,9 +58,11 @@ document.getElementById("myTextarea").value = "";
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
 		console.log("j'envoi le message");
 		console.log(x);
-		addMessage(x);
+		addMessage(x, true);
 		//$chat.submit();
 	});
+
+
 
 
 </script>

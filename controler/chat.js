@@ -8,6 +8,7 @@ router.route('/:login').get(async (req, res) => {
 	//verifier que le login exist
 	//et pas bloqier?
 
+	res.locals.title = "Chat";
 	res.locals.my_login = req.session.login;
 	res.locals.the_login_i_chat = req.params.login;
 	author = req.session.login;

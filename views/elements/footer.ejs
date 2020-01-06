@@ -73,6 +73,14 @@
 				socket.on('message', (data) =>{
 					console.log("Jai recu un message");
 					notification({title: 'New message from '+ data.leUser, content: data.message, icon: '&#128077;'})
+
+					<% if( locals.page == "chat" ) { %>
+					<% } %>
+
+				<% if (locals.title == "Chat"){ %>
+								addMessage(data.message, false);
+				<%}%>
+
 				});
 				socket.on('notiflike', (data) => {
 					notification({title: "New like", content: data.user + " likes you!", icon: '&#128077;'});

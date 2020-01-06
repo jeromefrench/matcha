@@ -7,7 +7,6 @@ module.exports = function(){
 		var myRee = new RegExp('^/change-passwd', 'g');
 		var boolbool = myRee.test(req.url);
 
-
 		if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" && !bool && !boolbool && req.url != "/forgotten-passwd"){
 			res.redirect('/sign-in');
 		}else {

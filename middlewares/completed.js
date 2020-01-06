@@ -20,7 +20,6 @@ module.exports = function(){
 			}
 		}
 		else{
-			console.log(req.url);
 			next();
 		}
 	}
