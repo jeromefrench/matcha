@@ -16,31 +16,33 @@ router.route('/').get(async (req, res) => {
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 
-	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
-		 user = await bdd1.recover_user(req.session.login);
-		 console.log("lala");
-		 console.log(user);
-		result = await bdd.search(user[0], req.session.search);
-		console.log("le result");
-		console.log(result);
+	if (req.session &&
+		req.session.search &&
+		req.session.search.age_debut &&
+		req.session.search.age_fin &&
+		req.session.search.distance &&
+		req.session.search.interet &&
+		req.session.search.popularite){
+		var user = await bdd1.recover_user(req.session.login);
+		var result= await bdd.search(user[0], req.session.search);
 		if (result == undefined || result[0] == undefined){
 			res.render('main_view/research.ejs', {session: req.session});
 		}
 		else{
-			if (req.session.sortby == 'sortage'){
-				res.locals.users = sortBy(result, item => 'desc:' + item.birthday);
+			if (req.session.search.sortby == 'sortage'){
+				req.locals.users = sortBy(result, item => 'desc:' + item.birthday);
 			}
-			else if (req.session.sortby == 'sortdist'){
-				res.locals.users = sortBy(result, item => item.distance);
+			else if (req.session.search.sortby == 'sortdist'){
+				req.locals.users = sortBy(result, item => item.distance);
 			}
-			else if (req.session.sortby == 'sortinter'){
-				res.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
+			else if (req.session.search.sortby == 'sortinter'){
+				req.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
 			}
-			else if (req.session.sortby == 'sortpop'){
-				res.locals.users = sortBy(result, item => 'desc:' + item.pop);
+			else if (req.session.search.sortby == 'sortpop'){
+				req.locals.users = sortBy(result, item => 'desc:' + item.pop);
 			}
-			else if (req.session.sortby == 'sortmatch'){
-				res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
+			else if (req.session.search.sortby == 'sortmatch'){
+				req.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
 			}
 			else{
 				res.locals.users = result;
@@ -128,7 +130,7 @@ router.route('/').post((req, res) => {
 	req.session.search.interet = interet;  //regular expression
 	req.session.search.popularite = popularite;  //regular expression
 	if (req.body.sortby != undefined){
-		req.session.sortby = req.body.sortby;
+		req.session.search.sortby = req.body.sortby;
 	}
 	res.redirect('/research/?page=1');
 });

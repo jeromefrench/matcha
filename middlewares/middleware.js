@@ -13,6 +13,21 @@ module.exports = function(){
 			req.session.ans = {};
 		}
 
+
+		// if (req.session && req.session.search){
+		// 	res.locals.search = req.session.search;
+		// 	req.session.search = undefined;
+		// 	req.session.search = {};
+		// }
+		// else{
+		// 	res.locals.search = {};
+		// 	req.session.search = {};
+		// }
+
+
+
+
+
 		if (req.session && req.session.field){
 			res.locals.field = req.session.field;
 			req.session.field = undefined;

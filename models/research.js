@@ -76,10 +76,6 @@ function dateur_fin(fin){
 	return date_fin;
 }
 
-function distance_function(profile){
-	bool = profile.distance <= profile.distance_max;
-	return bool;
-}
 
 function inter_rab(profile){
 	var i = 0;
@@ -146,7 +142,6 @@ exports.search = async function (user, search){
 			var sql = "SELECT * FROM `docker`.`user_info` LEFT OUTER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` LEFT OUTER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` LEFT OUTER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'women' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = ?) AND `birthday` BETWEEN ? AND ?";
 		}
 		else if (user.gender == 'female'){
-			console.log('CEST BIEN ICI');
 			var sql = "SELECT * FROM `docker`.`user_info` LEFT OUTER JOIN `docker`.`photo` ON `docker`.`user_info`.`id_user` = `docker`.`photo`.`id_user` LEFT OUTER JOIN `docker`.`user` ON `docker`.`user_info`.`id_user` = `docker`.`user`.`id` LEFT OUTER JOIN `popularite` ON `docker`.`popularite`.`id_user` = `docker`.`user_info`.`id_user` WHERE `user`.`id` != ? AND `user_info`.`orientation` != 'men' AND `user_info`.`id_user` NOT IN (SELECT `id_block` FROM `block` WHERE `id_user` = ?) AND `birthday` BETWEEN ? AND ?";
 		}
 		else{
@@ -163,40 +158,40 @@ exports.search = async function (user, search){
 		array_inter = user.interests.split(',');
 	}
 	var result = await db.query(sql, todo);
-	console.log("RESUUUUULT");
-	console.log(result);
 	if(result == undefined || result[0] == undefined){
 		return (result);
 	}
 	else{
 		var dist_user = {lat: user.latitude, lon: user.longitude};
 		result.forEach((profile) => {
-			i++;
 			birthday = moment(profile.birthday);
-			profile.age = -(birthday.diff(moment(), 'years'));
-			profile.ecart = profile.age - user.age;
-			if (profile.ecart < 0){profile.ecart = -profile.ecart;}
-			profile.popRequired = search.popularite;
-			profile.array_inter = array_inter;
-			profile.nb_inter = search.interet;
-			var dist_profile = {lat: profile.latitude, lon: profile.longitude};
-			var dist = geodist(dist_profile, dist_user, {unit: 'km'});
-			profile.distance = dist;
-			profile.distance_max = search.distance;
-			var nb_com = inter_rab(profile);
-			profile.nb_com = nb_com;
-			console.log("POP");
-			console.log(profile.pop);
-			if (i == result.length){
-				console.log("CEST BON ON CONTINUE");
-				var filter_result = result.filter(distance_function);
-				// console.log(filter_result);
-				var filter_res = filter_result.filter(inter_function);
-				// console.log(filter_res);
-				filter_result = filter_res.filter(pop_function);
-				console.log(filter_result);
-				return (filter_result);
+			result[i].age = -(birthday.diff(moment(), 'years'));
+			result[i].ecart = result[i].age - user.age;
+			if (result[i].ecart < 0){
+				result[i].ecart = -result[i].ecart;
 			}
+			result[i].popRequired = search.popularite;
+			result[i].array_inter = array_inter;
+			result[i].nb_inter = search.interet;
+			var dist_profile = {lat: result[i].latitude, lon: result[i].longitude};
+			var dist = geodist(dist_profile, dist_user, {unit: 'km'});
+			result[i].distance = dist;
+			result[i].distance_max = search.distance;
+			var nb_com = inter_rab(result[i]);
+			result[i].nb_com = nb_com;
+			i++;
 		});
+		var filter_result = result.filter(distance_function);
+		var filter_res = filter_result.filter(inter_function);
+		filter_result = filter_res.filter(pop_function);
+		var le_result = filter_result;
+		return (le_result);
 	}
+}
+
+
+
+function distance_function(profile){
+	bool = profile.distance <= profile.distance_max;
+	return bool;
 }
