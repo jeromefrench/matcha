@@ -13,6 +13,9 @@ module.exports.isCompleted  = isCompleted ;
 module.exports.savethePic  = savethePic ;
 module.exports.get_info_user  = get_info_user ;
 module.exports.get_completed  = get_completed ;
+module.exports.insert_info_user  = insert_info_user ;
+module.exports.savePic  = savePic ;
+module.exports.update_info_user  = update_info_user ;
 
 
 async function InfoUser (login, property, field){
@@ -331,12 +334,13 @@ async function isCompleted (login){
 async function update_info_user (login, property, field){
 	try {
 		if (property != "interests"){
-			id_user = await get_id_user(login);
+			var id_user = await get_id_user(login);
 			var sql = "UPDATE `user_info` SET `"+property+"` = ? WHERE `id_user` = ?";
 			var todo = [field, id_user];
 			result = await db.query(sql, todo);
 		}
 		else{
+			var id_user = await get_id_user(login);
 			interests = field;
 			var sql = "UPDATE `user_info` SET `interests` = ?  WHERE `id_user` = ?";
 			inter = "";
@@ -371,13 +375,14 @@ async function update_info_user (login, property, field){
 async function insert_info_user (login, property, field){
 	try {
 		if (property != "interests"){
-			id_user = await get_id_user(login);
+			var id_user = await get_id_user(login);
 			var sql = "INSERT INTO `user_info` (`id_user`, `"+property+"`) VALUES (?, ?);";
 			var todo = [id_user, field];
 			result = await db.query(sql, todo);
 		}
 		else
 		{
+			var id_user = await get_id_user(login);
 			interests = field;
 			var sql = "INSERT INTO `user_info` (`id_user`, `interests`) VALUES (?, ?);";
 			inter = "";
