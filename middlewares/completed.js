@@ -9,8 +9,10 @@ module.exports = function(){
 		var myRee = new RegExp('^/change-passwd', 'g');
 		var boolbool = myRee.test(req.url);
 
+		var myReee = new RegExp('^/faker', 'g');
+		var boolboolbool = myReee.test(req.url);
 
-		if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" && !bool && !boolbool && req.url != "/forgotten-passwd" ){
+		if (req.url != "/sign-in" && req.url != "/sign-up" && req.url != "/my-account" && req.url != "/about-you" && req.url != "/" && req.url != "/sign-out" && !bool && !boolbool && !boolboolbool && req.url != "/forgotten-passwd" ){
 			var result = await bdd.get_completed(req.session.login);
 			if (result && result['completed'] == 1){
 				next();

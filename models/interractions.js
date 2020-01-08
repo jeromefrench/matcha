@@ -206,7 +206,7 @@ async function insert_message (content, date){
 	result = await db.query(sql, todo);
 }
 
-
+module.exports.insert_log  = insert_log ;
 async function insert_log (id_user){
 	var  sql = 'INSERT INTO `connection_log` (`id_user`, `last_visit`) VALUES (?, ?)';
 	date = new Date();
@@ -215,20 +215,29 @@ async function insert_log (id_user){
 }
 
 async function getRandomInt(max){
-	return Math.floor(Math.random() * Math.floor(max));
+	var nbr =  Math.floor(Math.random() * Math.floor(max));
+	return nbr;
 }
 
+module.exports.add_fakeVueLike  = add_fakeVueLike ;
 async function add_fakeVueLike (id_user){
-	var vue = getRandomInt(1000);
-	if (vue == 0){vue = 1;}
-	var like = getRandomInt(vue);
+	try{
+	var vue = await getRandomInt(1000);
+	if (vue == 0){
+		vue = 1;
+	}
+	var like = await getRandomInt(vue);
 	var pop = (like / vue) * 5;
 	var sql = "INSERT INTO `vue_profile` (`id_user`, `vue`) VALUES (?, ?)";
 	var todo = [id_user, vue];
-	done = await db.query(sql, todo);
+	var done = await db.query(sql, todo);
 	sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
 	todo = [id_user, like, vue, pop];
 	done = await db.query(sql, todo);
+	}
+	catch (err){
+		console.log(err);
+	}
 }
 
 exports.add_faker = async function(user_log, user_fake){

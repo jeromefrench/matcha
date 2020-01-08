@@ -514,6 +514,21 @@ async function check_mail(mail, check_mail){
 	}
 }
 
+
+module.exports.valide_user_fake = valide_user_fake;
+async function valide_user_fake (login, passwd, lname, fname, mail){
+	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+	var todo = [login, passwd, fname, lname, mail];
+	var done = await db.query(sql, todo);
+	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+	// todo = [login];
+	// conn.connection.query(sql, todo, (err, res) => {
+		// if (err) throw err;
+		// console.log(login + "deleted from user_sub");
+	// });
+}
+
+
 async function check_mail_function(mail, check_mail){
 	try{
 		if (check_mail == "empty"){
@@ -630,18 +645,3 @@ function check_passwd(passwd){
 
 
 
-// exports.valide_user_fake = function (login, passwd, lname, fname, mail, callback){
-// 	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-// 	var todo = [login, passwd, fname, lname, mail];
-// 	conn.connection.query(sql, todo, (err, res) => {
-// 		if (err) throw err;
-// 		console.log(login + "added in user");
-// 		callback();
-// 	});
-// 	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
-// 	// todo = [login];
-// 	// conn.connection.query(sql, todo, (err, res) => {
-// 		// if (err) throw err;
-// 		// console.log(login + "deleted from user_sub");
-// 	// });
-// }
