@@ -17,8 +17,12 @@ router.route('/').get(async (req, res) => {
 	const endIndex = page * limit;
 
 	if (req.session.search && req.session.search.age_debut && req.session.search.age_fin && req.session.search.distance && req.session.search.interet && req.session.search.popularite){
-	 	user = await bdd1.recover_user(req.session.login);
+		 user = await bdd1.recover_user(req.session.login);
+		 console.log("lala");
+		 console.log(user);
 		result = await bdd.search(user[0], req.session.search);
+		console.log("le result");
+		console.log(result);
 		if (result == undefined || result[0] == undefined){
 			res.render('main_view/research.ejs', {session: req.session});
 		}
