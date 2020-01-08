@@ -10,8 +10,8 @@ router.route('/').get((req, res) => {
 		res.render('main_view/sign-up.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('back');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -46,8 +46,8 @@ router.route('/').post(async (req, res) => {
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('back');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

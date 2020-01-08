@@ -108,8 +108,8 @@ router.route('/').get(async (req, res) => {
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -142,17 +142,11 @@ router.route('/').post((req, res) => {
 		if (req.body.sortby != undefined){
 			req.session.search.sortby = req.body.sortby;
 		}
-		console.log("--------------------");
-		console.log("req body");
-		console.log(req.body);
-
-		console.log("--------------------");
-		console.log(req.session.search);
 		res.redirect('/research/?page=1');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

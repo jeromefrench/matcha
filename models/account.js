@@ -7,7 +7,7 @@ module.exports.checkLoginSignIn = checkLoginSignIn;
 module.exports.isLoginPasswdMatch = isLoginPasswdMatch;
 module.exports.connect_user = connect_user;
 module.exports.IsFieldOk = IsFieldOk;
-module.exports.changePass = changePass;
+//module.exports.changePass = changePass;
 module.exports.recover_user_data = recover_user_data;
 module.exports.valide_user = valide_user;
 module.exports.insert_user = insert_user;
@@ -26,13 +26,11 @@ async function update_user_and_passwd (field,  passwd, old_login){
 		var fname = field['fname'];
 		var mail = field['mail'];
 		var login = field['login'];
-
-    	var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
+		var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
 		var todo = [lname, fname, mail, login, passwd, old_login];
 		var result = await db.query(sql, todo);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -61,7 +59,6 @@ async function checkLoginSignIn (login){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -139,7 +136,6 @@ async function recover_user_ (login){
 		return (results[0]);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -153,7 +149,6 @@ async function check_field_my_account (old_login, field){
 		return (check_field);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -166,7 +161,6 @@ async function update_user(lname, fname, mail, login, old_login){
 		return "done";
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -189,7 +183,6 @@ async function send_passwd (mail){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -207,23 +200,27 @@ async function IsLoginNumMatch (login, num, cat){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
 
 function IsFieldOk(npass, verif){
-	check_passwd = check_passwd_sign_up(npass, verif);
-	return (check_passwd);
+	try {
+		check_passwd = check_passwd_sign_up(npass, verif);
+		return (check_passwd);
+	}
+	catch (err){
+		return (err);
+	}
 }
 
-function changePass(login, npass){
-	var sql = "UPDATE `user` SET `passwd` = ? WHERE `login` LIKE ?";
-	var todo = [npass, login];
-	conn.connection.query(sql, todo, (err, result) => {
-		if (err) throw err;
-	});
-}
+// function changePass(login, npass){
+// 	var sql = "UPDATE `user` SET `passwd` = ? WHERE `login` LIKE ?";
+// 	var todo = [npass, login];
+// 	conn.connection.query(sql, todo, (err, result) => {
+// 		if (err) throw err;
+// 	});
+// }
 
 async function recover_user_data (num, callback){
 	try{
@@ -233,7 +230,6 @@ async function recover_user_data (num, callback){
 		return (res[0]);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -249,26 +245,30 @@ async function valide_user(login, passwd, lname, fname, mail, num){
 		return("");
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
 
 function check_passwd_function(passwd, verif){
-	if (passwd == verif && verif == ""){
-		return ("ok");
-	}
-	else if (passwd != verif){
-		return ("passwd_different");
-	}
-	else if (passwd == verif){
-		check = check_passwd(passwd);
-		if (check == true){
-			return ("change_passwd")
+	try{
+		if (passwd == verif && verif == ""){
+			return ("ok");
 		}
-		else {
-			return ("wrong_format");
+		else if (passwd != verif){
+			return ("passwd_different");
 		}
+		else if (passwd == verif){
+			check = check_passwd(passwd);
+			if (check == true){
+				return ("change_passwd")
+			}
+			else {
+				return ("wrong_format");
+			}
+		}
+	}
+	catch (err){
+		return (err);
 	}
 }
 
@@ -293,7 +293,6 @@ async function check_login_function_my_account(old_login, login, check_login){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -319,76 +318,96 @@ async function check_login_function(login, check_login, callback){
 			}
 			//});
 		}
-	} catch (err) {
+	}
+	catch (err) {
 		return (err);
 	}
 }
 
-
 function check_passwd_sign_up(passwd, verif){
-	if (passwd != verif){
-		return ("passwd_different");
-	}
-	else if (passwd == verif && (verif == "" || verif == " ")){
-		return ("empty");
-	}
-	else if (passwd == verif){
-		check = check_passwd(passwd);
-		if (check == true){
-			return ("ok")
+	try {
+		if (passwd != verif){
+			return ("passwd_different");
 		}
-		else {
-			return ("wrong_format");
+		else if (passwd == verif && (verif == "" || verif == " ")){
+			return ("empty");
 		}
+		else if (passwd == verif){
+			check = check_passwd(passwd);
+			if (check == true){
+				return ("ok")
+			}
+			else {
+				return ("wrong_format");
+			}
+		}
+	}
+	catch (err) {
+		return (err);
 	}
 }
 
 function help_noempty(champs){
-	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
-		return false;
-	return true;
+	try {
+		if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
+			return false;
+		return true;
+	}
+	catch (err) {
+		return (err);
+	}
 }
 
 function check_noempty(field){
-	check_field = {};
-	check_field['lname'] = "ok";
-	check_field['fname'] = "ok";
-	check_field['mail'] = "ok";
-	check_field['login'] = "ok";
-	if (help_noempty(field['lname']) == false){
-		check_field['lname']= "empty";
+	try {
+		check_field = {};
+		check_field['lname'] = "ok";
+		check_field['fname'] = "ok";
+		check_field['mail'] = "ok";
+		check_field['login'] = "ok";
+		if (help_noempty(field['lname']) == false){
+			check_field['lname']= "empty";
+		}
+		if (help_noempty(field['fname']) == false){
+			check_field['fname'] = "empty";
+		}
+		if (help_noempty(field['mail']) == false){
+			check_field['mail'] = "empty";
+		}
+		if (help_noempty(field['login']) == false){
+			check_field['login'] = "empty";
+		}
+		return check_field;
 	}
-	if (help_noempty(field['fname']) == false){
-		check_field['fname'] = "empty";
+	catch (err) {
+		return (err);
 	}
-	if (help_noempty(field['mail']) == false){
-		check_field['mail'] = "empty";
-	}
-	if (help_noempty(field['login']) == false){
-		check_field['login'] = "empty";
-	}
-	return check_field;
 }
 
 function sendmail(mail, subject, text){
-	var transporter = mailer.createTransport({
-		sendmail: true,
-		newline: 'unix',
-		path: '/usr/sbin/sendmail'
-	});
-	var letter = {
-		from: emoji.emojify('Matcha\'s Team :heart: matcha@no-reply.fr'),
-		to: mail,
-		subject: subject,
-		html: text
-	}
-	transporter.sendMail(letter, (err, res) => {
-		if (err){
-			console.log(err);
+	try {
+		var transporter = mailer.createTransport({
+			sendmail: true,
+			newline: 'unix',
+			path: '/usr/sbin/sendmail'
+		});
+		var letter = {
+			from: emoji.emojify('Matcha\'s Team :heart: matcha@no-reply.fr'),
+			to: mail,
+			subject: subject,
+			html: text
 		}
-		else
-			transporter.close();
-	});
+		transporter.sendMail(letter, (err, res) => {
+			if (err){
+				throw err;
+			}
+			else
+				transporter.close();
+		});
+	}
+	catch (err) {
+		return (err);
+	}
 }
 
 function getRandomInt(max){
@@ -403,7 +422,6 @@ async function recoveruser_wmail(email){
 		return (results[0]);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -450,7 +468,6 @@ async function save_connection_log (login){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -463,7 +480,6 @@ async function get_id_user (login){
 		return(result[0].id);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -476,7 +492,6 @@ async function get_id_user(login){
 		return(result[0].id);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -486,7 +501,6 @@ async function hellog(){
 		mon_login = await get_id_user("blabli");
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -509,7 +523,6 @@ async function check_mail(mail, check_mail){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -517,15 +530,20 @@ async function check_mail(mail, check_mail){
 
 module.exports.valide_user_fake = valide_user_fake;
 async function valide_user_fake (login, passwd, lname, fname, mail){
-	var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
-	var todo = [login, passwd, fname, lname, mail];
-	var done = await db.query(sql, todo);
-	// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
-	// todo = [login];
-	// conn.connection.query(sql, todo, (err, res) => {
+	try{
+		var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
+		var todo = [login, passwd, fname, lname, mail];
+		var done = await db.query(sql, todo);
+		// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
+		// todo = [login];
+		// conn.connection.query(sql, todo, (err, res) => {
 		// if (err) throw err;
 		// console.log(login + "deleted from user_sub");
-	// });
+		// });
+	}
+	catch (err){
+		return (err);
+	}
 }
 
 
@@ -547,44 +565,48 @@ async function check_mail_function(mail, check_mail){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
 
 function check_passwd(passwd){
-	var letters = "abcdefghijklmnopqrstuvwxyz";
-	var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var numbers = "0123456789";
-	var spec = "%#:$*@_-&^!>?()[]{}+=.,;";
-	var l = 0;
-	var m = 0;
-	var n = 0;
-	var s = 0;
-	for(var i = 0; i < letters.length; i++){
-		if (passwd.indexOf(letters.charAt(i)) != -1){
-			l++;
+	try {
+		var letters = "abcdefghijklmnopqrstuvwxyz";
+		var maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		var numbers = "0123456789";
+		var spec = "%#:$*@_-&^!>?()[]{}+=.,;";
+		var l = 0;
+		var m = 0;
+		var n = 0;
+		var s = 0;
+		for(var i = 0; i < letters.length; i++){
+			if (passwd.indexOf(letters.charAt(i)) != -1){
+				l++;
+			}
 		}
-	}
-	for (i = 0; i < maj.length; i++){
-		if (passwd.indexOf(maj.charAt(i)) != -1){
-			m++;
+		for (i = 0; i < maj.length; i++){
+			if (passwd.indexOf(maj.charAt(i)) != -1){
+				m++;
+			}
 		}
-	}
-	for (i = 0; i < numbers.length; i++){
-		if (passwd.indexOf(numbers.charAt(i)) != -1){
-			n++;
+		for (i = 0; i < numbers.length; i++){
+			if (passwd.indexOf(numbers.charAt(i)) != -1){
+				n++;
+			}
 		}
-	}
-	for (i = 0; i < spec.length; i++){
-		if (passwd.indexOf(spec.charAt(i)) != -1){
-			s++;
+		for (i = 0; i < spec.length; i++){
+			if (passwd.indexOf(spec.charAt(i)) != -1){
+				s++;
+			}
 		}
+		if (l == 0 || m == 0 || n == 0 || s == 0 || passwd.length < 9){
+			return false;
+		}
+		return true;
 	}
-	if (l == 0 || m == 0 || n == 0 || s == 0 || passwd.length < 9){
-		return false;
+	catch (err){
+		return (err);
 	}
-	return true;
 }
 
 // var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";

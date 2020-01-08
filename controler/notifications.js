@@ -15,8 +15,8 @@ router.route('/').get(async (req, res) => {
 		res.render('main_view/notifications.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

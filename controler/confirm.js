@@ -21,8 +21,8 @@ router.route('/:login/:num').get(async (req, res) => {
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

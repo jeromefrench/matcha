@@ -22,8 +22,8 @@ router.route('/:login').post(async (req, res) => {
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

@@ -6,10 +6,6 @@ const router = require('express').Router();
 
 router.route('/:login').get(async (req, res) => {
 	try {
-
-		//verifier que le login exist
-		//et pas bloqier?
-
 		res.locals.title = "Chat";
 		res.locals.my_login = req.session.login;
 		res.locals.the_login_i_chat = req.params.login;
@@ -17,30 +13,36 @@ router.route('/:login').get(async (req, res) => {
 		var le_recever = req.params.login;
 		var id_author = await bdd.get_id_user(author);
 		var id_recever = await bdd.get_id_user(le_recever);
-		var messages = await bdd_message.get_message(id_author, id_recever);
-		var itemsProcessed = 0;
-		if (messages[0] == undefined){
-			res.locals.messages = undefined;
-    		res.render('main_view/chat');
-		}else {
-			messages.forEach(function (message){
-				if (message.id_author == id_author){
-					message.author = author;
-				}
-				else {
-					message.author = le_recever;
-				}
-				itemsProcessed++;
-				if(itemsProcessed === messages.length) {
-					res.locals.messages = messages;
-    				res.render('main_view/chat');
-    			}
-			});
+		if (id_recever == undefined){
+
+		res.render('main_view/error.ejs');
+		}
+		else {
+			var messages = await bdd_message.get_message(id_author, id_recever);
+			var itemsProcessed = 0;
+			if (messages[0] == undefined){
+				res.locals.messages = undefined;
+    			res.render('main_view/chat');
+			}else {
+				messages.forEach(function (message){
+					if (message.id_author == id_author){
+						message.author = author;
+					}
+					else {
+						message.author = le_recever;
+					}
+					itemsProcessed++;
+					if(itemsProcessed === messages.length) {
+						res.locals.messages = messages;
+    					res.render('main_view/chat');
+    				}
+				});
+			}
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -65,8 +67,8 @@ router.route('/:login').post(async (req, res) => {
 		res.redirect('/chat/'+login+'');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

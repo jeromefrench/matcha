@@ -12,8 +12,8 @@ function bebe_char(res, all_user){
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 }
 
@@ -25,8 +25,8 @@ router.route('/').get(async (req, res) => {
  		res.render('main_view/dashboard.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -38,8 +38,8 @@ router.route('/:my-like').get(async (req, res) => {
  		res.render('main_view/dashboard.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -51,8 +51,8 @@ router.route('/:they-like-me').get(async (req, res) => {
  		res.render('main_view/dashboard.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -65,8 +65,8 @@ router.route('/:they-watched-me').get(async (req, res) => {
  		res.render('main_view/dashboard.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -79,8 +79,8 @@ router.route('/:my-match').get(async (req, res) => {
  		res.render('main_view/dashboard.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

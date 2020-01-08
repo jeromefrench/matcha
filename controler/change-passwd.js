@@ -9,8 +9,8 @@ router.route('/:login/:num').get((req, res) => {
 		res.render('main_view/change-passwd.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -46,8 +46,8 @@ router.route('/:login/:num').post(async (req, res) => {
 		}
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 

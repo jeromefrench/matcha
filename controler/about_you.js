@@ -41,8 +41,8 @@ router.route('/').get(async (req, res) => {
 		res.render('main_view/about-you.ejs');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -136,8 +136,8 @@ router.route('/').post(async (req, res) => {
 		res.redirect('/about-you');
 	}
 	catch (err){
-		console.log(err);
-		res.redirect('/error');
+		console.error(err);
+		res.render('main_view/error.ejs');
 	}
 });
 
@@ -147,7 +147,6 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
-			console.log(place.components);
 			field['country'] = place.components.country;
 			field['city'] = place.components.town;
 			field['zip_code'] = place.components.postcode;
@@ -161,7 +160,7 @@ async function searchAdresse(field){
 		return field;
 	}
 	catch (err){
-		console.log(err);
+		console.error(err);
 		return (err);
 	}
 }

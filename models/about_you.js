@@ -28,7 +28,6 @@ async function InfoUser (login, property, field){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -46,7 +45,6 @@ async function count_photo (id_user){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -58,7 +56,6 @@ async function savePic (id_user, path, profile){
 		var result = await db.query(sql, todo);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -77,7 +74,6 @@ async function getPic (id_user){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -90,7 +86,6 @@ async function get_id_user (login){
 		return (result[0].id);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -103,7 +98,6 @@ async function profileToZero (id_user){
 		return ("done");
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -116,7 +110,6 @@ async function profileToOne (path){
 		return ("done");
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -129,7 +122,6 @@ async function isProfile (path){
 		return (result);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -142,124 +134,168 @@ async function delPic (path){
 		return "done";
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
 
 function check_field_about_you (field){
-	var check_field = {};
+	try {
+		var check_field = {};
 
-	check_field['gender'] = check_gender(field['gender']);
-	check_field['orientation'] = check_orientation(field['orientation']);
-	check_field['birthday'] = check_birthday(field['birthday']);
-	check_field['bio'] = check_bio(field['bio']);
-	check_field['interests'] = check_interests(field['interests']);
-	return check_field;
+		check_field['gender'] = check_gender(field['gender']);
+		check_field['orientation'] = check_orientation(field['orientation']);
+		check_field['birthday'] = check_birthday(field['birthday']);
+		check_field['bio'] = check_bio(field['bio']);
+		check_field['interests'] = check_interests(field['interests']);
+		return check_field;
+	}
+	catch (err){
+		return (err);
+	}
 }
 
 function check_field_localisation (field, check_field){
-	check_field['country'] = help_noempty(field['country']);
-	check_field['city'] = help_noempty(field['city']);
-	check_field['zip_code'] = help_noempty(field['zip_code']);
-	check_field['localisation'] = check_localisation(check_field);
-	return check_field;
+	try {
+		check_field['country'] = help_noempty(field['country']);
+		check_field['city'] = help_noempty(field['city']);
+		check_field['zip_code'] = help_noempty(field['zip_code']);
+		check_field['localisation'] = check_localisation(check_field);
+		return check_field;
+	}
+	catch (err){
+		return (err);
+	}
 }
 
 function check_localisation(check_field){
-	if (check_field['country'] == "ok" &&
-		check_field['city'] == "ok" &&
-		check_field['zip_code'] == "ok"){
-		return "ok";
+	try {
+		if (check_field['country'] == "ok" &&
+			check_field['city'] == "ok" &&
+			check_field['zip_code'] == "ok"){
+			return "ok";
+		}
+		else{
+			return "empty"
+		}
 	}
-	else{
-		return "empty"
+	catch (err){
+		return (err);
 	}
 }
 
 function help_noempty(champs){
-	if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
-		return "empty";
-	return "ok";
+	try {
+		if (champs == undefined || champs == "" || champs.indexOf(" ") > -1)
+			return "empty";
+		return "ok";
+	}
+	catch (err){
+		return (err);
+	}
 }
 
 function check_gender(gender){
-	check_field = help_noempty(gender);
-	if (check_field == "ok" && gender != "male" && gender != "female" && gender != "other"){
-		check_field = "wrong";
+	try {
+		check_field = help_noempty(gender);
+		if (check_field == "ok" && gender != "male" && gender != "female" && gender != "other"){
+			check_field = "wrong";
+		}
+		return check_field;
 	}
-	return check_field;
+	catch (err){
+		return (err);
+	}
 }
 
 function check_orientation(orientation){
-	check_field = help_noempty(orientation);
-	if (check_field == "ok" && orientation != "everyone" && orientation != "women" && orientation != "men"){
-		check_field = "wrong";
+	try {
+		check_field = help_noempty(orientation);
+		if (check_field == "ok" && orientation != "everyone" && orientation != "women" && orientation != "men"){
+			check_field = "wrong";
+		}
+		return check_field;
 	}
-	return check_field;
+	catch (err){
+		return (err);
+	}
 }
 
 function check_birthday(birthday){
-	check_field = help_noempty(birthday);
+	try {
+		check_field = help_noempty(birthday);
 
-	if (check_field == "empty"){
-		return check_field
-	}
-	else{
-		var myRe = new RegExp('[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]', 'g');
-		var bool = myRe.test(birthday);
-		if (bool == true){
-			return "ok"
+		if (check_field == "empty"){
+			return check_field
 		}
-		else {
-			return "wrong"
+		else{
+			var myRe = new RegExp('[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]', 'g');
+			var bool = myRe.test(birthday);
+			if (bool == true){
+				return "ok"
+			}
+			else {
+				return "wrong"
+			}
 		}
+		return check_field;
 	}
-	return check_field;
+	catch (err){
+		return (err);
+	}
 }
 
 function check_bio(bio){
-	//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
-	if (bio != undefined && bio != ""){
-		check_field = "ok";
+	try {
+		//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
+		if (bio != undefined && bio != ""){
+			check_field = "ok";
+		}
+		else{
+			check_field = "empty";
+		}
+		return check_field;
 	}
-	else{
-		check_field = "empty";
+	catch (err){
+		return (err);
 	}
-	return check_field;
 }
 
 function check_interests(interests){
-	var array = Array.isArray(interests);
-	var check_field = "ok";
-	var check_inter;
-	if (array == true) {
-		interests.forEach((inter) => {
-			check_inter = help_noempty(inter);
-			if (check_field == "ok" && check_inter == "ok" &&
-				inter != "voyage" &&
-				inter != "cuisine" &&
-				inter != "escalade" &&
-				inter != "equitation" &&
-				inter != "soleil" &&
-				inter != "sieste"){
+	try {
+		var array = Array.isArray(interests);
+		var check_field = "ok";
+		var check_inter;
+		if (array == true) {
+			interests.forEach((inter) => {
+				check_inter = help_noempty(inter);
+				if (check_field == "ok" && check_inter == "ok" &&
+					inter != "voyage" &&
+					inter != "cuisine" &&
+					inter != "escalade" &&
+					inter != "equitation" &&
+					inter != "soleil" &&
+					inter != "sieste"){
+					check_field = "wrong";
+				}
+			});
+		}
+		else{
+			check_field = help_noempty(interests);
+			if (check_field == "ok" &&
+				interests != "voyage" &&
+				interests != "cuisine" &&
+				interests != "escalade" &&
+				interests != "equitation" &&
+				interests != "soleil" &&
+				interests != "sieste"){
 				check_field = "wrong";
 			}
-		});
-	}
-	else{
-		check_field = help_noempty(interests);
-		if (check_field == "ok" &&
-			interests != "voyage" &&
-			interests != "cuisine" &&
-			interests != "escalade" &&
-			interests != "equitation" &&
-			interests != "soleil" &&
-			interests != "sieste"){
-			check_field = "wrong";
 		}
+		return check_field;
 	}
-	return check_field;
+	catch (err){
+		return (err);
+	}
 }
 
 async function get_id_user (login){
@@ -270,7 +306,6 @@ async function get_id_user (login){
 		return (result[0].id);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -284,26 +319,30 @@ async function get_photo (login){
 		return (result);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
 
 function check_picture (files, login, number){
-	var check_pic = "ok";
-	if ((files == undefined || files.photo == undefined || files.photo.size == 0) && number == 0){
-		check_pic = "no_pic_uploaded";
+	try {
+		var check_pic = "ok";
+		if ((files == undefined || files.photo == undefined || files.photo.size == 0) && number == 0){
+			check_pic = "no_pic_uploaded";
+		}
+		else if (files == undefined || files.photo == undefined || files.photo.size == 0){
+			check_pic = "nothing";
+		}
+		else if (files.photo.mimetype != "image/jpeg"){
+			check_pic = "wrong_format";
+		}
+		else if (number > 4){
+			check_pic = "photo_exed_5";
+		}
+		return check_pic;
 	}
-	else if (files == undefined || files.photo == undefined || files.photo.size == 0){
-		check_pic = "nothing";
+	catch (err){
+		return (err);
 	}
-	else if (files.photo.mimetype != "image/jpeg"){
-		check_pic = "wrong_format";
-	}
-	else if (number > 4){
-		check_pic = "photo_exed_5";
-	}
-	return check_pic;
 }
 
 async function isCompleted (login){
@@ -326,7 +365,6 @@ async function isCompleted (login){
 
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -367,7 +405,6 @@ async function update_info_user (login, property, field){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -409,7 +446,6 @@ async function insert_info_user (login, property, field){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -427,7 +463,6 @@ async function count_photo (id_user){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -446,7 +481,6 @@ async  function is_info_user_exist (login){
 		}
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -463,7 +497,6 @@ async function savethePic (files, login, number){
 		return done;
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -476,7 +509,6 @@ async function get_the_info_user (login){
 		return (result);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -517,7 +549,6 @@ async function get_info_user (login){
 		return user;
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }
@@ -531,7 +562,6 @@ async function get_completed (login){
 		return (result[0]);
 	}
 	catch (err){
-		console.log(err);
 		return (err);
 	}
 }

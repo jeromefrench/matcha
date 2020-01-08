@@ -11,7 +11,7 @@ router.route('/').get((req, res) => {
 	res.redirect('/sign-in');
 	}
 	catch (err){
-		console.log(err);
+		console.error(err);
 		res.redirect('/error');
 	}
 });
