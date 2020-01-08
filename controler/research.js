@@ -11,7 +11,6 @@ const router = require('express').Router();
 
 router.route('/').get(async (req, res) => {
 	try {
-
 		const page = parseInt(req.query.page);
 		const limit = 9;
 
@@ -125,11 +124,9 @@ router.route('/').post((req, res) => {
 
 		tab = req.body.inter.match(/^[0-9]*/g);
 		var interet = tab[0];  //regular expression
-
-
 		tab = req.body.popularite.match(/^[0-5]/g);
-		var popularite = tab[0];  //regular expression
 
+		var popularite = tab[0];  //regular expression
 
 		req.session.search = new Object();
 		req.session.search.age_debut = age_debut;

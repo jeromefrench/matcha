@@ -4,29 +4,29 @@
 
 		<div id="age">
 			<p>
-  				<label for="amount">Age range:<span id="add-space"><span></label>
-  				<input name="age" type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				<label for="amount">Age range:<span id="add-space"><span></label>
+				<input name="age" type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
 			</p>
 			<div id="slider-range"></div>
 		</div>
 		<div id="distance">
 			<p>
-  				<label for="amount-distance">Distance maximum:</label>
-  				<input name="distance" type="text" id="amount-distance" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				<label for="amount-distance">Distance maximum:</label>
+				<input name="distance" type="text" id="amount-distance" readonly style="border:0; color:#f6931f; font-weight:bold;">
 			</p>
 			<div id="slider-range-min"></div>
 		</div>
 		<div id="inter">
 			<p>
-  				<label for="amount-inter">Interet en commun:</label>
-  				<input name="inter" type="text" id="amount-inter" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				<label for="amount-inter">Interet en commun:</label>
+				<input name="inter" type="text" id="amount-inter" readonly style="border:0; color:#f6931f; font-weight:bold;">
 			</p>
 			<div id="slider-inter"></div>
 		</div>
 		<div id="popularite">
 			<p>
-  				<label for="amount-popularite">Popularite:</label>
-  				<input name="popularite" type="text" id="amount-popularite" readonly style="border:0; color:#f6931f; font-weight:bold;">
+				<label for="amount-popularite">Popularite:</label>
+				<input name="popularite" type="text" id="amount-popularite" readonly style="border:0; color:#f6931f; font-weight:bold;">
 			</p>
 			<div id="slider-popularite"></div>
 		</div>
@@ -52,8 +52,8 @@
 		</br>
 		</br>
 		<div class="ui centered grid">
-    		<input type="submit" class="ui primary button" value="Research">
-    	</div>
+			<input type="submit" class="ui primary button" value="Research">
+		</div>
 		</br>
 	</div>
 </form>
@@ -85,6 +85,7 @@ margin-bottom:20px;
 </style>
 
 <script>
+
 	var age_fin = <% if (session.search && session.search.age_fin) { %>
 			<%= session.search.age_fin %>
 		<% }else{ %> 
@@ -98,80 +99,76 @@ margin-bottom:20px;
 				<% } %>
 
 
-  		$( function() {
-    		$( "#age #slider-range" ).slider({
-      			range: true,
-      			min: 18,
-      			max: 99,
-      			values: [ age_debut, age_fin ],
-      			slide: function( event, ui ) {
-        			$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
-      			}
-    		});
-    		$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-      			" - " + $( "#slider-range" ).slider( "values", 1 ) + " years old" );
-  		} );
-</script>
+		$( function() {
+			$( "#age #slider-range" ).slider({
+				range: true,
+				min: 18,
+				max: 99,
+				values: [ age_debut, age_fin ],
+				slide: function( event, ui ) {
+					$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
+				}
+			});
+			$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+" - " + $( "#slider-range" ).slider( "values", 1 ) + " years old" );
+		} );
 
 
-<script>
+
 	var distance = 	<% if (session.search && session.search.distance) { %>
 			<%= session.search.distance %>
 		<% }else{ %> 
 					<%= 42 %>
 			<% } %>
-  		$( function() {
-    		$( "#slider-range-min" ).slider({
-      			range: "min",
-      			value: distance,
-      			min: 1,
-      			max: 700,
-      			slide: function( event, ui ) {
-        			$( "#amount-distance" ).val( "" + ui.value  + " km");
-      			}
-    		});
-    		$( "#amount-distance" ).val( "" + $( "#slider-range-min" ).slider( "value" ) + " km" );
-  		} );
-</script>
+		$( function() {
+			$( "#slider-range-min" ).slider({
+				range: "min",
+				value: distance,
+				min: 1,
+				max: 700,
+				slide: function( event, ui ) {
+					$( "#amount-distance" ).val( "" + ui.value  + " km");
+				}
+			});
+			$( "#amount-distance" ).val( "" + $( "#slider-range-min" ).slider( "value" ) + " km" );
+		} );
 
 
-<script>
 	var interet = <% if (session.search && session.search.interet) { %>
 			<%= session.search.interet %>
 		<% }else{ %> 
 					<%= 2 %>
 			<% } %>
-  		$( function() {
-    		$( "#slider-inter" ).slider({
-      			value:interet,
-      			min: 0,
-      			max: 5,
-      			step: 1,
-      			slide: function( event, ui ) {
-        			$( "#amount-inter" ).val( "" + ui.value );
-      			}
-    		});
-    		$( "#amount-inter" ).val( "" + $( "#slider-inter" ).slider( "value" ) );
-  		} );
-</script>
+		$( function() {
+			$( "#slider-inter" ).slider({
+				value:interet,
+				min: 0,
+				max: 5,
+				step: 1,
+				slide: function( event, ui ) {
+					$( "#amount-inter" ).val( "" + ui.value );
+				}
+			});
+			$( "#amount-inter" ).val( "" + $( "#slider-inter" ).slider( "value" ) );
+		} );
 
 
-<script>
+
 	var pop = <% if (session.search && session.search.popularite) { %>
 			<%= session.search.popularite %>
 		<% }else{ %> 
 					<%= 3 %>
 			<% } %>
-  		$( function() {
-    		$( "#slider-popularite" ).slider({
-      			value:pop,
-      			min: 0,
-      			max: 5,
-      			step: 1,
-      			slide: function( event, ui ) {
-        			$( "#amount-popularite" ).val( "" + ui.value + " coeurs" );
-      			}
-    		});
-    		$( "#amount-popularite" ).val( "" + $( "#slider-popularite" ).slider( "value" ) + " coeurs");
-  		} );
+		$( function() {
+			$( "#slider-popularite" ).slider({
+				value:pop,
+				min: 0,
+				max: 5,
+				step: 1,
+				slide: function( event, ui ) {
+					$( "#amount-popularite" ).val( "" + ui.value + " coeurs" );
+				}
+			});
+			$( "#amount-popularite" ).val( "" + $( "#slider-popularite" ).slider( "value" ) + " coeurs");
+		} );
 </script>

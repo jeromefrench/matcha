@@ -19,9 +19,6 @@ var connection = mysql.createConnection({
 	database : 'docker'
 });
 
-
-
-
 function get_id_user (login, callback){
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
@@ -31,9 +28,7 @@ function get_id_user (login, callback){
 	});
 }
 
-
 function isBlock(userLog, isblockLog, callback){
-
 	get_id_user(userLog, (userId) => {
 		get_id_user(isblockLog, (isblockId) => {
 			var sql = "SELECT COUNT(*) AS 'count' FROM `block` WHERE `id_user` = ? AND `id_block` = ?";
@@ -70,7 +65,6 @@ function isMatch(userLog, ismatchLog, callback){
 	});
 }
 
-
 function wasMatch(userLog, wasmatchLog, callback){
 	get_id_user(userLog, (userId) => {
 		get_id_user(wasmatchLog, (wasmatchId) => {
@@ -83,7 +77,6 @@ function wasMatch(userLog, wasmatchLog, callback){
 	});
 }
 
-
 function get_user_my_match (login, callback){
 	var i = 0;
 	bdd.get_id_user(login, (id_user) => {
@@ -95,7 +88,6 @@ function get_user_my_match (login, callback){
 		});
 	})
 }
-
 
 function updateMatch (userLog, ismatchLog){
 	get_id_user(userLog, (userId) => {
@@ -116,7 +108,6 @@ function updateMatch (userLog, ismatchLog){
 		});
 	});
 }
-
 
 exports = module.exports = function(io){
 
@@ -148,10 +139,9 @@ exports = module.exports = function(io){
 							user.count++;
 						}
 						socket.join(currentUser.login, () => {
-							
 							socket.on('vue_profile', (data) => {
-	// console.log("ci ci");
-	// console.log(currentUser);
+								// console.log("ci ci");
+								// console.log(currentUser);
 								// console.log(data);
 								isBlock(data.room, currentUser.login, (block) => {
 									if (block == 0){
