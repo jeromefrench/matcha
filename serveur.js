@@ -84,8 +84,9 @@ app.get('/error', function(req, res){
 	res.send("Une erreur c'est produire");
 });
 app.use(function(req, res, next){
-	res.setHeader('Content-Type', 'text/plain');
-	res.status(404).send('Page introuvable');
+	//res.setHeader('Content-Type', 'text/plain');
+	//res.status(404).send('Page introuvable');
+	res.render('main_view/404.ejs');
 });
 //*****************************************************************************
 //****************************ROUTES*******************************************

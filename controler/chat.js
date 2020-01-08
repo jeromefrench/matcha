@@ -14,8 +14,7 @@ router.route('/:login').get(async (req, res) => {
 		var id_author = await bdd.get_id_user(author);
 		var id_recever = await bdd.get_id_user(le_recever);
 		if (id_recever == undefined){
-
-		res.render('main_view/error.ejs');
+			res.render('main_view/error.ejs');
 		}
 		else {
 			var messages = await bdd_message.get_message(id_author, id_recever);
