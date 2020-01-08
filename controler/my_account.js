@@ -1,15 +1,22 @@
+"use strict";
 let bdd = require('../models/account.js');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/').get(async (req, res) => {
+	try {
 	if (res.locals.check_field == undefined){
 		res.locals.check_field = false;
 	}
 	res.locals.title = "My Account";
 	res.locals.user = await bdd.recover_user_(req.session.login);
 	res.render('main_view/my-account.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 router.route('/').post(async (req, res) => {

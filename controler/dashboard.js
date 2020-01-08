@@ -12,40 +12,70 @@ function bebe_char(res, all_user){
 }
 
 router.route('/').get(async (req, res) => {
-	var all_user = await bdd.get_user_i_like(req.session.login);
-	bebe_char(res, all_user);
-	res.locals.page = "my-like";
- 	res.render('main_view/dashboard.ejs');
+	try {
+		var all_user = await bdd.get_user_i_like(req.session.login);
+		bebe_char(res, all_user);
+		res.locals.page = "my-like";
+ 		res.render('main_view/dashboard.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 router.route('/:my-like').get(async (req, res) => {
-	var all_user = await bdd.get_user_i_like(req.session.login);
-	bebe_char(res, all_user);
-	res.locals.page = "my-like";
- 	res.render('main_view/dashboard.ejs');
+	try {
+		var all_user = await bdd.get_user_i_like(req.session.login);
+		bebe_char(res, all_user);
+		res.locals.page = "my-like";
+ 		res.render('main_view/dashboard.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 router.route('/:they-like-me').get(async (req, res) => {
-	var all_user = await bdd.get_user_they_like_me(req.session.login);
-	bebe_char(res, all_user);
-	res.locals.page = "they-like-me";
- 	res.render('main_view/dashboard.ejs');
+	try {
+		var all_user = await bdd.get_user_they_like_me(req.session.login);
+		bebe_char(res, all_user);
+		res.locals.page = "they-like-me";
+ 		res.render('main_view/dashboard.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 
 router.route('/:they-watched-me').get(async (req, res) => {
-	var all_user = await bdd.get_user_they_watched_me(req.session.login);
-	bebe_char(res, all_user);
-	res.locals.page = "they-watched-me";
- 	res.render('main_view/dashboard.ejs');
+	try {
+		var all_user = await bdd.get_user_they_watched_me(req.session.login);
+		bebe_char(res, all_user);
+		res.locals.page = "they-watched-me";
+ 		res.render('main_view/dashboard.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 
 router.route('/:my-match').get(async (req, res) => {
-	var all_user = await bdd.get_user_my_match(req.session.login);
-	bebe_char(res, all_user);
-	res.locals.page = "my-match";
- 	res.render('main_view/dashboard.ejs');
+	try {
+		var all_user = await bdd.get_user_my_match(req.session.login);
+		bebe_char(res, all_user);
+		res.locals.page = "my-match";
+ 		res.render('main_view/dashboard.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 module.exports = router;

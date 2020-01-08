@@ -7,25 +7,25 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-try {
-	var field = {};
-	var check_field = {};
-	field['mail'] = req.body.mail;
-	check_field['mail'] = await bdd.send_passwd(field['mail']);
+	try {
+		var field = {};
+		var check_field = {};
+		field['mail'] = req.body.mail;
+		check_field['mail'] = await bdd.send_passwd(field['mail']);
 
-	if (check_field['mail'] == "change_ok"){
-		req.session.ans['notification_general'] = "An email with a link has been sent";
-		res.redirect('/forgotten-passwd');
+		if (check_field['mail'] == "change_ok"){
+			req.session.ans['notification_general'] = "An email with a link has been sent";
+			res.redirect('/forgotten-passwd');
+		}
+		else
+		{
+			req.session.ans['notification_general'] = "The email adresse is wrong";
+			res.redirect('/forgotten-passwd');
+		}
 	}
-	else
-	{
-		req.session.ans['notification_general'] = "The email adresse is wrong";
-		res.redirect('/forgotten-passwd');
+	catch (err){
+		console.log(err);
 	}
-}
-catch (err){
-	console.log(err);
-}
 });
 
 module.exports = router;

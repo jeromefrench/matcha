@@ -1,3 +1,4 @@
+"use strict";
 let bdd = require('../models/account.js');
 const router = require('express').Router();
 
@@ -36,6 +37,7 @@ try {
 }
 catch (err){
 	console.log(err);
+	res.redirect('/error');
 }
 });
 
