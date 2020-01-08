@@ -30,10 +30,10 @@
 			</p>
 			<div id="slider-popularite"></div>
 		</div>
-		
-			</br>
-			</br>
-			</br>
+
+		</br>
+		</br>
+		</br>
 		<div style="text-align: center;">
 			Sort by :
 			<div style="display:inline-block;">
@@ -51,10 +51,10 @@
 		</div>
 		</br>
 		</br>
-<div class="ui centered grid">
+		<div class="ui centered grid">
     		<input type="submit" class="ui primary button" value="Research">
     	</div>
-			</br>
+		</br>
 	</div>
 </form>
 
@@ -86,92 +86,92 @@ margin-bottom:20px;
 
 <script>
 	var age_fin = <% if (session.search && session.search.age_fin) { %>
-					<%= session.search.age_fin %>
-					<% }else{ %> 
+			<%= session.search.age_fin %>
+		<% }else{ %> 
 					<%= 42 %>
-					<% } %>
+			<% } %>
 
-	var age_debut = <% if (session.search && session.search.age_debut) { %>
-					<%= session.search.age_debut %>
-					<% }else{ %> 
-					<%= 18 %>
-					<% } %>
+		var age_debut = <% if (session.search && session.search.age_debut) { %>
+				<%= session.search.age_debut %>
+			<% }else{ %> 
+						<%= 18 %>
+				<% } %>
 
 
-  	$( function() {
-    	$( "#age #slider-range" ).slider({
-      		range: true,
-      		min: 18,
-      		max: 99,
-      		values: [ age_debut, age_fin ],
-      		slide: function( event, ui ) {
-        		$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
-      		}
-    	});
-    	$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-      		" - " + $( "#slider-range" ).slider( "values", 1 ) + " years old" );
-  	} );
+  		$( function() {
+    		$( "#age #slider-range" ).slider({
+      			range: true,
+      			min: 18,
+      			max: 99,
+      			values: [ age_debut, age_fin ],
+      			slide: function( event, ui ) {
+        			$( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] + " years old" );
+      			}
+    		});
+    		$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+      			" - " + $( "#slider-range" ).slider( "values", 1 ) + " years old" );
+  		} );
 </script>
 
 
 <script>
 	var distance = 	<% if (session.search && session.search.distance) { %>
-					<%= session.search.distance %>
-					<% }else{ %> 
+			<%= session.search.distance %>
+		<% }else{ %> 
 					<%= 42 %>
-					<% } %>
-  	$( function() {
-    	$( "#slider-range-min" ).slider({
-      		range: "min",
-      		value: distance,
-      		min: 1,
-      		max: 700,
-      		slide: function( event, ui ) {
-        		$( "#amount-distance" ).val( "" + ui.value  + " km");
-      		}
-    	});
-    	$( "#amount-distance" ).val( "" + $( "#slider-range-min" ).slider( "value" ) + " km" );
-  	} );
+			<% } %>
+  		$( function() {
+    		$( "#slider-range-min" ).slider({
+      			range: "min",
+      			value: distance,
+      			min: 1,
+      			max: 700,
+      			slide: function( event, ui ) {
+        			$( "#amount-distance" ).val( "" + ui.value  + " km");
+      			}
+    		});
+    		$( "#amount-distance" ).val( "" + $( "#slider-range-min" ).slider( "value" ) + " km" );
+  		} );
 </script>
 
 
 <script>
 	var interet = <% if (session.search && session.search.interet) { %>
-				<%= session.search.interet %>
-				<% }else{ %> 
-				<%= 2 %>
-				<% } %>
-  	$( function() {
-    	$( "#slider-inter" ).slider({
-      		value:interet,
-      		min: 0,
-      		max: 5,
-      		step: 1,
-      		slide: function( event, ui ) {
-        		$( "#amount-inter" ).val( "" + ui.value );
-      		}
-    	});
-    	$( "#amount-inter" ).val( "" + $( "#slider-inter" ).slider( "value" ) );
-  	} );
+			<%= session.search.interet %>
+		<% }else{ %> 
+					<%= 2 %>
+			<% } %>
+  		$( function() {
+    		$( "#slider-inter" ).slider({
+      			value:interet,
+      			min: 0,
+      			max: 5,
+      			step: 1,
+      			slide: function( event, ui ) {
+        			$( "#amount-inter" ).val( "" + ui.value );
+      			}
+    		});
+    		$( "#amount-inter" ).val( "" + $( "#slider-inter" ).slider( "value" ) );
+  		} );
 </script>
 
 
 <script>
 	var pop = <% if (session.search && session.search.popularite) { %>
-				<%= session.search.popularite %>
-				<% }else{ %> 
-				<%= 3 %>
-				<% } %>
-  	$( function() {
-    	$( "#slider-popularite" ).slider({
-      		value:pop,
-      		min: 0,
-      		max: 5,
-      		step: 1,
-      		slide: function( event, ui ) {
-        		$( "#amount-popularite" ).val( "" + ui.value + " coeurs" );
-      		}
-    	});
-    	$( "#amount-popularite" ).val( "" + $( "#slider-popularite" ).slider( "value" ) + " coeurs");
-  	} );
+			<%= session.search.popularite %>
+		<% }else{ %> 
+					<%= 3 %>
+			<% } %>
+  		$( function() {
+    		$( "#slider-popularite" ).slider({
+      			value:pop,
+      			min: 0,
+      			max: 5,
+      			step: 1,
+      			slide: function( event, ui ) {
+        			$( "#amount-popularite" ).val( "" + ui.value + " coeurs" );
+      			}
+    		});
+    		$( "#amount-popularite" ).val( "" + $( "#slider-popularite" ).slider( "value" ) + " coeurs");
+  		} );
 </script>
