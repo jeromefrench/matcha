@@ -32,19 +32,19 @@ router.route('/').get(async (req, res) => {
 			}
 			else{
 				if (req.session.search.sortby == 'sortage'){
-					req.locals.users = sortBy(result, item => 'desc:' + item.birthday);
+					res.locals.users = sortBy(result, item => 'desc:' + item.birthday);
 				}
 				else if (req.session.search.sortby == 'sortdist'){
-					req.locals.users = sortBy(result, item => item.distance);
+					res.locals.users = sortBy(result, item => item.distance);
 				}
 				else if (req.session.search.sortby == 'sortinter'){
-					req.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
+					res.locals.users = sortBy(result, item => 'desc:' + item.nb_com);
 				}
 				else if (req.session.search.sortby == 'sortpop'){
-					req.locals.users = sortBy(result, item => 'desc:' + item.pop);
+					res.locals.users = sortBy(result, item => 'desc:' + item.pop);
 				}
 				else if (req.session.search.sortby == 'sortmatch'){
-					req.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
+					res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
 				}
 				else{
 					res.locals.users = result;
@@ -91,15 +91,15 @@ router.route('/').get(async (req, res) => {
 					req.session.previous = undefined;
 				}
 				res.locals.users = all_user.slice(startIndex, endIndex);
-				i = 0;
-				info = await about.get_info_user(req.session.login);
+				var i = 0;
+				var info = await about.get_info_user(req.session.login);
 				info[0] = info;
-				loc = {lat: info[0].latitude, lon: info[0].longitude};
+				var loc = {lat: info[0].latitude, lon: info[0].longitude};
 				res.locals.users.forEach(() => {
 					var dist_user = {lat: res.locals.users[i].latitude, lon: res.locals.users[i].longitude};
 					res.locals.users[i].distance = geodist(dist_user, loc, {unit: 'km'});
 					// res.locals.users[i].distance = dist;
-					birthdate = moment(res.locals.users[i].birthday);
+					var birthdate = moment(res.locals.users[i].birthday);
 					res.locals.users[i].age = -(birthdate.diff(moment(), 'years'));
 					i++;
 				});
@@ -137,9 +137,17 @@ router.route('/').post((req, res) => {
 		req.session.search.distance = distance;  //regular expression
 		req.session.search.interet = interet;  //regular expression
 		req.session.search.popularite = popularite;  //regular expression
+
+
 		if (req.body.sortby != undefined){
 			req.session.search.sortby = req.body.sortby;
 		}
+		console.log("--------------------");
+		console.log("req body");
+		console.log(req.body);
+
+		console.log("--------------------");
+		console.log(req.session.search);
 		res.redirect('/research/?page=1');
 	}
 	catch (err){

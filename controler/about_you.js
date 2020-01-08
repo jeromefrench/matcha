@@ -147,8 +147,9 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
+			console.log(place.components);
 			field['country'] = place.components.country;
-			field['city'] = place.components.county;
+			field['city'] = place.components.town;
 			field['zip_code'] = place.components.postcode;
 			field['latitude'] = place.geometry.lat;
 			field['longitude'] = place.geometry.lng;

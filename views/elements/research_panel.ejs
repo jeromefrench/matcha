@@ -40,11 +40,11 @@
 				<div class="ui input">
 					<select name="sortby" class="ui dropdown">
 						<option hidden disabled selected value> -- select an option -- </option>
-						<option <% if (session && session.sortby == 'sortage') {%> <%= selected="selected"%> <%}%>value="sortage">Age</option>
-						<option <% if (session && session.sortby == 'sortdist') {%> <%= selected="selected"%> <%}%>value="sortdist">Distance</option>
-						<option <% if (session && session.sortby == 'sortinter') {%> <%= selected="selected"%> <%}%>value="sortinter">Interest</option>
-						<option <% if (session && session.sortby == 'sortpop') {%> <%= selected="selected"%> <%}%>value="sortpop">Popularity</option>
-						<option <% if (session && session.sortby == 'sortmatch') {%> <%= selected="selected"%> <%}%>value="sortmatch">Match Score</option>
+						<option <% if (session && session.search && session.search.sortby == 'sortage') {%> <%= selected="selected"%> <%}%>value="sortage">Age</option>
+						<option <% if (session && session.search && session.search.sortby == 'sortdist') {%> <%= selected="selected"%> <%}%>value="sortdist">Distance</option>
+						<option <% if (session && session.search && session.search.sortby == 'sortinter') {%> <%= selected="selected"%> <%}%>value="sortinter">Interest</option>
+						<option <% if (session && session.search && session.search.sortby == 'sortpop') {%> <%= selected="selected"%> <%}%>value="sortpop">Popularity</option>
+						<option <% if (session && session.search && session.search.sortby == 'sortmatch') {%> <%= selected="selected"%> <%}%>value="sortmatch">Match Score</option>
 					</select>
 				</div>
 			</div>
