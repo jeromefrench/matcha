@@ -1,12 +1,13 @@
+"use strict";
 let bdd = require('../models/interractions.js');
 const router = require('express').Router();
 var bdd_notif = require('../models/notifications.js');
 
 router.route('/:login').post(async (req, res) => {
 	try {
-		my_login = req.session.login;
-		the_login_i_like = req.params.login;
-		result = await bdd.doILike(my_login, the_login_i_like);
+		var my_login = req.session.login;
+		var the_login_i_like = req.params.login;
+		var result = await bdd.doILike(my_login, the_login_i_like);
 		if (result){
 			bdd.unLike(my_login, the_login_i_like);
 			bdd_notif.save_notif(my_login, the_login_i_like, my_login + " doesn't like you anymore");

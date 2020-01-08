@@ -2,8 +2,14 @@ let bdd = require('../models/account.js');
 const router = require('express').Router();
 
 router.route('/').get((req, res) => {
-	res.locals.title = "Forgotten Password";
-	res.render('main_view/forgotten-passwd.ejs');
+	try{
+		res.locals.title = "Forgotten Password";
+		res.render('main_view/forgotten-passwd.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 router.route('/').post(async (req, res) => {
@@ -25,6 +31,7 @@ router.route('/').post(async (req, res) => {
 	}
 	catch (err){
 		console.log(err);
+		res.redirect('/error');
 	}
 });
 

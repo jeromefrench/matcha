@@ -1,13 +1,19 @@
+"use strict";
 const router = require('express').Router();
 let bdd = require('../models/dashboard.js');
 
-
 function bebe_char(res, all_user){
-	if (all_user[0] != undefined){
-		res.locals.users = all_user;
-	}else {
-		res.locals.users = [];
-		res.locals.users[0] = undefined;
+	try {
+		if (all_user[0] != undefined){
+			res.locals.users = all_user;
+		}else {
+			res.locals.users = [];
+			res.locals.users[0] = undefined;
+		}
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
 	}
 }
 

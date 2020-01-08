@@ -4,8 +4,14 @@ const router = require('express').Router();
 const saltRounds = 2;
 
 router.route('/:login/:num').get((req, res) => {
-	res.locals.title = "Change Password";
-	res.render('main_view/change-passwd.ejs');
+	try{
+		res.locals.title = "Change Password";
+		res.render('main_view/change-passwd.ejs');
+	}
+	catch (err){
+		console.log(err);
+		res.redirect('/error');
+	}
 });
 
 router.route('/:login/:num').post(async (req, res) => {
