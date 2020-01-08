@@ -42,6 +42,8 @@ async function fakeUser()
 	var id_user = await bdd.get_id_user(login);
 	image = faker.internet.avatar();
 	path = image;
+	console.log(path);
+
 	profile = 1;
 
 	gender = faker.random.arrayElement(["male","female","other"]);
@@ -85,7 +87,7 @@ async function fakeUser()
 
 		bdd2.insert_log(id_user);
 		bdd2.add_fakeVueLike(id_user);
-		bdd_about.savePic(id_user, "/public/photo/"+login+"/1"+number, 1);
+		bdd_about.savePic(id_user, path, profile);
 		bdd_about.isCompleted(login);
 	}
 	catch(err){
