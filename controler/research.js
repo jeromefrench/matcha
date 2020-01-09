@@ -1,4 +1,3 @@
-"use strict";
 let bdd = require('../models/research.js');
 var bdd1 = require('../models/interractions.js');
 var about = require('../models/about_you.js');

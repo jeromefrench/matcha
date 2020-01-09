@@ -1,4 +1,3 @@
-"use strict";
 let bdd = require('../models/account.js');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');

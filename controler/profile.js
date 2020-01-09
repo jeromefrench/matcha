@@ -1,4 +1,3 @@
-"use strict";
 let bdd_re = require('../models/research.js');
 let bdd = require('../models/interractions.js');
 var bdd_notif = require('../models/notifications.js');

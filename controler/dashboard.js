@@ -1,4 +1,3 @@
-"use strict";
 const router = require('express').Router();
 let bdd = require('../models/dashboard.js');
 

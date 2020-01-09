@@ -1,4 +1,3 @@
-"use strict";
 let bdd = require('../models/interractions.js');
 const router = require('express').Router();
 var bdd_notif = require('../models/notifications.js');

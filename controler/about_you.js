@@ -1,4 +1,3 @@
-"use strict";
 let bdd = require('../models/about_you.js');
 const router = require('express').Router();
 const opencage = require('opencage-api-client');
