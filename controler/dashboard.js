@@ -12,8 +12,7 @@ function bebe_char(res, all_user){
 		}
 	}
 	catch (err){
-		console.error(err);
-		res.render('main_view/error.ejs');
+		return (err)
 	}
 }
 

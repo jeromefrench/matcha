@@ -1,0 +1,63 @@
+<%
+	var str = user.path_photo;
+	var patt = /^http/;
+	var res = patt.test(str)
+
+	if (res){
+		//c'est un lien
+		pic_link = user.path_photo;
+	}else {
+		//c'est pas un lien
+		pic_link = user.path_photo.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
+
+
+<div class="card">
+	<div class="blurring dimmable image">
+		<div class="ui dimmer">
+			<div class="content">
+				<div class="center">
+					<!-- <div class="ui inverted button">View profile</div> -->
+					<%- include('view_profile', {login: user.login}); %>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<!-- <1!-- <% pic_link = user.path_photo.replace('public/', '');%> --1> -->
+	<!-- <img src="<%= pic_link %>" > -->
+
+<% 
+	//regex pour savoir si c'est un lien ou une image sur le disk
+	var str = user.path_photo;
+	var patt = /^http/;
+	var res = patt.test(str)
+
+	if (res){
+		//c'est un lien
+		pic_link = user.path_photo;
+	}else {
+		//c'est pas un lien
+		pic_link = user.path_photo.replace('public/', '');
+		pic_link = "/assets"+pic_link;
+	}
+
+%>
+
+	<img class="ui medium image" src="<%= pic_link %>"/>
+
+	</div>
+	<div class="content">
+		<a class="header" style="display: inline-block;"><%= user.login %> </a><i <% if (user.gender == 'female') {%>class="venus icon" style="width:15px; height:15px; color:#db12a9;"<% }else if (user.gender == 'male'){ %>class="mars icon" style="width:15px; height: 15px; color:blue;"<%} else {%>class="transgender icon" style="width:15px; height:15px; color: purple;"<%}%>></i>
+		<div class="meta">
+		</div>
+	</div>
+	<div class="extra content">
+	</div>
+</div>
+
