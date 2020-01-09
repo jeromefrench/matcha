@@ -16,7 +16,7 @@ module.exports.get_completed  = get_completed ;
 module.exports.insert_info_user  = insert_info_user ;
 module.exports.savePic  = savePic ;
 module.exports.update_info_user  = update_info_user ;
-
+module.exports.isPhotoExist  = isPhotoExist ;
 
 async function InfoUser (login, property, field){
 	try {
@@ -113,6 +113,25 @@ async function profileToOne (path){
 		return (err);
 	}
 }
+
+
+async function isPhotoExist (path){
+	try {
+		var sql = "SELECT * FROM `photo` WHERE `path_photo` LIKE ?";
+		var todo = [path];
+		result = await db.query(sql, todo);
+		if (result[0] == undefined) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	catch (err){
+		return (err);
+	}
+}
+
 
 async function isProfile (path){
 	try {
