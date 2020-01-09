@@ -60,9 +60,6 @@ router.route('/:login').post(async (req, res) => {
 		var message_content = req.body.message_hello;
 		var date = new Date();
 		var ismatch = await bdd.isMatch(id_author, id_recever);
-		console.log("--------------");
-		console.log("Is match");
-		console.log(ismatch);
 		if (ismatch == false){
 			throw "chat imposssible car pas de match";
 		}

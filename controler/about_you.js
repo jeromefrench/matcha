@@ -69,8 +69,6 @@ router.route('/').post(async (req, res) => {
 
 		if (check_field['localisation'] == "ok"){
 			field = await searchAdresse(field);
-			console.log("ici ici ici");
-			console.log(field);
 			if (field['localisation'] == "ok"){
 				check_field['longitude'] = "ok";
 				check_field['latitude'] = "ok";
@@ -82,12 +80,7 @@ router.route('/').post(async (req, res) => {
 				check_field['zip_code'] = "wrong";
 			}
 		}
-
 		for (const property in check_field){
-			console.log("----------------");
-			console.log(property);
-			console.log(check_field[property]);
-			console.log(field[property]);
 			if(check_field[property] == "ok" && property != 'localisation'){
 				if (property == 'birthday'){
 					var birthday = field['birthday'];
@@ -104,9 +97,6 @@ router.route('/').post(async (req, res) => {
 		if (check_field['picture'] == "ok"){
 			done = await bdd.savethePic(req.files, req.session.login, number);
 		}
-
-
-
 		var user = await bdd.get_info_user(req.session.login);
 
 		var etiquette_preferences = false;
@@ -152,7 +142,6 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
-			console.log(place.components);
 			field['country'] = place.components.country;
 			field['city'] = place.components.city;
 			field['zip_code'] = place.components.postcode;
