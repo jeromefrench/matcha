@@ -19,10 +19,11 @@ exports.save_notif = async function (login, login_i_send, notification,  callbac
 	}
 }
 
+
 exports.get_notif = async function (login){
 	try {
 		var id_login = await bdd.get_id_user(login);
-		var sql = "SELECT * FROM `notifications` WHERE `id_user_i_send` = ?";
+		var sql = "SELECT * FROM `notifications` INNER JOIN `user` ON `user`.`id` = `notifications`.`id_user` WHERE `id_user_i_send` = ?";
 		var todo = [id_login];
 		var result = await db.query(sql, todo);
 		return (result);
@@ -31,3 +32,17 @@ exports.get_notif = async function (login){
 		return err
 	}
 }
+
+
+// exports.get_notif = async function (login){
+// 	try {
+// 		var id_login = await bdd.get_id_user(login);
+// 		var sql = "SELECT * FROM `notifications` WHERE `id_user_i_send` = ?";
+// 		var todo = [id_login];
+// 		var result = await db.query(sql, todo);
+// 		return (result);
+// 	}
+// 	catch (err){
+// 		return err
+// 	}
+// }

@@ -629,8 +629,6 @@ function check_passwd(passwd){
 // });
 // });
 
-
-
 // exports.check_log = function (login, callback){
 // 	if (help_noempty(login) == false){
 // 		callback('vide','vide');

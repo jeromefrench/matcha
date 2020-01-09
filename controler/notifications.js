@@ -6,6 +6,9 @@ var bdd = require('../models/account.js');
 router.route('/').get(async (req, res) => {
 	try {
 		var result = await notif.get_notif(req.session.login);
+		console.log("------------");
+		console.log("notif");
+		console.log(result);
 		bell = 0;
 		var userId = await bdd.get_id_user(req.session.login);
 		var sql = "UPDATE `notifications` SET `lu` = 1 WHERE `id_user_i_send` = ?";

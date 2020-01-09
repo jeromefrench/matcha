@@ -2,12 +2,43 @@
 
 <div class="ui container" style="margin-top: 30px">
 	<h1>Notifications</h1>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+
+	<table>
+		<tr>
+			<th>Notification</th>
+			<th>Expediteur</th>
+		</tr>
 
 <% if (locals.notifs){ %>
 	<% locals.notifs.forEach(function(notif) {  %>
-		<p> <%= notif.messages %> </p>
+		<tr>
+			<td>  <%= notif.messages %>     </td>
+			<td>  <%= notif.login %>   </td>
+		</tr>
 	<% });  %>
 <% } %>
+
+
+
+	</table>
 
 
 </div>
