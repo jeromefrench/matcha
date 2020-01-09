@@ -22,39 +22,63 @@
 
 	</head>
 	<body class="Site">
-		<div class="ui inverted segment">
-			<div class="ui inverted secondary menu">
-				<a href="/" class="item"><%- include logo.ejs %></a>
-				<a href="/about-you" class="item">About you</a>
-				<a href="/research/?page=1" class="item">Research</a>
-				<a href="/dashboard" class="item">Dashboard</a>
-				<div class="right menu">
-					<% if (locals.login) {%>
-						<a href="/notifications" class="item"><% if (bell == 1) { %> 🔔 <% } %>Notifications</a>
-						<a href="/my-account" class="item">My profile <%= locals.login %></a>
-					<%}%>
-					<div class="ui teal buttons" style="height:40px; margin-top:auto; margin-bottom:auto;">
-						<div class="ui simple dropdown icon button">
-							<% if (locals.logon) {%>
-								<i style="height:30px;" class="sign out alternate icon"></i>
-							<% }else{ %>
-								<i class="sign in alternate icon"></i>
-							<% } %>
-							<div class="menu">
-								<% if (!locals.logon) { %>
-									<% if (locals.title == "Sign Up") {} else{ %>
-										<div class="item"><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
-									<% } %>
-									<% if (locals.title == "Sign In") {} else{ %>
-										<div class="item"><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
-									<% } %>
-								<% }else{ %>
-									<div class="item"><a href="/sign-out" style="color:black"><b>Sign out</b></a></div>
+
+		<style>
+
+#moi1{
+	color: rgb(0, 181, 173);
+	background-color:black;
+	font-weight: 900;
+}
+
+#moi2{
+	color: white;
+	background-color:black;
+}
+
+#moi3{
+	color: white;
+	background-color:black;
+}
+#moi4{
+	color: white;
+	background-color:black;
+}
+
+		</style>
+
+		<div class="ui stackable container menu" style="background-color:black; ">
+			<a href="/" class="item" id="moi1">Matcha</a>
+			<a href="/about-you" id="moi2" class="item">About you</a>
+			<a href="/research/?page=1" id="moi3" class="item">Research</a>
+			<a href="/dashboard" id="moi4" class="item">Dashboard</a>
+			<div class="right menu">
+				<% if (locals.login) {%>
+					<a href="/notifications" class="item" id="moi4" ><% if (bell == 1) { %> 🔔 <% } %>Notifications</a>
+					<a href="/my-account" class="item" id="moi4" >My profile <%= locals.login %></a>
+				<%}%>
+				<div class="ui teal buttons" style="height:40px; margin-top:auto; margin-bottom:auto;">
+					<div class="ui simple dropdown icon button">
+						<% if (locals.logon) {%>
+							<i style="height:30px;" class="sign out alternate icon"></i>
+						<% }else{ %>
+							<i class="sign in alternate icon"></i>
+						<% } %>
+						<div class="menu" >
+							<% if (!locals.logon) { %>
+								<% if (locals.title == "Sign Up") {} else{ %>
+									<div class="item" ><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
 								<% } %>
-							</div>
+								<% if (locals.title == "Sign In") {} else{ %>
+									<div class="item" ><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
+								<% } %>
+							<% }else{ %>
+								<div class="item" href="/sign-out" style="color:black"><b>Sign out</b></a></div>
+							<% } %>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div class="Site-content">

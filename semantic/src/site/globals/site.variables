@@ -1,3 +1,11 @@
 /*******************************
      User Global Variables
+
+
+
+$mobileBreakpoint : 400px;
+$smallMonitorBreakpoinp : 400px;
+
+
+
 *******************************/
