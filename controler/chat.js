@@ -1,4 +1,3 @@
-"use strict";
 var bdd = require('../models/account.js');
 var bdd_message = require('../models/Message.js');
 var bdd_notif = require('../models/notifications.js');
@@ -51,18 +50,24 @@ router.route('/:login').post(async (req, res) => {
 		var le_recever = req.params.login;
 		var login = le_recever;
 		var id_author = await bdd.get_id_user(author);
+		if (id_author == undefined){
+			throw "utilisateur inconu";
+		}
 		var id_recever = await bdd.get_id_user(le_recever);
-		//le messages message_content
+		if (id_recever == undefined){
+			throw "utilisateur inconu";
+		}
 		var message_content = req.body.message_hello;
 		var date = new Date();
-		//l'envoyer dans la base de donne
-		//regarder si ils ont match
+		var ismatch = await bdd.isMatch(id_author, id_recever);
+		console.log("--------------");
+		console.log("Is match");
+		console.log(ismatch);
+		if (ismatch == false){
+			throw "chat imposssible car pas de match";
+		}
 		bdd_message.save_message(id_author, id_recever, message_content, date);
 		var done = await bdd_notif.save_notif(author, le_recever, message_content);
-		//regarder si il est connecter
-		// connecter on envoi le message dans notification avec mention lu
-		//else
-		//pas conencter on envvoi le message dans notification avec mention non lu
 		res.redirect('/chat/'+login+'');
 	}
 	catch (err){

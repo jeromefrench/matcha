@@ -19,6 +19,29 @@ module.exports.update_user = update_user;
 module.exports.IsLoginNumMatch = IsLoginNumMatch;
 module.exports.get_id_user = get_id_user;
 module.exports.update_user_and_passwd = update_user_and_passwd;
+module.exports.isMatch = isMatch;
+
+
+
+async function isMatch(userLog, ismatchLog){
+	try {
+		var userId = userLog;
+		var ismatchId = ismatchLog;
+		var sql = "SELECT * FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
+		var todo = [userId, userId];
+		var result = await db.query(sql, todo);
+		var find = result.find(element => element.id_user == ismatchId);
+		if (find == undefined){
+			return (false);
+		}
+		else{
+			return (true);
+		}
+	}
+	catch (err){
+		return (err);
+	}
+}
 
 async function update_user_and_passwd (field,  passwd, old_login){
 	try {
