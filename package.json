@@ -4,7 +4,8 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./test/test_file.js",
     "start": "nodemon serveur.js",
-    "stara": "nodemon serveur.js"
+    "serveur": "zsh ./app/script_launch_docker jchardin",
+    "database": "node ./app/script_install_database.js"
   },
   "dependencies": {
     "all-the-cities": "^3.0.0",

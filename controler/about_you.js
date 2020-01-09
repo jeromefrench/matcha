@@ -70,6 +70,8 @@ router.route('/').post(async (req, res) => {
 
 		if (check_field['localisation'] == "ok"){
 			field = await searchAdresse(field);
+			console.log("ici ici ici");
+			console.log(field);
 			if (field['localisation'] == "ok"){
 				check_field['longitude'] = "ok";
 				check_field['latitude'] = "ok";
@@ -83,6 +85,10 @@ router.route('/').post(async (req, res) => {
 		}
 
 		for (const property in check_field){
+			console.log("----------------");
+			console.log(property);
+			console.log(check_field[property]);
+			console.log(field[property]);
 			if(check_field[property] == "ok" && property != 'localisation'){
 				if (property == 'birthday'){
 					var birthday = field['birthday'];
@@ -147,8 +153,9 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
+			console.log(place.components);
 			field['country'] = place.components.country;
-			field['city'] = place.components.town;
+			field['city'] = place.components.city;
 			field['zip_code'] = place.components.postcode;
 			field['latitude'] = place.geometry.lat;
 			field['longitude'] = place.geometry.lng;
