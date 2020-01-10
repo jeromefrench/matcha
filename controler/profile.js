@@ -25,11 +25,7 @@ router.route('/:login').get(async (req, res) => {
 		else {
 			field['match'] = false;
 		}
-		var find = users.find(element => element.login == req.params.login);
 
-		//if (find != undefined){
-		//user.last_visit = 'online';
-		//}
 		var result = await bdd_re.get_user_profile(field['profil']);
 		console.log(result);
 		var user = result[0];
@@ -43,6 +39,11 @@ router.route('/:login').get(async (req, res) => {
 		res.locals.title = "Profile";
 		res.locals.field = field;
 		res.locals.user = user;
+		var find = users.find(element => element.login == req.params.login);
+
+		if (find != undefined){
+		user.last_visit = 'online';
+		}
 		res.render('main_view/profile.ejs');
 	}
 	catch (err){
