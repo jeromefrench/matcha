@@ -19,13 +19,13 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
 
 <script>
-	function addMessage(message_, post){
+	function addMessage(message_, post, author){
 		var div = document.createElement('div');
 		div.innerHTML = '<a class="avatar">'+
 			'<img src="/assets/avatar/jenny.jpg">'+
 			'</a>'+
 			'<div class="content">'+
-			'<a class="author"> <%= locals.my_login  %> </a>'+
+			'<a class="author">' + author + '</a>'+
 			'<div class="text">'
 			+message_+
 			'</div>'+
@@ -54,11 +54,12 @@
 	$chat.submit(function(e){
 		e.preventDefault();
 		var x = document.getElementById("myTextarea").value;
+		var author = '<%= locals.my_login %>';
 
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
 		console.log("j'envoi le message");
 		console.log(x);
-		addMessage(x, true);
+		addMessage(x, true, author);
 		//$chat.submit();
 	});
 

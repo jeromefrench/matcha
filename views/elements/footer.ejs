@@ -78,7 +78,8 @@
 					<% } %>
 
 				<% if (locals.title == "Chat"){ %>
-								addMessage(data.message, false);
+								var author = '<%= locals.the_login_i_chat %>';
+								addMessage(data.message, false, author);
 				<%}%>
 
 				});
