@@ -1,6 +1,10 @@
 <div class="comment">
 	<a class="avatar">
-		<img src="/assets/avatar/jenny.jpg">
+		<% if (message.author == locals.my_login) {%>
+		<img src="/assets/avatar/elyse.png">
+		<% } else {%>
+			<img src="/assets/avatar/daniel.jpg">
+		<% } %>
 	</a>
 	<div class="content">
 		<a class="author"><%= message.author %></a>

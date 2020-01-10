@@ -19,10 +19,10 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
 
 <script>
-	function addMessage(message_, post, author){
+	function addMessage(message_, post, author, img){
 		var div = document.createElement('div');
 		div.innerHTML = '<a class="avatar">'+
-			'<img src="/assets/avatar/jenny.jpg">'+
+			'<img src="/assets/avatar/' + img + '">'+
 			'</a>'+
 			'<div class="content">'+
 			'<a class="author">' + author + '</a>'+
@@ -59,7 +59,7 @@
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
 		console.log("j'envoi le message");
 		console.log(x);
-		addMessage(x, true, author);
+		addMessage(x, true, author, "elyse.png");
 		//$chat.submit();
 	});
 
