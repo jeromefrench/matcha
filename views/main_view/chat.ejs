@@ -21,11 +21,15 @@
 <script>
 	function addMessage(message_, post, author, img){
 		var div = document.createElement('div');
+		var date = new Date();
 		div.innerHTML = '<a class="avatar">'+
 			'<img src="/assets/avatar/' + img + '">'+
 			'</a>'+
 			'<div class="content">'+
 			'<a class="author">' + author + '</a>'+
+			'<div class="metadata">' +
+			'<span class="date">' + date + '</span>' +
+			'</div>' +
 			'<div class="text">'
 			+message_+
 			'</div>'+
