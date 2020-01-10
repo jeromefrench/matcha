@@ -142,9 +142,17 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
-			field['country'] = place.components.country;
-			field['city'] = place.components.city;
-			field['zip_code'] = place.components.postcode;
+			console.log(place);
+			//console.log(place.components);
+			if (place.components.country != undefined){
+				field['country'] = place.components.country;
+			}
+			if (place.components.city != undefined){
+				field['city'] = place.components.city;
+			}
+			if (place.components.postcode != undefined){
+				field['zip_code'] = place.components.postcode;
+			}
 			field['latitude'] = place.geometry.lat;
 			field['longitude'] = place.geometry.lng;
 			field['localisation'] = "ok";

@@ -31,6 +31,7 @@ router.route('/:login').get(async (req, res) => {
 		//user.last_visit = 'online';
 		//}
 		var result = await bdd_re.get_user_profile(field['profil']);
+		console.log(result);
 		var user = result[0];
 		if (user.birthday){
 			var date = new Date();

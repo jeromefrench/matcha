@@ -79,7 +79,7 @@ function wasMatch(userLog, wasmatchLog, callback){
 
 function get_user_my_match (login, callback){
 	var i = 0;
-	bdd.get_id_user(login, (id_user) => {
+	get_id_user(login, (id_user) => {
 		var sql = "SELECT * FROM `like_table` INNER JOIN `user` ON `docker`.`user`.`id` = `docker`.`like_table`.`id_user` INNER JOIN `photo` ON `docker`.`photo`.`id_user` = `docker`.`like_table`.`id_user` WHERE `id_i_like` = ? AND `like_table`.`id_user` IN (SELECT `id_i_like` FROM `like_table` WHERE `id_user` = ?)";
 		var todo = [id_user, id_user];
 		connection.query(sql, todo, (error, result) => {
