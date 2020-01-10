@@ -182,20 +182,40 @@
 						function errorCallback(error) {
 							console.log("l'utilisateur a refuser");
 							console.log(error);
-							$.getJSON('http://ip-api.com/json?callback=?', function(data) {
+							//$.getJSON('http://ip-api.com/json?callback=?', function(data) {
 								//console.log(data);
-								if (data.status == "success"){
-									elemCountry.value = data.country;
-									elemCity.value = data.city;
-									elemZipcode.value = data.zip;
+								//if (data.status == "success"){
+									//elemCountry.value = data.country;
+									//elemCity.value = data.city;
+									//elemZipcode.value = data.zip;
+								//}
+								//else{
+									//elemCountry.value = "error";
+									//elemCity.value = "error";
+									//elemZipcode.value = "error";
+								//}
+							//});
+
+							$.get("https://ipinfo.io?token=c1e0866de5c0ac", function(response) {
+  								console.log(response);
+								if (response){
+									if (response.country == "FR"){
+										elemCountry.value = "France";
+									}
+									else
+									{
+										elemCountry.value = response.country;
+									}
+									elemCity.value = response.city;
+									elemZipcode.value = response.postal;
 								}
 								else{
 									elemCountry.value = "error";
 									elemCity.value = "error";
 									elemZipcode.value = "error";
 								}
-								//console.log(JSON.stringify(data, null, 2));
-							});	
+							}, "jsonp")
+
 						}
 					});
 				</script>
@@ -206,18 +226,18 @@
 			<div class="ui container" style="margin-top: 30px">
 				<!-- ************************************************************************************************************ -->
 
-		<!-- ***********************************submit ****************************************************** -->
-		</br>
-		<div class="ui middle aligned center aligned grid container" style="margin-top:10px;">
-			<input type="submit" class="ui button" name="submit_button" value="Valider">
-		</div>
-		<!-- ***********************************submit ****************************************************** -->
+				<!-- ***********************************submit ****************************************************** -->
+				</br>
+				<div class="ui middle aligned center aligned grid container" style="margin-top:10px;">
+					<input type="submit" class="ui button" name="submit_button" value="Valider">
+				</div>
+				<!-- ***********************************submit ****************************************************** -->
 
 				<!-- ***********************************photo ****************************************************** -->
 				<h4 class="ui dividing header">Photos
-				<% if (locals.check_field['picture']) { %>
-				<%- include('../check_field/empty.ejs', {empty: locals.check_field['picture']}); %>
-				<% } %>
+					<% if (locals.check_field['picture']) { %>
+						<%- include('../check_field/empty.ejs', {empty: locals.check_field['picture']}); %>
+					<% } %>
 					<% if (locals.ans['pic_completed'] == false){ %>
 						<span style="margin-left:20px;" class="ui red tag label"> Missing information</span>
 					<% }else{ %>
