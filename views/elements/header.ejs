@@ -21,7 +21,7 @@
 		<script src="/assets/semantic/dist/semantic.min.js"></script>
 
 	</head>
-	<body class="Site">
+	<body class="Site"   onresize="myFunction()" >
 
 		<style>
 
@@ -80,5 +80,29 @@
 				</div>
 			</div>
 		</div>
+
+
+
+		<div id="myself" class="ui container">
+
+		</div>
+
+
+		<script>
+			function myFunction() {
+				var w = window.outerWidth;
+				if(w <= 767){
+					document.getElementById("myself").style.marginBottom = "250px";
+				}
+				else{
+					document.getElementById("myself").style.marginBottom = "0px";
+				}
+			}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+	myFunction();
+})
+
+		</script>
 
 		<div class="Site-content">
