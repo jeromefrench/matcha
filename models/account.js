@@ -191,7 +191,7 @@ async function update_user(lname, fname, mail, login, old_login){
 
 async function send_passwd (mail){
 	try{
-		var answer = await check_mail(mail, undefined);
+		var answer = await check_mail_forgot(mail);
 		if (answer == "mail_already_taken"){
 			var user = await recoveruser_wmail(mail);
 			var login = user.login;
@@ -560,8 +560,6 @@ async function check_mail_function(old_mail, mail, check_mail){
 				var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
 				var todo = [mail, mail];
 				var result = await db.query(sql, todo);
-				console.log("R");
-				console.log(result);
 				if ((result[0].count > 0 && mail != old_mail) || result[1].count > 0){
 					return ("mail_already_taken");
 				}
@@ -576,6 +574,26 @@ async function check_mail_function(old_mail, mail, check_mail){
 	}
 	catch (err){
 		return (err);
+	}
+}
+
+async function check_mail_forgot(mail){
+	try{
+		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
+		var todo = [mail, mail];
+		var result = await db.query(sql, todo);
+		if (result[0].count > 0 && result[1].count == 0){
+			return ("ok");
+		}
+		else if (result[1].count > 0){
+			return ("mail_confirm");
+		}
+		else{
+			return ("mail_unknown");
+		}
+	}
+	catch (err){
+
 	}
 }
 

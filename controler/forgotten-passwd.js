@@ -19,13 +19,14 @@ router.route('/').post(async (req, res) => {
 		field['mail'] = req.body.mail;
 		check_field['mail'] = await bdd.send_passwd(field['mail']);
 
-		if (check_field['mail'] == "change_ok"){
+		if (check_field['mail'] == "ok"){
 			req.session.ans['notification_general'] = "An email with a link has been sent";
 			res.redirect('/forgotten-passwd');
 		}
 		else
 		{
-			req.session.ans['notification_general'] = "The email adresse is wrong";
+			req.session.check_field = check_field;
+			req.session.field = field;
 			res.redirect('/forgotten-passwd');
 		}
 	}

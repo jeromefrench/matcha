@@ -5,10 +5,13 @@
 			<h2 class="ui teal image header">
 				<p>Enter the email address associated with your Matcha's account.</p>
 			</h2>
+			<div class="inline field">
+
         	<input type="email" name="mail" placeholder="Email" required>
-			<% if (locals.check_field['login']) { %>
+			<% if (locals.check_field['mail']) { %>
 				<%- include('../check_field/check_mail.ejs', {mail: locals.check_field['mail']}); %>
 			<% } %>
+			</div>
     		<input type="submit" class="ui primary button" value="Send">
 		</form>
 	</div>
