@@ -64,14 +64,12 @@
 			socket = io.connect('http://localhost:8080');
 			socket.on('connect', () => {
 				socket.on('notifvue', (data) => {
-					console.log("blajfiheruaghergaowfe");
 					notification({title: "New vue!", content: data.user + " is looking at your profile page", icon: '🎉'});
 				});
 				socket.emit('identify', {
 					token: test
 				});
 				socket.on('message', (data) =>{
-					console.log("Jai recu un message");
 					notification({title: 'New message from '+ data.leUser, content: data.message, icon: '💌'})
 
 					<% if( locals.page == "chat" ) { %>

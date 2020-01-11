@@ -6,7 +6,6 @@ router.route('/').get(async (req, res) => {
 	try{
 		res.locals.title = "About You";
 		res.locals.ans['user'] = await bdd.get_info_user(req.session.login);
-
 		var user = res.locals.ans['user'];
 
 		var etiquette_preferences = false;

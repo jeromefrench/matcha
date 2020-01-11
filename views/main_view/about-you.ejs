@@ -39,7 +39,7 @@
 						<select name="orientation" class="ui dropdown">
 							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "men") {%> <%= selected="selected"%> <%}%> value="men">Men</option>
 							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "women") {%> <%= selected="selected"%> <%}%> value="women">Women</option>
-							<option <% if (locals.ans['user'] && locals.ans['user'].orientation == "everyone" || locals.ans['user'] == undefined)  {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
+							<option <% if ((locals.ans['user'] && locals.ans['user'].orientation == "everyone") || (locals.ans['user'] && locals.ans['user'].orientation == undefined))  {%> <%= selected="selected"%> <%}%> value="everyone">Everyone</option>
 						</select>
 						<% if (locals.check_field['orientation']) { %>
 						<%- include('../check_field/empty.ejs', {empty: locals.check_field['orientation']}); %>
