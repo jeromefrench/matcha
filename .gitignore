@@ -2,3 +2,4 @@
 node_modules/*
 public/photo/*
 public/tmp/*
+.DS*

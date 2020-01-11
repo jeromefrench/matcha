@@ -57,14 +57,16 @@ router.route('/:login').post(async (req, res) => {
 		if (id_recever == undefined){
 			throw "utilisateur inconu";
 		}
-		var message_content = req.body.message_hello;
-		var date = new Date();
-		var ismatch = await bdd.isMatch(id_author, id_recever);
-		if (ismatch == false){
-			throw "chat imposssible car pas de match";
+		if (req.body.message_hello != ""){
+			var message_content = req.body.message_hello;
+			var date = new Date();
+			var ismatch = await bdd.isMatch(id_author, id_recever);
+			if (ismatch == false){
+				throw "chat imposssible car pas de match";
+			}
+			bdd_message.save_message(id_author, id_recever, message_content, date);
+			var done = await bdd_notif.save_notif(author, le_recever, message_content);
 		}
-		bdd_message.save_message(id_author, id_recever, message_content, date);
-		var done = await bdd_notif.save_notif(author, le_recever, message_content);
 		res.redirect('/chat/'+login+'');
 	}
 	catch (err){
