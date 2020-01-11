@@ -115,17 +115,17 @@
 
 				<!-- ***********************************Country ****************************************************** -->
 				<div class="field"> <label>Country</label> </div>
-				<div class="ui input"> <input type="text" id="country" name="country" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].country) { %> value ="<%= locals.ans['user'].country  %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="country" name="country" <% if (locals.ans['user'] && locals.ans['user'].country) { %> value ="<%= locals.ans['user'].country  %>" <% } %> > </div>
 				</br>
 				</br>
 				<!-- ***********************************City ****************************************************** -->
 				<div class="field"> <label>City</label> </div>
-				<div class="ui input"> <input type="text" id="city" name="city" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].city) { %> value ="<%= locals.ans['user'].city %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="city" name="city" <% if (locals.ans['user'] && locals.ans['user'].city) { %> value ="<%= locals.ans['user'].city %>" <% } %> > </div>
 				</br>
 				</br>
 				<!-- ***********************************Zip_code ****************************************************** -->
 				<div class="field"> <label>Zip Code</label> </div>
-				<div class="ui input"> <input type="text" id="zipcode" name="zipcode" placeholder="First Name" <% if (locals.ans['user'] && locals.ans['user'].zip_code) { %> value ="<%= locals.ans['user'].zip_code %>" <% } %> > </div>
+				<div class="ui input"> <input type="text" id="zipcode" name="zipcode" <% if (locals.ans['user'] && locals.ans['user'].zip_code) { %> value ="<%= locals.ans['user'].zip_code %>" <% } %> > </div>
 				</br>
 				</br>
 
@@ -137,7 +137,7 @@
 					elem = document.getElementById("monid");
 					elem.addEventListener("click", (event) => {
 						event.preventDefault();
-						navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {maximumAge:Infinity, timeout:1000});
+						navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {maximumAge:Infinity, timeout:10000});
 
 						function successCallback(position) {
 							console.log("l'utilisateur a accepter");
@@ -183,39 +183,39 @@
 						function errorCallback(error) {
 							console.log("l'utilisateur a refuser");
 							console.log(error);
-							//$.getJSON('http://ip-api.com/json?callback=?', function(data) {
-								//console.log(data);
-								//if (data.status == "success"){
-									//elemCountry.value = data.country;
-									//elemCity.value = data.city;
-									//elemZipcode.value = data.zip;
-								//}
-								//else{
-									//elemCountry.value = "error";
-									//elemCity.value = "error";
-									//elemZipcode.value = "error";
-								//}
-							//});
-
-							$.get("https://ipinfo.io?token=c1e0866de5c0ac", function(response) {
-  								console.log(response);
-								if (response){
-									if (response.country == "FR"){
-										elemCountry.value = "France";
-									}
-									else
-									{
-										elemCountry.value = response.country;
-									}
-									elemCity.value = response.city;
-									elemZipcode.value = response.postal;
+							$.getJSON('http://ip-api.com/json?callback=?', function(data) {
+								console.log(data);
+								if (data.status == "success"){
+									elemCountry.value = data.country;
+									elemCity.value = data.city;
+									elemZipcode.value = data.zip;
 								}
 								else{
 									elemCountry.value = "error";
 									elemCity.value = "error";
 									elemZipcode.value = "error";
 								}
-							}, "jsonp")
+							});
+
+							// $.get("https://ipinfo.io?token=c1e0866de5c0ac", function(response) {
+  							// 	console.log(response);
+							// 	if (response){
+							// 		if (response.country == "FR"){
+							// 			elemCountry.value = "France";
+							// 		}
+							// 		else
+							// 		{
+							// 			elemCountry.value = response.country;
+							// 		}
+							// 		elemCity.value = response.city;
+							// 		elemZipcode.value = response.postal;
+							// 	}
+							// 	else{
+							// 		elemCountry.value = "error";
+							// 		elemCity.value = "error";
+							// 		elemZipcode.value = "error";
+							// 	}
+							// }, "jsonp")
 
 						}
 					});

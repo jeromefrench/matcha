@@ -137,10 +137,13 @@ router.route('/').post(async (req, res) => {
 
 async function searchAdresse(field){
 	try {
+		console.log("LOC");
 		var loc = field['country'] + "  " + field['city'] + "  " + field['zip_code'];
+		console.log(loc);
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
+			console.log("PLACE");
 			console.log(place);
 			//console.log(place.components);
 			if (place.components.country != undefined){
