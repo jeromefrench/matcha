@@ -326,14 +326,14 @@ async function check_login_function(login, check_login, callback){
 			return ("empty")
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-			var todo = [login];
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) AS 'count1' FROM `user_sub` WHERE `login` LIKE ?";
+			var todo = [login, login];
 			result = await db.query(sql, todo);
 			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
 			//		todo = [login];
 			//conn.connection.query(sql, todo, function (err1, result1){
 			//	if (err1) throw err1;
-			if (result[0].count == 0){// && result1[0].count == 0){
+			if (result[0].count == 0 && result[0].count1 == 0){// && result1[0].count == 0){
 				return ("ok");
 			}
 			else{
