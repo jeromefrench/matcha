@@ -17,6 +17,7 @@ module.exports.insert_info_user  = insert_info_user ;
 module.exports.savePic  = savePic ;
 module.exports.update_info_user  = update_info_user ;
 module.exports.isPhotoExist  = isPhotoExist ;
+var moment = require('moment');
 
 async function InfoUser (login, property, field){
 	try {
@@ -247,13 +248,23 @@ function check_birthday(birthday){
 			return check_field
 		}
 		else{
-			var myRe = new RegExp('[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]', 'g');
+			console.log("BIRTHDAY");
+			console.log(birthday);
+			var myRe = new RegExp('[0-9]{2}/[0-9]{2}/[0-9]{4}', 'g');
 			var bool = myRe.test(birthday);
 			if (bool == true){
-				return "ok"
+				var birth = moment(birthday);
+				var age = -(birth.diff(moment(), 'years'));
+				if (age < 18 && age > 0){
+					return "too_young";
+				}
+				else if (age <= 0){
+					return "wrong";
+				}
+				return "ok";
 			}
 			else {
-				return "wrong"
+				return "wrong";
 			}
 		}
 		return check_field;
