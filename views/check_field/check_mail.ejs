@@ -10,6 +10,12 @@
     </div>
 <% } %>
 
+<% if (mail == "wrong_format"){ %>
+    <div class="ui left pointing red basic label">
+        Wrong format, @ needed baby.
+    </div>
+<% } %>
+
 <% if (mail == "empty"){ %>
     <div class="ui left pointing red basic label">
         Please fill in this field correctly.

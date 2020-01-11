@@ -294,7 +294,7 @@ async function check_login_function_my_account(old_login, login, check_login){
 			return ("empty")
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
 			var todo = [login, login];
 			var result = await db.query(sql, todo)
 			if (old_login == login){
@@ -319,7 +319,7 @@ async function check_login_function(login, check_login, callback){
 			return ("empty")
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
 			var todo = [login, login];
 			var result = await db.query(sql, todo);
 			console.log("RESULT LOG");
@@ -503,19 +503,24 @@ async function check_mail(mail, check_mail){
 			return ("empty");
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
-			var todo = [mail, mail];
-			var result = await db.query(sql, todo);
-			console.log("RESULT MAIL");
-			console.log(result);
-			if (result[0].count > 0){
-				return ("mail_already_taken");
-			}
-			else if (result[1].count > 0){
-				return ("mail_confirm");
+			var myRe = new RegExp('.*@.*', 'g');
+			var bool = myRe.test(mail);
+			if (bool == true){
+				var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
+				var todo = [mail, mail];
+				var result = await db.query(sql, todo);
+				if (result[0].count > 0){
+					return ("mail_already_taken");
+				}
+				else if (result[1].count > 0){
+					return ("mail_confirm");
+				}
+				else{
+					return ("ok");
+				}
 			}
 			else{
-				return ("ok");
+				return("wrong_format");
 			}
 		}
 	}
@@ -523,7 +528,6 @@ async function check_mail(mail, check_mail){
 		return (err);
 	}
 }
-
 
 module.exports.valide_user_fake = valide_user_fake;
 async function valide_user_fake (login, passwd, lname, fname, mail){
@@ -550,14 +554,23 @@ async function check_mail_function(old_mail, mail, check_mail){
 			return ("empty");
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
-			var todo = [mail, mail];
-			var result = await db.query(sql, todo);
-			if ((result[0].count > 0 && mail != old_mail) || result[1].count > 0){
-				return ("mail_already_taken");
+			var myRe = new RegExp('.*@.*', 'g');
+			var bool = myRe.test(mail);
+			if (bool == true){
+				var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
+				var todo = [mail, mail];
+				var result = await db.query(sql, todo);
+				console.log("R");
+				console.log(result);
+				if ((result[0].count > 0 && mail != old_mail) || result[1].count > 0){
+					return ("mail_already_taken");
+				}
+				else{
+					return ("ok");
+				}
 			}
 			else{
-				return ("ok");
+				return("wrong_format");
 			}
 		}
 	}
