@@ -163,12 +163,13 @@ async function recover_user_ (login){
 	}
 }
 
-async function check_field_my_account (old_login, field){
+async function check_field_my_account (old_login, old_mail, field){
 	try{
 		check_field = check_noempty(field);
 		check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
-		check_field['mail'] = await check_mail_function(field['mail'], check_field['mail']);
+		check_field['mail'] = await check_mail_function(old_mail, field['mail'], check_field['mail']);
 		check_field['passwd'] = check_passwd_function(field['npasswd'], field['verif']);
+		console.log(check_field);
 		return (check_field);
 	}
 	catch (err){
@@ -190,8 +191,8 @@ async function update_user(lname, fname, mail, login, old_login){
 
 async function send_passwd (mail){
 	try{
-		var answer = await check_mail_function(mail, undefined);
-		if (answer == "ok"){
+		var answer = await check_mail(mail, undefined);
+		if (answer == "mail_already_taken"){
 			var user = await recoveruser_wmail(mail);
 			var login = user.login;
 			var num = getRandomInt(10000);
@@ -236,14 +237,6 @@ function IsFieldOk(npass, verif){
 		return (err);
 	}
 }
-
-// function changePass(login, npass){
-// 	var sql = "UPDATE `user` SET `passwd` = ? WHERE `login` LIKE ?";
-// 	var todo = [npass, login];
-// 	conn.connection.query(sql, todo, (err, result) => {
-// 		if (err) throw err;
-// 	});
-// }
 
 async function recover_user_data (num, callback){
 	try{
@@ -301,13 +294,13 @@ async function check_login_function_my_account(old_login, login, check_login){
 			return ("empty")
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-			var todo = [login];
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
+			var todo = [login, login];
 			var result = await db.query(sql, todo)
 			if (old_login == login){
 				return ("ok");
 			}
-			else if (result[0].count == 0){
+			else if (result[0].count == 0 && result[1].count == 0){
 				return ("ok");
 			}
 			else{
@@ -492,33 +485,12 @@ async function save_connection_log (login){
 	}
 }
 
-async function get_id_user (login){
-	try{
-		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
-		var todo = [login];
-		result = await db.query(sql, todo);
-		return(result[0].id);
-	}
-	catch (err){
-		return (err);
-	}
-}
-
 async function get_id_user(login){
 	try{
 		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 		var todo = [login];
 		result = await db.query(sql, todo);
 		return(result[0].id);
-	}
-	catch (err){
-		return (err);
-	}
-}
-
-async function hellog(){
-	try{
-		mon_login = await get_id_user("blabli");
 	}
 	catch (err){
 		return (err);
@@ -572,16 +544,16 @@ async function valide_user_fake (login, passwd, lname, fname, mail){
 }
 
 
-async function check_mail_function(mail, check_mail){
+async function check_mail_function(old_mail, mail, check_mail){
 	try{
 		if (check_mail == "empty"){
 			return ("empty");
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-			var todo = [mail];
-			var result1 = await db.query(sql, todo);
-			if (result1[0].count != 1){
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
+			var todo = [mail, mail];
+			var result = await db.query(sql, todo);
+			if ((result[0].count > 0 && mail != old_mail) || result[1].count > 0){
 				return ("mail_already_taken");
 			}
 			else{

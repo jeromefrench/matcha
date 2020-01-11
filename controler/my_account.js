@@ -28,7 +28,8 @@ router.route('/').post(async (req, res) => {
 		field['login']  = req.body.login;
 		field['npasswd'] = req.body.npass;
 		field['verif']  = req.body.verif;
-		check_field = await bdd.check_field_my_account(req.session.login, field);
+		var user = await bdd.recover_user_(req.session.login);
+		check_field = await bdd.check_field_my_account(req.session.login, user.mail, field);
 		var check = "ok";
 		for (const property in check_field){
 			if(check_field[property] != "ok" && check_field[property] != "change_passwd"){
