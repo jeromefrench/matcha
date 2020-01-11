@@ -4,9 +4,6 @@ const router = require('express').Router();
 router.route('/:login/:num/profile').get(async (req, res) => {
 	try {
 		var num = req.params.num;
-
-		//a faire verifier que la photo existe
-
 		var id_user = await bdd.get_id_user(req.session.login);
 		var path = "/public/photo/"+req.session.login+"/"+num;
 		var test = await bdd.isPhotoExist(path);
@@ -34,7 +31,7 @@ router.route('/:login/:num').get(async (req, res) => {
 		}
 		var result = await bdd.isProfile(path);
 		if (result[0].profile == 1){
-			//profile pic on delete pas
+			req.session.ans['notification_general'] = "This is your profil picture, you can't delete it.";
 			res.redirect('back');
 		}else {
 			var done = await bdd.delPic(path);
