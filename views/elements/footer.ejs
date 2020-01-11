@@ -37,7 +37,7 @@
 			$('.notification').slideUp(300, function(){
 				$('.notification').remove();
 			})
-		}, 3000);
+		}, 10000);
 		$('.notification').click(function(event){
 			$('.notification').slideUp(300, function(){
 				$('.notification').remove();
@@ -47,15 +47,15 @@
 
 
 		<% if( locals.ans['notification_general'] != undefined ) { %>
-					notification({title: 'Message', content: '<%= locals.ans['notification_general'] %>', icon: '&#128077;'})
+					notification({title: 'Message', content: '<%= locals.ans['notification_general'] %>', icon: '📌'})
 		<% } %>
 
 
 		<% if( locals.first_log ) { %>
-					notification({title: 'Notification', content: 'You logged on successfully', icon: '&#128077;'})
+					notification({title: 'Notification', content: 'You logged on successfully', icon: '✨'})
 			<% } %>
 		<% if( locals.complete_message) { %>
-					notification({title: 'Notification', content: 'Area restricted to user with a profile completed', icon: '&#128077;'})
+					notification({title: 'Notification', content: 'Area restricted to user with a profile completed', icon: '⛔'})
 			<% } %>
 
 		<% if(locals.token) { %>
@@ -65,14 +65,14 @@
 			socket.on('connect', () => {
 				socket.on('notifvue', (data) => {
 					console.log("blajfiheruaghergaowfe");
-					notification({title: "New vue!", content: data.user + " is looking at your profile page", icon: '&#128077;'});
+					notification({title: "New vue!", content: data.user + " is looking at your profile page", icon: '🎉'});
 				});
 				socket.emit('identify', {
 					token: test
 				});
 				socket.on('message', (data) =>{
 					console.log("Jai recu un message");
-					notification({title: 'New message from '+ data.leUser, content: data.message, icon: '&#128077;'})
+					notification({title: 'New message from '+ data.leUser, content: data.message, icon: '💌'})
 
 					<% if( locals.page == "chat" ) { %>
 					<% } %>
@@ -84,14 +84,14 @@
 
 				});
 				socket.on('notiflike', (data) => {
-					notification({title: "New like", content: data.user + " likes you!", icon: '&#128077;'});
+					notification({title: "New like", content: data.user + " likes you!", icon: '❤️'});
 				});
 				socket.on('notifmatch', (data) => {
-					notification({title: "It\'s a match!", content: data.user + " likes you too!", icon: '&#128077;'});
+					notification({title: "It\'s a match!", content: data.user + " likes you too!", icon: '💘'});
 				});
 				socket.on('notifnomatch', (data) => {
 					console.log("NO LONGER MATCH");
-					notification({title: "A match is gone ...", content: data.user + " no longer likes you.", icon: '&#128077;'});
+					notification({title: "A match is gone ...", content: data.user + " no longer likes you.", icon: '💔'});
 				});
 				<% if (locals.title == "Profile"){ %>
 					socket.emit('vue_profile', {

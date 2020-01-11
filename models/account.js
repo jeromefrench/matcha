@@ -7,7 +7,7 @@ module.exports.checkLoginSignIn = checkLoginSignIn;
 module.exports.isLoginPasswdMatch = isLoginPasswdMatch;
 module.exports.connect_user = connect_user;
 module.exports.IsFieldOk = IsFieldOk;
-//module.exports.changePass = changePass;
+module.exports.changePass = changePass;
 module.exports.recover_user_data = recover_user_data;
 module.exports.valide_user = valide_user;
 module.exports.insert_user = insert_user;
@@ -20,8 +20,7 @@ module.exports.IsLoginNumMatch = IsLoginNumMatch;
 module.exports.get_id_user = get_id_user;
 module.exports.update_user_and_passwd = update_user_and_passwd;
 module.exports.isMatch = isMatch;
-
-
+module.exports.valide_user_fake = valide_user_fake;
 
 async function isMatch(userLog, ismatchLog){
 	try {
@@ -51,6 +50,17 @@ async function update_user_and_passwd (field,  passwd, old_login){
 		var login = field['login'];
 		var sql = "UPDATE `user` SET `lname` = ?, `fname` = ?, `mail` = ?, `login`= ? , `passwd`= ? WHERE `login` = ?";
 		var todo = [lname, fname, mail, login, passwd, old_login];
+		var result = await db.query(sql, todo);
+	}
+	catch (err){
+		return (err);
+	}
+}
+
+async function changePass(login, passwd){
+	try {
+		var sql = "UPDATE `user` SET `passwd`= ? WHERE `login` = ?";
+		var todo = [passwd, login];
 		var result = await db.query(sql, todo);
 	}
 	catch (err){
@@ -144,7 +154,7 @@ async function insert_user(field, passwd){
 		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
 		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail'], num];
 		result = await db.query(sql, todo);
-		sendmail(field['mail'], "Subscription", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/confirm/"+ field['login'] + '/' + num + "\">Confirmer</a>");
+		sendmail(field['mail'], "Subscription", "Click <a href=\"http://localhost:8080/confirm/"+ field['login'] + '/' + num + "\">here</a> to confirm your account.");
 		return "done";
 	}catch (err){
 		return err;
@@ -189,17 +199,17 @@ async function update_user(lname, fname, mail, login, old_login){
 	}
 }
 
-async function send_passwd (mail){
+async function send_passwd(mail){
 	try{
 		var answer = await check_mail_forgot(mail);
-		if (answer == "mail_already_taken"){
+		if (answer == "ok"){
 			var user = await recoveruser_wmail(mail);
 			var login = user.login;
 			var num = getRandomInt(10000);
 			var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
 			var todo = [num, login];
 			var res = await db.query(sql, todo);
-			sendmail(mail, "Forgotten password", "Clique sur ce lien pour confirmer ton inscription : <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">Changer passwd</a>");
+			sendmail(mail, "Forgotten password", "Click <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">here</a> to change your password.");
 			return (answer);
 		}
 		else{
@@ -230,7 +240,7 @@ async function IsLoginNumMatch (login, num, cat){
 
 function IsFieldOk(npass, verif){
 	try {
-		check_passwd = check_passwd_sign_up(npass, verif);
+		var check_passwd = check_passwd_sign_up(npass, verif);
 		return (check_passwd);
 	}
 	catch (err){
@@ -529,7 +539,6 @@ async function check_mail(mail, check_mail){
 	}
 }
 
-module.exports.valide_user_fake = valide_user_fake;
 async function valide_user_fake (login, passwd, lname, fname, mail){
 	try{
 		var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";

@@ -36,7 +36,6 @@ router.route('/').post( async (req, res) => {
 		}
 		else{
 			var done = await bdd.connect_user(field['login'], req);
-			req.session.ans['notification_general'] = "Successfully login"
 			res.redirect('/about-you');
 		}
 	}

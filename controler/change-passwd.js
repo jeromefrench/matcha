@@ -3,9 +3,16 @@ const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const saltRounds = 2;
 
-router.route('/:login/:num').get((req, res) => {
+router.route('/:login/:num').get(async (req, res) => {
 	try{
+		var check = {};
+		res.locals.log = req.params.login;
+		res.locals.num = req.params.num;
 		res.locals.title = "Change Password";
+		check['passwd'] = await bdd.IsLoginNumMatch(req.params.login, req.params.num, "user");
+		if (check['passwd'] == false){
+			res.locals.ans['notification_general'] = "Wrong url.";
+		}
 		res.render('main_view/change-passwd.ejs');
 	}
 	catch (err){
@@ -24,14 +31,14 @@ router.route('/:login/:num').post(async (req, res) => {
 		field['verif'] = req.body.verif;
 		check_field['passwd'] = await bdd.IsLoginNumMatch(field['login'], field['num'], "user");
 		if (check_field['passwd'] == false){
-			req.session.ans['notification_general'] = "The login and num dont match";
+			req.session.ans['notification_general'] = "Wrong url.";
 			req.session.check_field = check_field;
 			req.session.field = field;
 			res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
 		}
 		else{
 			check_field['passwd'] = bdd.IsFieldOk(field['npass'], field['verif']);
-			if (check_fiel['passwd'] != "ok"){
+			if (check_field['passwd'] != "ok"){
 				req.session.check_field = check_field;
 				req.session.field = field;
 				res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
@@ -39,8 +46,8 @@ router.route('/:login/:num').post(async (req, res) => {
 			else{
 				var salt = await bcrypt.genSalt(saltRounds);
 				var hash = await bcrypt.hash(field['npass'], salt);
-				bdd.changePass(field['login'], hash);
-				req.session.ans['notification_general'] = "Your password has been change you can sign in";
+				var result = await bdd.changePass(field['login'], hash);
+				req.session.ans['notification_general'] = "Your password has been changed, you can sign in";
 				res.redirect('/sign-in');
 			}
 		}
