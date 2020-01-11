@@ -1,9 +1,14 @@
 <% if (mail == "mail_already_taken"){ %>
     <div class="ui left pointing red basic label">
-        Mail already exists</a>.
+        Mail already exists.
     </div>
 <% } %>
 
+<% if (mail == "mail_confirm"){ %>
+    <div class="ui left pointing red basic label">
+        You need to confirm your account.
+    </div>
+<% } %>
 
 <% if (mail == "empty"){ %>
     <div class="ui left pointing red basic label">

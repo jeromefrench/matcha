@@ -190,7 +190,7 @@ async function update_user(lname, fname, mail, login, old_login){
 
 async function send_passwd (mail){
 	try{
-		var answer = await check_mail(mail, undefined);
+		var answer = await check_mail_function(mail, undefined);
 		if (answer == "ok"){
 			var user = await recoveruser_wmail(mail);
 			var login = user.login;
@@ -326,20 +326,17 @@ async function check_login_function(login, check_login, callback){
 			return ("empty")
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) AS 'count1' FROM `user_sub` WHERE `login` LIKE ?";
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
 			var todo = [login, login];
-			result = await db.query(sql, todo);
-			//		sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-			//		todo = [login];
-			//conn.connection.query(sql, todo, function (err1, result1){
-			//	if (err1) throw err1;
-			if (result[0].count == 0 && result[0].count1 == 0){// && result1[0].count == 0){
+			var result = await db.query(sql, todo);
+			console.log("RESULT LOG");
+			console.log(result);
+			if (result[0].count == 0 && result[1].count == 0){
 				return ("ok");
 			}
 			else{
 				return ("login_already_taken");
 			}
-			//});
 		}
 	}
 	catch (err) {
@@ -534,11 +531,16 @@ async function check_mail(mail, check_mail){
 			return ("empty");
 		}
 		else{
-			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-			var todo = [mail];
-			var result1 = await db.query(sql, todo);
-			if (result1[0].count >= 1){
+			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ? UNION SELECT COUNT(*) FROM `user_sub` WHERE `mail` LIKE ?";
+			var todo = [mail, mail];
+			var result = await db.query(sql, todo);
+			console.log("RESULT MAIL");
+			console.log(result);
+			if (result[0].count > 0){
 				return ("mail_already_taken");
+			}
+			else if (result[1].count > 0){
+				return ("mail_confirm");
 			}
 			else{
 				return ("ok");

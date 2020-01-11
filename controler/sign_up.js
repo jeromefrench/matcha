@@ -25,6 +25,9 @@ router.route('/').post(async (req, res) => {
 		field['passwd'] = req.body.passwd;
 		field['verif']  = req.body.verif;
 		check_field = await bdd.check_field_sign_up(field);
+		console.log(check_field);
+		console.log("-----------------------");
+		console.log(field);
 		var check = "ok";
 		for (const property in check_field){
 			if(check_field[property] != "ok"){
