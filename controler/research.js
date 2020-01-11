@@ -68,6 +68,8 @@ router.route('/').get(async (req, res) => {
 		}
 		else {
 			var all_user = await bdd.get_user(req.session.login);
+			console.log("USEEEERRSS");
+			console.log(all_user);
 			req.session.page = page;
 			req.session.totalpage = page;
 			if (all_user == undefined || all_user[0] == undefined){

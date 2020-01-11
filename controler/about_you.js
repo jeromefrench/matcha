@@ -141,10 +141,20 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
-			//console.log(place.components);
+			console.log(place.components);
 			if (place.components.country != undefined){
 				field['country'] = place.components.country;
 			}
+
+			if (place.components.county != undefined){
+				field['city'] = place.components.county;
+			}
+
+			if (place.components.town != undefined){
+				field['city'] = place.components.town;
+			}
+
+
 			if (place.components.city != undefined){
 				field['city'] = place.components.city;
 			}
