@@ -2,6 +2,8 @@ var fs = require('fs');
 const database = require('../connection_database.js');
 var contents = fs.readFileSync("./app/docker.sql", 'utf8');
 
+db = database.makeConn(config);
+
 async function execute_query (db, sql){
 	try {
 		var result = await db.query(sql);
@@ -16,7 +18,6 @@ async function execute_query (db, sql){
 
 async function hello(new_contents) {
 	var i = 0;
-	var db = await database.makeConn(config);
 	while  (i < new_contents.length - 1) {
 		// Print each iteration to the console
 		console.log(i);
