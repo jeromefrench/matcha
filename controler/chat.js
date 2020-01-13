@@ -13,6 +13,10 @@ router.route('/:login').get(async (req, res) => {
 		var le_recever = req.params.login;
 		var id_author = await bdd.get_id_user(author);
 		var id_recever = await bdd.get_id_user(le_recever);
+		var ismatch = await bdd.isMatch(id_author, id_recever);
+		if (ismatch == false){
+			throw "chat imposssible car pas de match";
+		}
 		if (id_recever == undefined){
 			throw "unknown user";
 		}
