@@ -57,7 +57,7 @@ router.route('/:login').post(async (req, res) => {
 		if (id_recever == undefined){
 			throw "utilisateur inconu";
 		}
-		if (trim(req.body.message_hello) != ""){
+		if (req.body.message_hello.trim() != ""){
 			var message_content = req.body.message_hello;
 			var date = new Date();
 			var ismatch = await bdd.isMatch(id_author, id_recever);

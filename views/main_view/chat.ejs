@@ -60,7 +60,12 @@
 	$chat.submit(function(e){
 		e.preventDefault();
 		var x = document.getElementById("myTextarea").value;
-		if (trim(x) != ""){
+		var y = x.trim();
+		console.log("X");
+		console.log(x);
+		console.log("Y");
+		console.log(y);
+		if (y != ""){
 		var author = '<%= locals.my_login %>';
 
 		socket.emit('message', {message: x, room: '<%= locals.the_login_i_chat %>'})
