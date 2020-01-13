@@ -42,7 +42,7 @@ router.route('/').get(async (req, res) => {
 					res.locals.users = sortBy(result, item => 'desc:' + item.pop);
 				}
 				else if (req.session.search.sortby == 'sortmatch'){
-					res.locals.users = sortBy(result, item => [item.ecart, item.distance, -item.nb_com, -item.pop]);
+					res.locals.users = sortBy(result, item => [item.distance, -item.nb_com, item.ecart, -item.pop]);
 				}
 				else{
 					res.locals.users = result;
