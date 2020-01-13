@@ -500,6 +500,9 @@ async function get_id_user(login){
 		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 		var todo = [login];
 		result = await db.query(sql, todo);
+		if (result[0] == undefined){
+			return undefined;
+		}
 		return(result[0].id);
 	}
 	catch (err){
