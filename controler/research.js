@@ -50,6 +50,9 @@ router.route('/').get(async (req, res) => {
 
 				req.session.page = page;
 				req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
+				if (page > req.session.totalpage || page < 1){
+					req.session.page = 1;
+				}
 				if (endIndex < Object.keys(res.locals.users).length){
 					req.session.nextpage = page + 1;
 				}
@@ -78,6 +81,9 @@ router.route('/').get(async (req, res) => {
 				res.locals.users = all_user;
 				req.session.page = page;
 				req.session.totalpage = Math.ceil((Object.keys(res.locals.users).length) / limit);
+				if (page > req.session.totalpage || page < 1){
+					req.session.page = 1;
+				}
 				if (endIndex < Object.keys(res.locals.users).length){
 					req.session.nextpage = page + 1;
 				}
@@ -115,30 +121,46 @@ router.route('/').get(async (req, res) => {
 
 router.route('/').post((req, res) => {
 	try {
-
-		var tab = req.body.age.match(/[0-9]{2}/g);  //regular expression pour bebe chat
+		console.log("BODY");
+		console.log(req.body);
+		var tab = req.body.age.match(/[0-9]{2}/g);
 		var age_debut = tab[0];
-		var age_fin = tab[1];  //regular expression
+		var age_fin = tab[1];
+		if(age_debut < 18 || age_fin > 99){
+			throw "age range not valid";
+		}
 
 		tab = req.body.distance.match(/^[0-9]*/g);
-		var distance = tab[0];  //regular expression
+		var distance = tab[0];
+		if(distance < 0 || distance > 700){
+			throw "dist range not valid";
+		}
 
 		tab = req.body.inter.match(/^[0-9]*/g);
-		var interet = tab[0];  //regular expression
-		tab = req.body.popularite.match(/^[0-5]/g);
+		var interet = tab[0];
+		if(interet < 0 || interet > 5){
+			throw "int range not valid";
+		}
 
-		var popularite = tab[0];  //regular expression
+		tab = req.body.popularite.match(/^[0-5]/g);
+		var popularite = tab[0];
+		if(popularite < 0 || popularite > 5){
+			throw "pop range not valid";
+		}
 
 		req.session.search = new Object();
 		req.session.search.age_debut = age_debut;
-		req.session.search.age_fin = age_fin;  //regular expression
-		req.session.search.distance = distance;  //regular expression
-		req.session.search.interet = interet;  //regular expression
-		req.session.search.popularite = popularite;  //regular expression
+		req.session.search.age_fin = age_fin;
+		req.session.search.distance = distance;
+		req.session.search.interet = interet;
+		req.session.search.popularite = popularite;
 
 
 		if (req.body.sortby != undefined){
 			req.session.search.sortby = req.body.sortby;
+		}
+		if(req.body.sortby != undefined && req.body.sortby != "sortage" && req.body.sortby != "sortdist" && req.body.sortby != "sortinter" && req.body.sortby != "sortpop" && req.body.sortby != "sortmatch"){
+			throw "sortby not valid";
 		}
 		res.redirect('/research/?page=1');
 	}
