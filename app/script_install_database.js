@@ -14,8 +14,9 @@ async function execute_query (db, sql){
 	}
 }
 
-async function hello(db, new_contents) {
+async function hello(new_contents) {
 	var i = 0;
+	var db = await database.makeConn(config);
 	while  (i < new_contents.length - 1) {
 		// Print each iteration to the console
 		console.log(i);
@@ -32,9 +33,8 @@ async function hello(db, new_contents) {
 
 
 
-var db = database.makeConn(config);
 new_contents = contents.toString();
 new_contents = new_contents.split(";");
-hello(db, new_contents);
+hello(new_contents);
 
 

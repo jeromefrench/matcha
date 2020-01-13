@@ -1,6 +1,7 @@
 var bdd = require('../models/account.js');
 var bdd_message = require('../models/Message.js');
 var bdd_notif = require('../models/notifications.js');
+var bdd_dash = require('../models/dashboard.js');
 const router = require('express').Router();
 
 router.route('/:login').get(async (req, res) => {
@@ -13,7 +14,7 @@ router.route('/:login').get(async (req, res) => {
 		var id_author = await bdd.get_id_user(author);
 		var id_recever = await bdd.get_id_user(le_recever);
 		if (id_recever == undefined){
-			res.render('main_view/error.ejs');
+			throw "unknown user";
 		}
 		else {
 			var messages = await bdd_message.get_message(id_author, id_recever);

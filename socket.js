@@ -25,7 +25,7 @@ function get_login_user(id, callback){
 	connection.query(sql, todo, (error, result) => {
 		if (error) throw error;
 		callback(result[0].login);
-	})
+	});
 }
 
 function get_id_user (login, callback){
@@ -169,14 +169,24 @@ exports = module.exports = function(io){
 								});
 								socket.on('message', function(data){
 									isBlock(data.room, currentUser.login, (block) => {
-										if (block == 0){
-											// console.log("on a un new message");
-											// console.log(data.room);
-											// console.log(data.message);
-											//if (le current user a matcher avec data room){
-											io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
-											//}
-										}
+										isMatch(data.room, currentUser.login, (match) => {
+											if (block == 0 && match == true){
+												// console.log("on a un new message");
+												// console.log(data.room);
+												// console.log(data.message);
+												//if (le current user a matcher avec data room){
+												io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
+												//}
+											}
+										})
+										// if (block == 0){
+										// 	// console.log("on a un new message");
+										// 	// console.log(data.room);
+										// 	// console.log(data.message);
+										// 	//if (le current user a matcher avec data room){
+										// 	io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
+										// 	//}
+										// }
 									});
 								});
 								socket.on('like', (data) => {
