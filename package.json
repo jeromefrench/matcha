@@ -5,7 +5,7 @@
     "test": "./node_modules/mocha/bin/mocha ./test/test_file.js",
     "start": "nodemon serveur.js",
     "serveur": "zsh ./app/script_launch_docker llejeune",
-    "database": "node ./app/script_install_database.js"
+    "database": "node ./app/script_install_database.js & node ./app/script_install_database.js"
   },
   "dependencies": {
     "all-the-cities": "^3.0.0",
