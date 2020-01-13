@@ -150,7 +150,6 @@ exports.search = async function (user, search){
 	try {
 		var i = 0;
 		var array_inter = [];
-		//dateur(search.age_debut, search.age_fin, (debut, fin) => {
 
 		var	debut = dateur_debut(search.age_debut);
 		var fin  = dateur_fin(search.age_fin);

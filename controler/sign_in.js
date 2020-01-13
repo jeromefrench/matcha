@@ -23,7 +23,6 @@ router.route('/').post( async (req, res) => {
 		if (check_field['login'] == "ok"){
 			check_field['passwd'] = await bdd.isLoginPasswdMatch(field['login'], field['passwd']);
 		}
-
 		if (check_field['login'] != "ok"){
 			req.session.field = field;
 			req.session.check_field = check_field;

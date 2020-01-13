@@ -141,7 +141,6 @@ async function searchAdresse(field){
 		var data = await opencage.geocode({q: '' + loc});
 		if (data.status.code == 200 && data.results.length > 0) {
 			var place = data.results[0];
-			console.log(place.components);
 			if (place.components.country != undefined){
 				field['country'] = place.components.country;
 			}

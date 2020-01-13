@@ -179,7 +179,6 @@ async function check_field_my_account (old_login, old_mail, field){
 		check_field['login'] = await check_login_function_my_account(old_login, field['login'], check_field['login']);
 		check_field['mail'] = await check_mail_function(old_mail, field['mail'], check_field['mail']);
 		check_field['passwd'] = check_passwd_function(field['npasswd'], field['verif']);
-		console.log(check_field);
 		return (check_field);
 	}
 	catch (err){
@@ -332,8 +331,6 @@ async function check_login_function(login, check_login, callback){
 			var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ? UNION ALL SELECT COUNT(*) FROM `user_sub` WHERE `login` LIKE ?";
 			var todo = [login, login];
 			var result = await db.query(sql, todo);
-			console.log("RESULT LOG");
-			console.log(result);
 			if (result[0].count == 0 && result[1].count == 0){
 				return ("ok");
 			}
@@ -547,12 +544,6 @@ async function valide_user_fake (login, passwd, lname, fname, mail){
 		var sql = "INSERT INTO `user` (login, passwd, fname, lname, mail) VALUES (?, ?, ?, ?, ?)";
 		var todo = [login, passwd, fname, lname, mail];
 		var done = await db.query(sql, todo);
-		// sql = "DELETE FROM `user_sub` WHERE `login` LIKE ?";
-		// todo = [login];
-		// conn.connection.query(sql, todo, (err, res) => {
-		// if (err) throw err;
-		// console.log(login + "deleted from user_sub");
-		// });
 	}
 	catch (err){
 		return (err);
@@ -648,60 +639,4 @@ function check_passwd(passwd){
 		return (err);
 	}
 }
-
-// var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `mail` LIKE ?";
-// var todo = [mail];
-// conn.connection.query(sql, todo, function (err, result) {
-// if (err) throw err;
-// sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `mail` LIKE ?";
-// todo = [mail];
-// conn.connection.query(sql, todo, function (err1, result1){
-// if (err1) throw err1;
-// if (result[0].count == 0)
-// callback(0);
-// else if (result1[0].count != 0)
-// callback(2);
-// else if (result[0].count == 1){
-// callback('changeok');
-// }
-// else
-// callback(1);
-// });
-// });
-
-// exports.check_log = function (login, callback){
-// 	if (help_noempty(login) == false){
-// 		callback('vide','vide');
-// 	}
-// 	else{
-// 		var sql = "SELECT COUNT(*) AS 'count' FROM `user` WHERE `login` LIKE ?";
-// 		var todo = [login];
-// 		conn.connection.query(sql, todo, function (err, result) {
-// 			if (err) throw err;
-// 			sql = "SELECT COUNT(*) AS 'count' FROM `user_sub` WHERE `login` LIKE ?";
-// 			todo = [login];
-// 			conn.connection.query(sql, todo, function (err1, result1){
-// 				if (err1) throw err1;
-// 				callback(result[0].count, result1[0].count);
-// 			});
-// 		});
-// 	}
-// }
-
-// exports.change_log_mail = function(oldlog, login, email, lname, fname, callback){
-//     console.log("oldlog = " + oldlog);
-//     console.log("log = " + login);
-//     console.log("email = " + email);
-//     var sql = "UPDATE `user` SET `login` = ?, `mail` = ?, `fname` = ?, `lname`= ? WHERE `login` = ?";
-//     var todo = [login, email, fname, lname, oldlog];
-//     conn.connection.query(sql, todo, (err) => {
-//         if (err){console.log(err);}
-//         else {
-//             console.log("USER UPDATED");
-//             callback();
-//         }
-//     });
-// }
-
-
 

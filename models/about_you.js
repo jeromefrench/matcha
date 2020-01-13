@@ -248,8 +248,6 @@ function check_birthday(birthday){
 			return check_field
 		}
 		else{
-			console.log("BIRTHDAY");
-			console.log(birthday);
 			var myRe = new RegExp('[0-9]{2}/[0-9]{2}/[0-9]{4}', 'g');
 			var bool = myRe.test(birthday);
 			if (bool == true){
@@ -276,7 +274,6 @@ function check_birthday(birthday){
 
 function check_bio(bio){
 	try {
-		//check_field['bio'] = help_noempty(field['bio']); marche pas car espace
 		if (bio != undefined && bio != ""){
 			check_field = "ok";
 		}

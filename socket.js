@@ -29,8 +29,6 @@ function get_login_user(id, callback){
 }
 
 function get_id_user (login, callback){
-	console.log("LOGIN");
-	console.log(login);
 	var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";
 	var todo = [login];
 	connection.query(sql, todo, (error, result) => {
@@ -67,7 +65,6 @@ function isMatch(userLog, ismatchLog, callback){
 						callback(false);
 					}
 					else{
-						//console.log("find = " + find);
 						callback(true);
 					}
 				}
@@ -113,7 +110,6 @@ function updateMatch (userLog, ismatchLog){
 					var todo = [0, userId, ismatchId];
 				}
 				connection.query(sql, todo, (error, result) => {
-					//console.log("match on like table UPDATED");
 				});
 			});
 		});
@@ -124,80 +120,46 @@ exports = module.exports = function(io){
 
 	io.on('connection', socket => {
 		var currentUser = null;
-		// console.log("on a une connection");
 		socket.on('identify', (data) => {
 			if (data.token){
 				jwt.verify(data.token, 'secretkey', {algorithms: ['HS256']},  (err, decoded) => {
 					if (err){
-						// console.log("token pas valid");
 					}else{
-						// console.log("token valid");
-						// console.log(decoded);
 						get_login_user(decoded.id, (loglog) => {
 							currentUser = {
 								id: decoded.id,
 								login: loglog,
 								count: 1
 							};
-							// console.log("USSSERRRRS TAAABBBB");
-							// console.log(users);
-	
 							var user = users.find(u => u.id == currentUser.id);
 							if (user == undefined){
-								// console.log("ADDED");
 								users.push(currentUser);
 							}
 							else{
-								// console.log("count = " + user.count);
 								user.count++;
 							}
 							socket.join(currentUser.login, () => {
 								socket.on('vue_profile', (data) => {
-									// console.log("ci ci");
-									// console.log(currentUser);
-									// console.log(data);
 									isBlock(data.room, currentUser.login, (block) => {
 										if (block == 0){
-											// console.log("hello you ici bas");
-											// console.log(data);
 											io.to(data.room).emit('notifvue', {user: currentUser.login});
 										}	
 									});
-									// console.log("hello you ici bas");
-									// console.log(data);
-									// io.to(data.room).emit('notifvue', {user: currentUser.login});
 								});
 								socket.on('message', function(data){
 									isBlock(data.room, currentUser.login, (block) => {
 										isMatch(data.room, currentUser.login, (match) => {
 											if (block == 0 && match == true){
-												// console.log("on a un new message");
-												// console.log(data.room);
-												// console.log(data.message);
-												//if (le current user a matcher avec data room){
 												io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
-												//}
 											}
 										})
-										// if (block == 0){
-										// 	// console.log("on a un new message");
-										// 	// console.log(data.room);
-										// 	// console.log(data.message);
-										// 	//if (le current user a matcher avec data room){
-										// 	io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
-										// 	//}
-										// }
 									});
 								});
 								socket.on('like', (data) => {
-									// console.log("like like");
-									// console.log(data);
 									isBlock(data.room, currentUser.login, (block) => {
 										if (block == 0){
 											if (data.like == 1){
 												isMatch(data.room, currentUser.login, (match) => {
-													// console.log('bla***********************');
-													// console.log(match);
 													if (match != 0){
 														io.to(data.room).emit('notifmatch', {user: currentUser.login});
 													}
@@ -208,8 +170,6 @@ exports = module.exports = function(io){
 											}
 											else if (data.like == 0){
 												wasMatch(data.room, currentUser.login, (result) => {
-													// console.log("HELLO ICI ICI ICI BAS");
-													// console.log(data.room);
 													if (result != undefined && result.match == 1){
 														updateMatch(data.room, currentUser.login);
 														updateMatch(currentUser.login, data.room);
@@ -221,134 +181,28 @@ exports = module.exports = function(io){
 									});
 								});
 							})
-							// console.log("tableau user");
-							// console.log(users);
 	
 							socket.on('disconnect', () => {
 								if (currentUser){
 									user = users.find(u => u.id == currentUser.id);
 									if (user){
 										user.count--;
-										// console.log("nv count = " + user.count);
 										if (user.count == 0){
 											users = users.filter(u => u.id != currentUser.id);
-											// console.log("lalalalalalalala");
-											// console.log(users);
 										}
 									}
 								}
 							});
 						});
 
-						// currentUser = {
-						// 	id: decoded.id,
-						// 	login: decoded.username,
-						// 	count: 1
-						// };
-						// // console.log("USSSERRRRS TAAABBBB");
-						// // console.log(users);
-
-						// var user = users.find(u => u.id == currentUser.id);
-						// if (user == undefined){
-						// 	// console.log("ADDED");
-						// 	users.push(currentUser);
-						// }
-						// else{
-						// 	// console.log("count = " + user.count);
-						// 	user.count++;
-						// }
-						// socket.join(currentUser.login, () => {
-						// 	socket.on('vue_profile', (data) => {
-						// 		// console.log("ci ci");
-						// 		// console.log(currentUser);
-						// 		// console.log(data);
-						// 		isBlock(data.room, currentUser.login, (block) => {
-						// 			if (block == 0){
-						// 				// console.log("hello you ici bas");
-						// 				// console.log(data);
-						// 				io.to(data.room).emit('notifvue', {user: currentUser.login});
-						// 			}	
-						// 		});
-						// 		// console.log("hello you ici bas");
-						// 		// console.log(data);
-						// 		// io.to(data.room).emit('notifvue', {user: currentUser.login});
-						// 	});
-						// 	socket.on('message', function(data){
-						// 		isBlock(data.room, currentUser.login, (block) => {
-						// 			if (block == 0){
-						// 				// console.log("on a un new message");
-    					// 				// console.log(data.room);
-    					// 				// console.log(data.message);
-    					// 				//if (le current user a matcher avec data room){
-    					// 				io.to(data.room).emit('message', {message: data.message, leUser: currentUser.login});
-						// 				//}
-						// 			}
-						// 		});
-						// 	});
-						// 	socket.on('like', (data) => {
-						// 		// console.log("like like");
-						// 		// console.log(data);
-						// 		isBlock(data.room, currentUser.login, (block) => {
-						// 			if (block == 0){
-						// 				if (data.like == 1){
-						// 					isMatch(data.room, currentUser.login, (match) => {
-						// 						// console.log('bla***********************');
-						// 						// console.log(match);
-						// 						if (match != 0){
-						// 							io.to(data.room).emit('notifmatch', {user: currentUser.login});
-						// 						}
-						// 						else {
-						// 							io.to(data.room).emit('notiflike', {user: currentUser.login});
-						// 						}
-						// 					});
-						// 				}
-						// 				else if (data.like == 0){
-						// 					wasMatch(data.room, currentUser.login, (result) => {
-						// 						// console.log("HELLO ICI ICI ICI BAS");
-						// 						// console.log(data.room);
-						// 						if (result != undefined && result.match == 1){
-						// 							updateMatch(data.room, currentUser.login);
-						// 							updateMatch(currentUser.login, data.room);
-						// 							io.to(data.room).emit('notifnomatch', {user: currentUser.login});
-						// 						}
-						// 					});
-						// 				}
-						// 			}
-						// 		});
-						// 	});
-						// })
-						// // console.log("tableau user");
-						// // console.log(users);
-
-						// socket.on('disconnect', () => {
-						// 	if (currentUser){
-						// 		user = users.find(u => u.id == currentUser.id);
-						// 		if (user){
-						// 			user.count--;
-						// 			// console.log("nv count = " + user.count);
-						// 			if (user.count == 0){
-						// 				users = users.filter(u => u.id != currentUser.id);
-						// 				// console.log("lalalalalalalala");
-						// 				// console.log(users);
-						// 			}
-						// 		}
-						// 	}
-						// });
 					}
 				});
 			}
 			else{
-				// console.log("pas de token");
+				console.log("pas de token");
 			}
 		})
-		// 	client.on('join', handleJoin);
-		// 	client.on('message', handleMessage);
 	})
 
-	function handleJoin(){
-	}
-
-	function handleMessage(){
-	}
 
 }

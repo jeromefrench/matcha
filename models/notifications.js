@@ -34,15 +34,3 @@ exports.get_notif = async function (login){
 }
 
 
-// exports.get_notif = async function (login){
-// 	try {
-// 		var id_login = await bdd.get_id_user(login);
-// 		var sql = "SELECT * FROM `notifications` WHERE `id_user_i_send` = ?";
-// 		var todo = [id_login];
-// 		var result = await db.query(sql, todo);
-// 		return (result);
-// 	}
-// 	catch (err){
-// 		return err
-// 	}
-// }

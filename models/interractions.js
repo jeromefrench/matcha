@@ -7,7 +7,7 @@ exports.add_visited_profile = async function (my_login, login_i_visit){
 		var sql = "SELECT * FROM `visited` WHERE `id_user` = ? AND `id_visited` = ? ";
 		var todo = [my_id, id_i_visit];
 		var result = await db.query(sql, todo);
-		if (result[0] == undefined) {//on ajoute dans la base la visit
+		if (result[0] == undefined) {
 			sql = "INSERT INTO `visited` (`id`, `id_user`, `id_visited`) VALUES (NULL, ?, ?)";
 			todo = [my_id, id_i_visit];
 			result = await db.query(sql, todo);
@@ -252,7 +252,6 @@ exports.IsBlocked = async function(user_log, user_block){
 	}
 }
 
-//bdd_functions
 async function get_id (login){
 	try {
 		var sql = "SELECT `id` FROM `user` WHERE `login` LIKE ?";

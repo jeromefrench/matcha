@@ -31,8 +31,13 @@ const restricted_logon = require('./middlewares/restricted_logon.js');
 const database = require('./connection_database.js');
 const test = require('./views/test_dir/test.js');
 
+
 rootPath = __dirname;
+
 db = database.makeConn(config);
+
+
+
 users = [];
 bell = 0;
 
@@ -84,39 +89,5 @@ app.get('/error', function(req, res){
 	res.send("Une erreur c'est produire");
 });
 app.use(function(req, res, next){
-	//res.setHeader('Content-Type', 'text/plain');
-	//res.status(404).send('Page introuvable');
 	res.render('main_view/404.ejs');
 });
-//*****************************************************************************
-//****************************ROUTES*******************************************
-//*****************************************************************************
-// const test_erreur = require('./test_tchat.js');
-// app.use('/test_erreur', test_erreur);
-// app.get('/test', (req, res) => {
-// 	console.log(req.session.flash);
-// 	if (req.session.test){
-// 		res.locals.error = req.session.test;
-// 		req.session.test = undefined;
-// 	}
-// 	// res.send("salut");
-// 	res.render('index', {test : 'Salut'});
-// });
-// app.post('/test', (req, res) => {
-// 	// console.log(req.body);
-// 	if (req.body.message == undefined || req.body.message == ""){
-// 		req.flash('error', "Vous n'avez pas poste de message");
-// 		req.session.test = "Il y a une erreur";
-// 		res.redirect('/test');  // pour rediriger vers une url
-// 		// res.render('index', {error: "Vous n'avez pas entrez de message",
-// 		// 					test: "salut"});
-// 	}
-// 	else {
-// 		var Message = require('./models/Message');
-// 		Message.create(req.body.message, function (){
-// 			req.flash('success', "Merci petit chat!");
-// 			res.redirect('/test');  // pour rediriger vers une url
-// 		})
-// 	}
-// });
-//**************404************************************************************

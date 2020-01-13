@@ -71,8 +71,6 @@ router.route('/').get(async (req, res) => {
 		}
 		else {
 			var all_user = await bdd.get_user(req.session.login);
-			console.log("USEEEERRSS");
-			console.log(all_user);
 			req.session.page = page;
 			req.session.totalpage = page;
 			if (all_user == undefined || all_user[0] == undefined){
@@ -104,7 +102,6 @@ router.route('/').get(async (req, res) => {
 				res.locals.users.forEach(() => {
 					var dist_user = {lat: res.locals.users[i].latitude, lon: res.locals.users[i].longitude};
 					res.locals.users[i].distance = geodist(dist_user, loc, {unit: 'km'});
-					// res.locals.users[i].distance = dist;
 					var birthdate = moment(res.locals.users[i].birthday);
 					res.locals.users[i].age = -(birthdate.diff(moment(), 'years'));
 					i++;
@@ -121,8 +118,6 @@ router.route('/').get(async (req, res) => {
 
 router.route('/').post((req, res) => {
 	try {
-		console.log("BODY");
-		console.log(req.body);
 		var tab = req.body.age.match(/[0-9]{2}/g);
 		var age_debut = tab[0];
 		var age_fin = tab[1];

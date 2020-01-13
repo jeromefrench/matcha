@@ -4,7 +4,6 @@ let bdd2 = require('./models/interractions.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
 
-// var faker = require('faker');
 var cities = require("all-the-cities");
 const router = require('express').Router();
 faker = require('faker/locale/fr');
@@ -42,7 +41,6 @@ async function fakeUser()
 	var id_user = await bdd.get_id_user(login);
 	image = faker.internet.avatar();
 	path = image;
-	console.log(path);
 
 	profile = 1;
 
