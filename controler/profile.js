@@ -16,6 +16,8 @@ router.route('/:login').get(async (req, res) => {
 		field['do_i_like'] = await bdd.doILike(req.session.login, field['profil']);
 		field['doesItLikeMe'] = await bdd.doesItLikeMe(req.session.login, field['profil']);
 		field['count_like'] = await bdd.countLike(field['profil']);
+		console.log("LIKE PROFIL");
+		console.log(field['count_like']);
 		field['nbVue'] = await bdd.countVue(field['profil']);
 		field['report'] = await bdd.IsReport(req.session.login, field['profil']);
 		field['block'] = await bdd.IsBlocked(req.session.login, field['profil']);

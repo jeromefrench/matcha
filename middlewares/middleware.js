@@ -78,6 +78,10 @@ module.exports = function(){
 			res.locals.complete_message = true;
 		}
 
+		if (req.session.logon_message == true){
+			req.session.logon_message = false;
+			res.locals.logon_message = true;
+		}
 
 		res.locals.jwtToken = req.session.jwtToken;
 		req.session.jwtToken = undefined;

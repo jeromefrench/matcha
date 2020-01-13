@@ -4,7 +4,7 @@
 </div>
 <div class="ui inverted vertical footer segment">
 	<div class="ui text container">
-		<p>FOOTER</p>
+		<p></p>
 	</div>
 </div>
 
@@ -52,11 +52,18 @@
 
 
 		<% if( locals.first_log ) { %>
-					notification({title: 'Notification', content: 'You logged on successfully', icon: '✨'})
+					notification({title: 'Notification', content: 'You logged on successfully.', icon: '✨'})
 			<% } %>
 		<% if( locals.complete_message) { %>
-					notification({title: 'Notification', content: 'Area restricted to user with a profile completed', icon: '⛔'})
+					notification({title: 'Notification', content: 'Area restricted to user with a profile completed.', icon: '⛔'})
 			<% } %>
+
+
+		<% if( locals.logon_message) { %>
+					notification({title: 'Notification', content: 'Please register or sign in first.', icon: '⛔'})
+			<% } %>
+
+		
 
 		<% if(locals.token) { %>
 					localStorage.setItem('Thetoken', "<%= locals.token %>");

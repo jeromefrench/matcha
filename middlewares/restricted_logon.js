@@ -13,6 +13,7 @@ module.exports = function(){
 
 
 		if (req.url != "/sign-in" && req.session.logon != true && req.url != "/sign-up" && !bool && !boolbool && !boolboolbool && req.url != "/forgotten-passwd"){
+			req.session.logon_message = true;
 			res.redirect('/sign-in');
 		}else {
 			next();

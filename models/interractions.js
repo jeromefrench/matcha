@@ -152,6 +152,8 @@ exports.countLike = async function (login){
 			sql = "SELECT COUNT(*) AS 'count' FROM `like_table` WHERE `id_i_like` = ?";
 			todo = [id_user];
 			like = await db.query(sql, todo);
+			console.log("COUNTLIKE");
+			console.log(like[0].count);
 			return (like[0].count);
 		}
 	}
@@ -162,10 +164,13 @@ exports.countLike = async function (login){
 
 exports.addLikeVue = async function(id_user, countLike, nbVue){
 	try {
+
 		var sql = "SELECT COUNT(*) AS 'count' FROM `popularite` WHERE `id_user` = ?";
 		var todo = [id_user];
 		var pop = Math.round((countLike / nbVue) * 5);
 		var result = await db.query(sql, todo);
+		console.log("ADDLV RESULT");
+		console.log(result[0]);
 		if (result[0].count == 0){
 			sql = "INSERT INTO `popularite` (`id_user`, `nb_like`, `nb_vue`, `pop`) VALUES (?, ?, ?, ?)";
 			todo = [id_user, countLike, nbVue, pop];
@@ -173,15 +178,25 @@ exports.addLikeVue = async function(id_user, countLike, nbVue){
 			sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 			todo = [id_user];
 			result = await db.query(sql, todo);
+			console.log("RESULT POP");
+			console.log(result[0]);
 			return (result[0].pop);
 		}
 		else{
-			sql = "UPDATE `popularite` SET `nb_like` = ? AND `nb_vue` = ? AND `pop` = ? WHERE `id_user` = ?";
+			console.log("COUNT ADDLV");
+			console.log(countLike);
+			console.log("NB VUE");
+			console.log(nbVue);
+			console.log("ID USER ADDLV");
+			console.log(id_user);
+			sql = "UPDATE `popularite` SET `nb_like` = ?, `nb_vue` = ?, `pop` = ? WHERE `id_user` = ?";
 			todo = [countLike, nbVue, pop, id_user];
 			done = await db.query(sql, todo);
 			sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 			todo = [id_user];
 			result = await db.query(sql, todo);
+			console.log("RESULT POP");
+			console.log(result[0]);
 			if (result && result[0]){
 				return (result[0].pop);
 			}
