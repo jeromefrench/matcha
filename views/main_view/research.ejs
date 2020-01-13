@@ -27,7 +27,7 @@
 		<% if (session.previous) {%>
 		<a class="item" href="/research/?page=<%= session.previous %>">Previous</a>
 		<% } %>
-		<i class="item"><%= session.page %> / <% if (session.totalpage == 0) {%> 1 <% }else{ %><%= session.totalpage %><% } %></i>
+		<i class="item"><%= session.page %></i>
 		<% if (session.nextpage) {%>
 		<a class="item" href="/research/?page=<%= session.nextpage %>">Next</a>
 		<% } %>
