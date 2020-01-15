@@ -59,11 +59,14 @@ async function update_user_and_passwd (field,  passwd, old_login){
 
 async function changePass(login, passwd){
 	try {
-		var sql = "UPDATE `user` SET `passwd`= ? WHERE `login` = ?";
-		var todo = [passwd, login];
+		var num = getRandomInt(10000);
+		var sql = "UPDATE `user` SET `passwd`= ?, `num` = ? WHERE `login` = ?";
+		var todo = [passwd, num, login];
 		var result = await db.query(sql, todo);
 	}
 	catch (err){
+		console.log("ERRRRR");
+		console.log(err);
 		return (err);
 	}
 }
