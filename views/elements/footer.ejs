@@ -27,12 +27,14 @@
 						</div> \
 						<div class="right"> \
 						<h2>'+ options.title + '</h2> \
-						<p>' + options.content +'</p> \
+						<p id="content"></p> \
 						</div> \
 						</div>';
 
 		var $notifs = $('.notifications');
 		$notifs.append(html).slideDown(300);
+		var message = document.getElementById('content');
+		message.appendChild(document.createTextNode(options.content));
 		setTimeout( function() {
 			$('.notification').slideUp(300, function(){
 				$('.notification').remove();

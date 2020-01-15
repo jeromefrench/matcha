@@ -32,10 +32,15 @@
 			'<div class="metadata">' +
 			'<span class="date">' + date + '</span>' +
 			'</div>' +
-			'<div class="text">'
-			+message_+
-			'</div>'+
 			'</div>';
+		var div_content = document.createElement('div');
+		div_content.className = "content";
+		var div_message = document.createElement('div');
+		div_message.className = "text";
+		var text = document.createTextNode(message_);
+		div_message.appendChild(text);
+		div_content.appendChild(div_message);
+		div.appendChild(div_content);
 		div.className = "comment";
 		var myElement = document.getElementById("new_message");
 		myElement.append(div);
