@@ -65,8 +65,6 @@ async function changePass(login, passwd){
 		var result = await db.query(sql, todo);
 	}
 	catch (err){
-		console.log("ERRRRR");
-		console.log(err);
 		return (err);
 	}
 }
@@ -231,8 +229,6 @@ async function IsLoginNumMatch (login, num, cat){
 		var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
 		var todo = [login, num];
 		result = await db.query(sql, todo);
-		console.log("RESULT LOG NUM MATCH");
-		console.log(result);
 		if (result[0].count == 0){
 			return (false);
 		}

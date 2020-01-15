@@ -20,12 +20,6 @@ router.route('/:token').get(async (req, res) => {
 		else{
 			res.locals.ans['notification_general'] = "Wrong url.";
 		}
-		// res.locals.token = token;
-		// var decoded = jwt.verify(token, 'secretkey', {algorithms: ['HS256']});
-		// check['passwd'] = await bdd.IsLoginNumMatch(req.params.login, req.params.num, "user");
-		// if (check['passwd'] == false){
-		// 	res.locals.ans['notification_general'] = "Wrong url.";
-		// }
 		res.render('main_view/change-passwd.ejs');
 	}
 	catch (err){
