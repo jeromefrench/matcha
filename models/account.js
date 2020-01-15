@@ -153,8 +153,8 @@ async function insert_user(field, passwd){
 		var number = getRandomInt(10000);		
 		var user = {  login: field['login'], num: number };
 		var token = jwt.sign(user, 'secretkey');
-		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail) VALUES (?, ?, ?, ?, ?)";
-		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail']];
+		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, ?)";
+		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail'], number];
 		result = await db.query(sql, todo);
 		sendmail(field['mail'], "Subscription", "Click <a href=\"http://localhost:8080/confirm/"+ token + "\">here</a> to confirm your account.");
 		return "done";
@@ -205,12 +205,13 @@ async function send_passwd(mail){
 		var answer = await check_mail_forgot(mail);
 		if (answer == "ok"){
 			var user = await recoveruser_wmail(mail);
-			var login = user.login;
-			var num = getRandomInt(10000);
-			var sql = "UPDATE `user` SET `num` = ? WHERE `login` LIKE ?";
-			var todo = [num, login];
-			var res = await db.query(sql, todo);
-			sendmail(mail, "Forgotten password", "Click <a href=\"http://localhost:8080/change-passwd/"+ login + '/' + num + "\">here</a> to change your password.");
+			var number = getRandomInt(10000);
+			var sql = "UPDATE `user` SET num = ? WHERE `mail` = ?";
+			var todo = [number, mail];
+			var done = await db.query(sql, todo);
+			var data = { login: user.login, num: number };
+			var token = jwt.sign(data, 'secretkey');
+			sendmail(mail, "Forgotten password", "Click <a href=\"http://localhost:8080/change-passwd/"+ token + "\">here</a> to change your password.");
 			return (answer);
 		}
 		else{
@@ -227,6 +228,8 @@ async function IsLoginNumMatch (login, num, cat){
 		var sql = "SELECT COUNT(*) AS 'count' FROM `"+ cat +"` WHERE `login` LIKE ? AND `num` LIKE ?";
 		var todo = [login, num];
 		result = await db.query(sql, todo);
+		console.log("RESULT LOG NUM MATCH");
+		console.log(result);
 		if (result[0].count == 0){
 			return (false);
 		}

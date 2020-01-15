@@ -1,18 +1,31 @@
 var bdd = require('../models/account.js');
 const bcrypt = require('bcrypt');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 const saltRounds = 2;
 
-router.route('/:login/:num').get(async (req, res) => {
+router.route('/:token').get(async (req, res) => {
 	try{
 		var check = {};
-		res.locals.log = req.params.login;
-		res.locals.num = req.params.num;
 		res.locals.title = "Change Password";
-		check['passwd'] = await bdd.IsLoginNumMatch(req.params.login, req.params.num, "user");
-		if (check['passwd'] == false){
+		var token = req.params.token;
+		if (token != ""){
+			res.locals.cp_token = token;
+			var decoded = jwt.verify(token, 'secretkey', {algorithms: ['HS256']});
+			check['passwd'] = await bdd.IsLoginNumMatch(decoded.login, decoded.num, "user");
+			if (check['passwd'] == false){
+				res.locals.ans['notification_general'] = "Wrong url.";
+			}
+		}
+		else{
 			res.locals.ans['notification_general'] = "Wrong url.";
 		}
+		// res.locals.token = token;
+		// var decoded = jwt.verify(token, 'secretkey', {algorithms: ['HS256']});
+		// check['passwd'] = await bdd.IsLoginNumMatch(req.params.login, req.params.num, "user");
+		// if (check['passwd'] == false){
+		// 	res.locals.ans['notification_general'] = "Wrong url.";
+		// }
 		res.render('main_view/change-passwd.ejs');
 	}
 	catch (err){
@@ -21,12 +34,17 @@ router.route('/:login/:num').get(async (req, res) => {
 	}
 });
 
-router.route('/:login/:num').post(async (req, res) => {
+router.route('/:token').post(async (req, res) => {
 	try{
 		var field = {};
 		var check_field = {};
-		field['login'] = req.params.login;
-		field['num'] = req.params.num;
+		var token = req.params.token;
+		if (token == ""){
+			res.redirect('/change-passwd');
+		}
+		var decoded = jwt.verify(token, 'secretkey', {algorithms: ['HS256']});
+		field['login'] = decoded.login;
+		field['num'] = decoded.num;
 		field['npass'] = req.body.npass;
 		field['verif'] = req.body.verif;
 		check_field['passwd'] = await bdd.IsLoginNumMatch(field['login'], field['num'], "user");
@@ -34,14 +52,14 @@ router.route('/:login/:num').post(async (req, res) => {
 			req.session.ans['notification_general'] = "Wrong url.";
 			req.session.check_field = check_field;
 			req.session.field = field;
-			res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+			res.redirect('/change-passwd/'+ token);
 		}
 		else{
 			check_field['passwd'] = bdd.IsFieldOk(field['npass'], field['verif']);
 			if (check_field['passwd'] != "ok"){
 				req.session.check_field = check_field;
 				req.session.field = field;
-				res.redirect('/change-passwd/'+ req.params.login + '/' + req.params.num);
+				res.redirect('/change-passwd/'+ token);
 			}
 			else{
 				var salt = await bcrypt.genSalt(saltRounds);

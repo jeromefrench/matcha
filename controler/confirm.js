@@ -10,6 +10,8 @@ router.route('/:token').get(async (req, res) => {
 			var login = decoded.login;
 			var num = decoded.num;
 			var suspense = await bdd.IsLoginNumMatch(login, num, "user_sub");
+			console.log("SUSPENSE");
+			console.log(suspense);
 			if (suspense){
 				var data = await bdd.recover_user_data(login);
 				var done = bdd.valide_user(data.login, data.passwd, data.lname, data.fname, data.mail);
