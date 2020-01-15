@@ -76,6 +76,9 @@ exports.addLike = async function (my_login, the_login_i_like){
 		var sql = "INSERT INTO `like_table` (id_user, id_i_like) VALUES (?, ?)";
 		var todo = [my_id, id_i_like];
 		var result = await db.query(sql, todo);
+		sql = "UPDATE `popularite` SET `nb_like` = `nb_like` + 1 WHERE `id_user` = ?";
+		todo = [id_i_like];
+		result = await db.query(sql, todo);
 	}
 	catch (err){
 		return (err);
@@ -89,7 +92,9 @@ exports.unLike = async function (my_login, the_login_i_like){
 		var sql = "DELETE FROM `like_table` WHERE `id_user` = ? AND `id_i_like` = ?";
 		var todo = [my_id, id_i_like];
 		var result = await db.query(sql, todo);
-	}
+		sql = "UPDATE `popularite` SET `nb_like` = `nb_like` - 1 WHERE `id_user` = ?";
+		todo = [id_i_like];
+		result = await db.query(sql, todo);	}
 	catch (err){
 		return (err);
 	}
@@ -149,12 +154,10 @@ exports.countLike = async function (login){
 		}
 		else{
 			var id_user = user[0].id;
-			sql = "SELECT COUNT(*) AS 'count' FROM `like_table` WHERE `id_i_like` = ?";
+			sql = "SELECT * FROM `popularite` WHERE `id_user` = ?";
 			todo = [id_user];
-			like = await db.query(sql, todo);
-			console.log("COUNTLIKE");
-			console.log(like[0].count);
-			return (like[0].count);
+			result = await db.query(sql, todo);
+			return (result[0].nb_like);
 		}
 	}
 	catch (err){
