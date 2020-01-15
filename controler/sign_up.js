@@ -39,6 +39,7 @@ router.route('/').post(async (req, res) => {
 		else{
 			var salt = await bcrypt.genSalt(saltRounds);
 			var hash = await bcrypt.hash(field['passwd'], salt);
+			console.log("Machu");
 			bdd.insert_user(field, hash);
 			req.session.ans['notification_general'] = "Please confirm your account on your email"
 			res.redirect('/sign-in');

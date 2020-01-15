@@ -67,13 +67,13 @@
 						<div class="menu" >
 							<% if (!locals.logon) { %>
 								<% if (locals.title == "Sign Up") {} else{ %>
-									<div class="item" ><a href="/sign-up" style="color:black"><b>Sign up</b></a></div>
+									<a href="/sign-up" style="color:black"><div class="item"><b>Sign up</b></div></a>
 								<% } %>
 								<% if (locals.title == "Sign In") {} else{ %>
-									<div class="item" ><a href="/sign-in" style="color:black"><b>Sign in</b></a></div>
+									<a href="/sign-in" style="color:black"><div class="item"><b>Sign in</b></div></a>
 								<% } %>
 							<% }else{ %>
-								<div class="item"><a href="/sign-out" style="color:black"><b>Sign out</b></a></div>
+								<a href="/sign-out" style="color:black"><div class="item"><b>Sign out</b></div></a>
 							<% } %>
 						</div>
 					</div>

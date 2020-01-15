@@ -150,11 +150,13 @@ async  function check_field_sign_up (field){
 
 async function insert_user(field, passwd){
 	try{
-		var num = getRandomInt(10000);
-		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail, num) VALUES (?, ?, ?, ?, ?, "+ num +")";
-		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail'], num];
+		var number = getRandomInt(10000);		
+		var user = {  login: field['login'], num: number };
+		var token = jwt.sign(user, 'secretkey');
+		var sql = "INSERT INTO `user_sub` (login, passwd, lname, fname, mail) VALUES (?, ?, ?, ?, ?)";
+		var todo = [field['login'], passwd, field['lname'], field['fname'], field['mail']];
 		result = await db.query(sql, todo);
-		sendmail(field['mail'], "Subscription", "Click <a href=\"http://localhost:8080/confirm/"+ field['login'] + '/' + num + "\">here</a> to confirm your account.");
+		sendmail(field['mail'], "Subscription", "Click <a href=\"http://localhost:8080/confirm/"+ token + "\">here</a> to confirm your account.");
 		return "done";
 	}catch (err){
 		return err;
@@ -247,10 +249,10 @@ function IsFieldOk(npass, verif){
 	}
 }
 
-async function recover_user_data (num, callback){
+async function recover_user_data (login, callback){
 	try{
-		var sql = "SELECT * FROM `user_sub` WHERE `num` LIKE ?";
-		var todo = [num];
+		var sql = "SELECT * FROM `user_sub` WHERE `login` LIKE ?";
+		var todo = [login];
 		res = await db.query(sql, todo);
 		return (res[0]);
 	}

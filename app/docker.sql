@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `login
 
 CREATE TABLE IF NOT EXISTS `user_info` ( `id` int(11) NOT NULL AUTO_INCREMENT, `id_user` int(11) NOT NULL, `gender` enum('male','female','other','') DEFAULT NULL, `orientation` enum('men','women','everyone','') DEFAULT NULL, `bio` tinytext, `birthday` date DEFAULT NULL, `interests` set('voyage','cuisine','escalade','equitation','sieste','soleil') DEFAULT NULL, `country` text, `city` text, `zip_code` text, `longitude` float DEFAULT NULL, `latitude` float DEFAULT NULL, `completed` tinyint(1) DEFAULT '0', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `user_sub` ( `id` int(11) NOT NULL AUTO_INCREMENT, `login` text NOT NULL, `passwd` text NOT NULL, `lname` text NOT NULL, `fname` text NOT NULL, `mail` text NOT NULL, `num` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `user_sub` ( `id` int(11) NOT NULL AUTO_INCREMENT, `login` text NOT NULL, `passwd` text NOT NULL, `lname` text NOT NULL, `fname` text NOT NULL, `mail` text NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `visited` ( `id` int(11) NOT NULL AUTO_INCREMENT, `id_user` int(11) NOT NULL, `id_visited` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
