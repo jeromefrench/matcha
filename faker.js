@@ -89,7 +89,7 @@ async function fakeUser()
 		bdd_about.isCompleted(login);
 	}
 	catch(err){
-		console.log("petit probleme");
+		console.log("petit probleme ");
 		console.log(err);
 	}
 }
